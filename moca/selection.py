@@ -86,6 +86,21 @@ triggersForFinalState = {
       'EGamma' : triggers['SingleElecTriggers'],
       'DoubleMuon' : triggers['DoubleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
+  },
+  'eeee' : {
+   
+  },
+  'mmmm' : {
+   
+  },
+  'eeem' : {
+   
+  },
+  'eemm' : {
+   
+  },
+  'mmme' : {
+   
   }
 }
 
@@ -115,6 +130,21 @@ triggersNotForFinalState = {
       'EGamma' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'DoubleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers'],
       'SingleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig'],
+  },
+  'eeee' : {
+   
+  },
+  'mmmm' : {
+   
+  },
+  'eeem' : {
+   
+  },
+  'eemm' : {
+   
+  },
+  'mmme' : {
+   
   }
 }
 
