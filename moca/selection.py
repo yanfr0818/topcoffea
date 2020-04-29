@@ -87,20 +87,34 @@ triggersForFinalState = {
       'DoubleMuon' : triggers['DoubleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
   },
-  'eeee' : {
-   
+  'eeee' : {#Same as eee. Not sure if anything should be added.
+      'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
+      'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
   },
-  'mmmm' : {
-   
+  'mmmm' : {#Same as mmm.
+      'MC': triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
+      'DoubleMuon' : triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
+      'SingleMuon' : triggers['SingleMuonTriggers'],
   },
-  'eeem' : {
-   
+  'eeem' : {#The eem list + eee
+      'MC': triggers['TripleElecTrig']+triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
+      'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
+      'EGamma' : triggers['TripleElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
+      'SingleMuon' : triggers['SingleMuonTriggers'],
   },
-  'eemm' : {
-   
+  'eemm' : {#The eem list + mm + mme
+      'MC': triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
+      'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
+      'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
+      'SingleMuon' : triggers['SingleMuonTriggers'],
+      'DoubleMuon' : triggers['DoubleMuonTrig'],
   },
-  'mmme' : {
-   
+  'mmme' : {#The mme list + mmm
+      'MC': triggers['TripleMuonTrig']+triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
+      'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
+      'EGamma' : triggers['SingleElecTriggers'],
+      'DoubleMuon' : triggers['TripleMuonTrig']+triggers['DoubleMuonTrig'],
+      'SingleMuon' : triggers['SingleMuonTriggers'],   
   }
 }
 
@@ -131,20 +145,26 @@ triggersNotForFinalState = {
       'DoubleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers'],
       'SingleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig'],
   },
-  'eeee' : {
-   
-  },
+  'eeee' : { 'EGamma' : [],},
   'mmmm' : {
-   
+      'DoubleMuon' : [],
+      'SingleMuon' : triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],   
   },
   'eeem' : {
-   
+      'MuonEG' : [], 
+      'EGamma' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
+      'SingleMuon' :  triggers['TripleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],   
   },
   'eemm' : {
-   
+      'MuonEG' : [], 
+      'EGamma' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
+      'SingleMuon' :  triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['DoubleMuonTrig'], 
   },
   'mmme' : {
-   
+      'MuonEG' : [],
+      'EGamma' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
+      'DoubleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers'],
+      'SingleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],   
   }
 }
 
