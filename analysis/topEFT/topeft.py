@@ -534,7 +534,7 @@ class AnalysisProcessor(processor.ProcessorABC):
                 print(values.shape)
                 print(ch)
                 print(lev)
-                hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, 1)
+                hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=1)
 
         return hout
 
