@@ -341,7 +341,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         print('test2')
         
         # Get Z and W invariant masses
+        print(clos_eeee)
+        print(isOSeeee)
         goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
+        print(goodPairs_eeee.i0)
         eZ0   = goodPairs_eeee.i0[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         eZ1   = goodPairs_eeee.i1[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         goodPairs_mmmm = mmmm_groups[(clos_mmmm)&(isOSmmmm)]
