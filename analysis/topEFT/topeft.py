@@ -312,7 +312,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         triMuon = [x+y for x,y in zip(mZ, mW)]
         mZ_mmm  = [t[0].mass for t in mZ]
         m3l_mmm = [t[0].mass for t in triMuon]
-
+        print('test1')
+        
         ### eeee and mmmm
         eeee =   e[(nElec==4)&(nMuon==0)&( e.pt>-1)] 
         mmmm =  mu[(nElec==0)&(nMuon==4)&(mu.pt>-1)] 
@@ -337,6 +338,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeeeOffZmask = (eeeeOffZmask[eeeeOffZmask].counts>0)
         mmmmOnZmask  = (mmmmOnZmask[mmmmOnZmask].counts>0)
         mmmmOffZmask = (mmmmOffZmask[mmmmOffZmask].counts>0)
+        print('test2')
         
         # Get Z and W invariant masses
         goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
@@ -345,7 +347,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         goodPairs_mmmm = mmmm_groups[(clos_mmmm)&(isOSmmmm)]
         mZ0   = goodPairs_mmmm.i0[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         mZ1   = goodPairs_mmmm.i1[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-
+        print('test3')
+        
         eeee_reg = eeee[(eeeeOnZmask)].regular()
         eW = np.append(eeee_reg, eZ0, axis=1)
         eW = np.append(eW, eZ1,axis=1)
