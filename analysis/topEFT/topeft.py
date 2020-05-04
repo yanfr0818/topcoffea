@@ -523,7 +523,7 @@ class AnalysisProcessor(processor.ProcessorABC):
                 if lev == 'base': continue
                 hout[var].fill(j0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)                
                 
-         for ch in channels3L:
+         for ch in channels4L:
           for lev in levels:
             weight = weights.weight()
             cuts = [ch] + [lev]
@@ -531,7 +531,6 @@ class AnalysisProcessor(processor.ProcessorABC):
             weights_flat = weight[cut].flatten()
             if var == 'counts':
               values = v[cut].flatten()
-              print(values.shape==weights_flat.shape)
               hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
 
         return hout
