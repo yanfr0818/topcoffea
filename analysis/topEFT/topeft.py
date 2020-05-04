@@ -388,7 +388,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         trig_mme  = passTrigger(df,'mme',isData,dataset)
         trig_eeee = passTrigger(df,'eeee',isData,dataset)
         trig_mmmm = passTrigger(df,'mmmm',isData,dataset)
-        
+        print('test4')
 
         # MET filters
 
@@ -423,6 +423,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('eeeeSSoffZ',  (eeeeOffZmask)&(trig_eeee))
         selections.add('mmmmSSonZ',   (mmmmOnZmask)&(trig_mmmm))
         selections.add('mmmmSSoffZ',  (mmmmOffZmask)&(trig_mmmm))
+        print('test5')
 
         levels = ['base', '2jets', '4jets', '4j1b', '4j2b']
         selections.add('base', (nElec+nMuon>=2))
@@ -484,7 +485,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         varnames['m0eta'] = m0.eta
         varnames['j0pt' ] = j0.pt
         varnames['j0eta'] = j0.eta
-        varnames['counts'] = np.ones_like(df['MET_pt'], dtype=np.bool) 
+        varnames['counts'] = np.ones_like(df['MET_pt'], dtype=np.bool)
+        print('test6')
 
         # Fill Histos
         hout = self.accumulator.identity()
