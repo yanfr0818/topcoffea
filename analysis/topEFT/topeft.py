@@ -516,7 +516,6 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'njets' : hout[var].fill(njets=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'nbtags': hout[var].fill(nbtags=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
-            print('test9')
               elif var == 'e0pt'  : 
                 if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ', 'mmmmSSoffZ', 'mmmmSSonZ']: continue
                 hout[var].fill(e0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
