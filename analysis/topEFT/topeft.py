@@ -148,7 +148,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         twoLeps   = (nElec+nMuon) == 2
         threeLeps = (nElec+nMuon) == 3
-        fourLeps  = (nElec+nMuon) == 4 ################
+        fourLeps  = (nElec+nMuon) == 4
         twoElec   = (nElec == 2)
         twoMuon   = (nMuon == 2)
         e0 = e[e.pt.argmax()]
@@ -320,8 +320,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeee_groups = eeee.distincts()
         mmme_groups = mmmm.distincts()
         # Calculate the invariant mass of the pairs
-        invMass_eeee = ((eee_groups.i0+eee_groups.i1).mass)
-        invMass_mmmm = ((mmm_groups.i0+mmm_groups.i1).mass)
+        invMass_eeee = ((eeee_groups.i0+eeee_groups.i1).mass)
+        invMass_mmmm = ((mmmm_groups.i0+mmmm_groups.i1).mass)
         # OS pairs
         isOSeeee = ((eeee_groups.i0.charge != eeee_groups.i1.charge))
         isOSmmmm = ((mmmm_groups.i0.charge != mmmm_groups.i1.charge))
@@ -378,7 +378,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         trig_eeee = passTrigger(df,'eeee',isData,dataset)
         trig_mmmm = passTrigger(df,'mmmm',isData,dataset)
         
-
 
         # MET filters
 
