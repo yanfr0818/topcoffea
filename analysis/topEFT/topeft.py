@@ -499,6 +499,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
+            print('test7')
             if var == 'invmass':
               if   ch in ['eeeSSoffZ', 'mmmSSoffZ', 'eeeeSSoffZ', 'mmmmSSoffZ']: continue
               elif ch in ['eeeSSonZ' , 'mmmSSonZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue #values = v[ch]
@@ -508,6 +509,7 @@ class AnalysisProcessor(processor.ProcessorABC):
               if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ','eeeeSSoffZ', 'mmmmSSoffZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue
               values = v[ch][cut].flatten()
               hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
+            print('test8')
             else:
               values = v[cut].flatten()
               if   var == 'ht'    : hout[var].fill(ht=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
@@ -515,6 +517,7 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'njets' : hout[var].fill(njets=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'nbtags': hout[var].fill(nbtags=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+            print('test9')
               elif var == 'e0pt'  : 
                 if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ', 'mmmmSSoffZ', 'mmmmSSonZ']: continue
                 hout[var].fill(e0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
