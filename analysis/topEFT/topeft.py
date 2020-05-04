@@ -540,7 +540,11 @@ class AnalysisProcessor(processor.ProcessorABC):
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
-            if var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+            if var == 'counts':
+                print(values)
+                print(ch)
+                print(lev)
+                hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
 
         return hout
 
