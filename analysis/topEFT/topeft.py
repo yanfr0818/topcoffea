@@ -504,7 +504,7 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'njets' : hout[var].fill(njets=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'nbtags': hout[var].fill(nbtags=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'counts':
-                print(values)
+                print(values.shape)
                 print(ch)
                 print(lev)
                 hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
@@ -534,7 +534,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
             if var == 'counts':
-                print(values)
+                print(values.shape)
                 print(ch)
                 print(lev)
                 hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
