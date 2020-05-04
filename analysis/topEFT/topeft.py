@@ -487,6 +487,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             weight = weights.weight()
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
+            print(cut)
             weights_flat = weight[cut].flatten()
             if var == 'invmass':
               if   ch in ['eeeSSoffZ', 'mmmSSoffZ']: continue
@@ -528,8 +529,6 @@ class AnalysisProcessor(processor.ProcessorABC):
             weight = weights.weight()
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
-            print(weights)
-            print(weight)
             print(cut)
             weights_flat = weight[cut].flatten()
             if var == 'counts':
