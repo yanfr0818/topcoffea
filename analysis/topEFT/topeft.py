@@ -287,8 +287,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         # Get Z and W invariant masses
         goodPairs_eee = eee_groups[(clos_eee)&(isOSeee)]
+        print(len(goodPairs_eee.i0[clos_eee==1]))
+        print(len(goodPairs_eee.i0[isOSeee==1]))
         print(len(goodPairs_eee.i0[goodPairs_eee.counts>0]))
-        print(len(goodPairs_eee.i1[goodPairs_eee.counts>0]))
         eZ0   = goodPairs_eee.i0[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         eZ1   = goodPairs_eee.i1[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         goodPairs_mmm = mmm_groups[(clos_mmm)&(isOSmmm)]
@@ -339,15 +340,14 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeeeOffZmask = (eeeeOffZmask[eeeeOffZmask].counts>0)
         mmmmOnZmask  = (mmmmOnZmask[mmmmOnZmask].counts>0)
         mmmmOffZmask = (mmmmOffZmask[mmmmOffZmask].counts>0)
-        print(eeeeOnZmask)
         print('test2')
         
         # Get Z and W invariant masses
         goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
         print('test2.1')
-        print(len(goodPairs_eeee.i0))
+        print(len(goodPairs_eeee.i0[clos_eeee==1]))
+        print(len(goodPairs_eeee.i0[isOSeeee==1]))
         print(len(goodPairs_eeee.i0[goodPairs_eeee.counts>0]))
-        print(len(goodPairs_eeee.i1[goodPairs_eeee.counts>0]))
         eZ0   = goodPairs_eeee.i0[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         print('test2.2')
         eZ1   = goodPairs_eeee.i1[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
