@@ -318,7 +318,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmm =  mu[(nElec==0)&(nMuon==4)&(mu.pt>-1)] 
         # Create pairs
         eeee_groups = eeee.distincts()
-        mmme_groups = mmmm.distincts()
+        mmmm_groups = mmmm.distincts()
         # Calculate the invariant mass of the pairs
         invMass_eeee = ((eeee_groups.i0+eeee_groups.i1).mass)
         invMass_mmmm = ((mmmm_groups.i0+mmmm_groups.i1).mass)
@@ -327,7 +327,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         isOSmmmm = ((mmmm_groups.i0.charge != mmmm_groups.i1.charge))
         # Get the ones with a mass closest to the Z mass (and in a range of  thr)
         clos_eeee = IsClosestToZ(invMass_eeee, thr=15)
-        clos_mmme = IsClosestToZ(invMass_mmmm, thr=15)
+        clos_mmmm = IsClosestToZ(invMass_mmmm, thr=15)
         # Finally, the mask for eee/mmm with/without OS onZ pair
         eeeeOnZmask  = (clos_eeee)&(isOSeeee)
         eeeeOffZmask = (eeeeOnZmask==0)
