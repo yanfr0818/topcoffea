@@ -492,6 +492,7 @@ class AnalysisProcessor(processor.ProcessorABC):
               if   ch in ['eeeSSoffZ', 'mmmSSoffZ']: continue
               elif ch in ['eeeSSonZ' , 'mmmSSonZ' ]: continue #values = v[ch]
               else: values = v[ch][cut].flatten()
+              print(values.shape==weights_flat.shape)
               hout['invmass'].fill(sample=dataset, channel=ch, cut=lev, invmass=values, weight=weights_flat)
             elif var == 'm3l': 
               if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
@@ -529,6 +530,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
+            values = v[cut].flatten()
+            print(values.shape==weights_flat.shape)
             if var == 'counts':
               hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
 
