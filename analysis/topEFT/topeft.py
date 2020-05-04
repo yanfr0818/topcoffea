@@ -493,13 +493,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         hout['dummy'].fill(sample=dataset, dummy=1, weight=df.size)
 
         for var, v in varnames.items():
-         for ch in channels2LSS+channels3L+channels4L:
+         for ch in channels2LSS+channels3L:
           for lev in levels:
             weight = weights.weight()
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
-            print('test7')
             if var == 'invmass':
               if   ch in ['eeeSSoffZ', 'mmmSSoffZ', 'eeeeSSoffZ', 'mmmmSSoffZ']: continue
               elif ch in ['eeeSSonZ' , 'mmmSSonZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue #values = v[ch]
@@ -534,6 +533,14 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'j0eta' : 
                 if lev == 'base': continue
                 hout[var].fill(j0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+
+         for ch in channels4L:
+          for lev in levels:
+            weight = weights.weight()
+            cuts = [ch] + [lev]
+            cut = selections.all(*cuts)
+            weights_flat = weight[cut].flatten()
+            if var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
 
         return hout
 
