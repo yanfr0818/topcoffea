@@ -509,7 +509,6 @@ class AnalysisProcessor(processor.ProcessorABC):
               if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ','eeeeSSoffZ', 'mmmmSSoffZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue
               values = v[ch][cut].flatten()
               hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
-            print('test8')
             else:
               values = v[cut].flatten()
               if   var == 'ht'    : hout[var].fill(ht=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
