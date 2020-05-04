@@ -525,10 +525,13 @@ class AnalysisProcessor(processor.ProcessorABC):
                 
          for ch in channels4L:
           for lev in levels:
-            #weight = weights.weight()
-            #cuts = [ch] + [lev]
-            #cut = selections.all(*cuts)
-            #weights_flat = weight[cut].flatten()
+            weight = weights.weight()
+            cuts = [ch] + [lev]
+            cut = selections.all(*cuts)
+            print(weights.shape)
+            print(weight.shape)
+            print(cut.shape)
+            weights_flat = weight[cut].flatten()
             if var == 'counts':
               hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=1.0)
 
