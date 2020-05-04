@@ -343,39 +343,39 @@ class AnalysisProcessor(processor.ProcessorABC):
         print('test2')
         
         # Get Z and W invariant masses
-        goodPairs_eeee = eeee_groups#[(clos_eeee)&(isOSeeee)]
+        #goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
         print('test2.1')
-        print(len(eeee_groups[clos_eeee.counts>0]))
-        print(len(eeee_groups[isOSeeee.counts>0]))
-        print(len(goodPairs_eeee.i0[goodPairs_eeee.counts>0]))
-        eZ0   = goodPairs_eeee.i0[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #print(len(eeee_groups[clos_eeee.counts>0]))
+        #print(len(eeee_groups[isOSeeee.counts>0]))
+        #print(len(goodPairs_eeee.i0[goodPairs_eeee.counts>0]))
+        #eZ0   = goodPairs_eeee.i0[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         print('test2.2')
-        eZ1   = goodPairs_eeee.i1[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #eZ1   = goodPairs_eeee.i1[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         print('test2.3')
-        goodPairs_mmmm = mmmm_groups#[(clos_mmmm)&(isOSmmmm)]
-        mZ0   = goodPairs_mmmm.i0[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        mZ1   = goodPairs_mmmm.i1[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #goodPairs_mmmm = mmmm_groups[(clos_mmmm)&(isOSmmmm)]
+        #mZ0   = goodPairs_mmmm.i0[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #mZ1   = goodPairs_mmmm.i1[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         print('test3')
         
-        eeee_reg = eeee[(eeeeOnZmask)].regular()
-        eW = np.append(eeee_reg, eZ0, axis=1)
-        eW = np.append(eW, eZ1,axis=1)
-        eWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, eW)
-        eW = eW[eWmask]
-        mmmm_reg = mmmm[(mmmmOnZmask)].regular()
-        mW = np.append(mmmm_reg, mZ0, axis=1)
-        mW = np.append(mW, mZ1,axis=1)
-        mWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, mW)
-        mW = mW[mWmask]
+        #eeee_reg = eeee[(eeeeOnZmask)].regular()
+        #eW = np.append(eeee_reg, eZ0, axis=1)
+        #eW = np.append(eW, eZ1,axis=1)
+        #eWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, eW)
+        #eW = eW[eWmask]
+        #mmmm_reg = mmmm[(mmmmOnZmask)].regular()
+        #mW = np.append(mmmm_reg, mZ0, axis=1)
+        #mW = np.append(mW, mZ1,axis=1)
+        #mWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, mW)
+        #mW = mW[mWmask]
         
-        eZ      = [x+y for x,y in zip(eZ0, eZ1)]
-        quadElec = [x+y for x,y in zip(eZ, eW)]
-        mZ_eeee  = [t[0].mass for t in eZ]
-        m4l_eeee = [t[0].mass for t in quadElec]
-        mZ      = [x+y for x,y in zip(mZ0, mZ1)]
-        quadMuon = [x+y for x,y in zip(mZ, mW)]
-        mZ_mmmm  = [t[0].mass for t in mZ]
-        m4l_mmmm = [t[0].mass for t in quadMuon]
+        #eZ      = [x+y for x,y in zip(eZ0, eZ1)]
+        #quadElec = [x+y for x,y in zip(eZ, eW)]
+        #mZ_eeee  = [t[0].mass for t in eZ]
+        #m4l_eeee = [t[0].mass for t in quadElec]
+        #mZ      = [x+y for x,y in zip(mZ0, mZ1)]
+        #quadMuon = [x+y for x,y in zip(mZ, mW)]
+        #mZ_mmmm  = [t[0].mass for t in mZ]
+        #m4l_mmmm = [t[0].mass for t in quadMuon]
 
         # Triggers
         #passTrigger = lambda df, n, m, o : np.ones_like(df['MET_pt'], dtype=np.bool) # XXX
@@ -457,10 +457,10 @@ class AnalysisProcessor(processor.ProcessorABC):
           'eeeSSoffZ' : mZ_eee,
           'mmmSSonZ'  : mZ_mmm,
           'mmmSSoffZ' : mZ_mmm,
-          'eeeeSSonZ'  : mZ_eeee,
-          'eeeeSSoffZ' : mZ_eeee,
-          'mmmmSSonZ'  : mZ_mmmm,
-          'mmmmSSoffZ' : mZ_mmmm,
+          #'eeeeSSonZ'  : mZ_eeee,
+          #'eeeeSSoffZ' : mZ_eeee,
+          #'mmmmSSonZ'  : mZ_mmmm,
+          #'mmmmSSoffZ' : mZ_mmmm,
         }
         varnames['m3l'] = {
           'eemSSonZ'  : m3l_eem,
@@ -473,12 +473,11 @@ class AnalysisProcessor(processor.ProcessorABC):
           'mmmSSoffZ' : m3l_mmm,
         }
         varnames['m4l'] = {
-          'eeeSSonZ'  : m4l_eeee,
-          'eeeSSoffZ' : m4l_eeee,
-          'mmmSSonZ'  : m4l_mmmm,
-          'mmmSSoffZ' : m4l_mmmm,
+          #'eeeSSonZ'  : m4l_eeee,
+          #'eeeSSoffZ' : m4l_eeee,
+          #'mmmSSonZ'  : m4l_mmmm,
+          #'mmmSSoffZ' : m4l_mmmm,
         }
-        print(varnames['m4l'])
         varnames['e0pt' ] = e0.pt
         varnames['e0eta'] = e0.eta
         varnames['m0pt' ] = m0.pt
