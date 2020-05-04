@@ -287,9 +287,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         # Get Z and W invariant masses
         goodPairs_eee = eee_groups[(clos_eee)&(isOSeee)]
-        print(len(eee_groups[clos_eee.counts>0]))
-        print(len(eee_groups[isOSeee.counts>0]))
-        print(len(goodPairs_eee.i0[goodPairs_eee.counts>0]))
         eZ0   = goodPairs_eee.i0[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         eZ1   = goodPairs_eee.i1[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         goodPairs_mmm = mmm_groups[(clos_mmm)&(isOSmmm)]
@@ -340,22 +337,17 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeeeOffZmask = (eeeeOffZmask[eeeeOffZmask].counts>0)
         mmmmOnZmask  = (mmmmOnZmask[mmmmOnZmask].counts>0)
         mmmmOffZmask = (mmmmOffZmask[mmmmOffZmask].counts>0)
-        print('test2')
         
         # Get Z and W invariant masses
         #goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
-        print('test2.1')
         #print(len(eeee_groups[clos_eeee.counts>0]))
         #print(len(eeee_groups[isOSeeee.counts>0]))
         #print(len(goodPairs_eeee.i0[goodPairs_eeee.counts>0]))
         #eZ0   = goodPairs_eeee.i0[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        print('test2.2')
         #eZ1   = goodPairs_eeee.i1[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        print('test2.3')
         #goodPairs_mmmm = mmmm_groups[(clos_mmmm)&(isOSmmmm)]
         #mZ0   = goodPairs_mmmm.i0[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
         #mZ1   = goodPairs_mmmm.i1[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        print('test3')
         
         #eeee_reg = eeee[(eeeeOnZmask)].regular()
         #eW = np.append(eeee_reg, eZ0, axis=1)
@@ -388,7 +380,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         trig_mme  = passTrigger(df,'mme',isData,dataset)
         trig_eeee = passTrigger(df,'eeee',isData,dataset)
         trig_mmmm = passTrigger(df,'mmmm',isData,dataset)
-        print('test4')
 
         # MET filters
 
@@ -423,7 +414,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('eeeeSSoffZ',  (eeeeOffZmask)&(trig_eeee))
         selections.add('mmmmSSonZ',   (mmmmOnZmask)&(trig_mmmm))
         selections.add('mmmmSSoffZ',  (mmmmOffZmask)&(trig_mmmm))
-        print('test5')
 
         levels = ['base', '2jets', '4jets', '4j1b', '4j2b']
         selections.add('base', (nElec+nMuon>=2))
@@ -473,12 +463,12 @@ class AnalysisProcessor(processor.ProcessorABC):
           'mmmSSonZ'  : m3l_mmm,
           'mmmSSoffZ' : m3l_mmm,
         }
-        varnames['m4l'] = {
+        #varnames['m4l'] = {
           #'eeeSSonZ'  : m4l_eeee,
           #'eeeSSoffZ' : m4l_eeee,
           #'mmmSSonZ'  : m4l_mmmm,
           #'mmmSSoffZ' : m4l_mmmm,
-        }
+        #}
         varnames['e0pt' ] = e0.pt
         varnames['e0eta'] = e0.eta
         varnames['m0pt' ] = m0.pt
@@ -490,7 +480,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Fill Histos
         hout = self.accumulator.identity()
         hout['dummy'].fill(sample=dataset, dummy=1, weight=df.size)
-        print('test6')
         
         for var, v in varnames.items():
          for ch in channels2LSS+channels3L:
