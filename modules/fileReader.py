@@ -180,8 +180,10 @@ def GetAllInfoFromFile(fname, treeName = 'Events'):
     # Method 2: from 'Runs' tree
     elif 'Runs' in f:
       r = f['Runs']
-      nGenEvents = sum(r['genEventSumw'].array())
-      nSumOfWeights = sum(r['genEventCount'].array())
+      try: nGenEvents = sum(r.array(b'genEventCount'))   
+      except: nGenEvents = sum(r.array(b'genEventCount_'))
+      try: nSumOfWeights = sum(r.array(b'genEventSumw')) 
+      except: nSumOfWeights = sum(r.array(b'genEventSumw_'))
     # Method 3: from unskimmed file
     else:
       nGenEvents = nEvents
