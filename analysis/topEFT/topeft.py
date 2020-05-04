@@ -61,6 +61,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         'nbtags'  : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("nbtags", "btag multiplicitu ", 5, 0, 5)),
         'met'     : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("met",    "MET (GeV)", 40, 0, 400)),
         'm3l'     : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("m3l",    "$m_{3\ell}$ (GeV) ", 20, 0, 200)),
+        'm4l'     : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("m4l",    "$m_{4\ell}$ (GeV) ", 20, 0, 200)),
         'wleppt'  : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("wleppt", "$p_{T}^{lepW}$ (GeV) ", 20, 0, 200)),
         'e0pt'    : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("e0pt",   "Leading elec $p_{T}$ (GeV)", 30, 0, 300)),
         'm0pt'    : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("m0pt",   "Leading muon $p_{T}$ (GeV)", 30, 0, 300)),
@@ -147,6 +148,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         twoLeps   = (nElec+nMuon) == 2
         threeLeps = (nElec+nMuon) == 3
+        fourLeps  = (nElec+nMuon) == 4 ################
         twoElec   = (nElec == 2)
         twoMuon   = (nMuon == 2)
         e0 = e[e.pt.argmax()]
@@ -311,6 +313,58 @@ class AnalysisProcessor(processor.ProcessorABC):
         mZ_mmm  = [t[0].mass for t in mZ]
         m3l_mmm = [t[0].mass for t in triMuon]
 
+        ### eeee and mmmm
+        eeee =   e[(nElec==4)&(nMuon==0)&( e.pt>-1)] 
+        mmmm =  mu[(nElec==0)&(nMuon==4)&(mu.pt>-1)] 
+        # Create pairs
+        eeee_groups = eeee.distincts()
+        mmme_groups = mmmm.distincts()
+        # Calculate the invariant mass of the pairs
+        invMass_eeee = ((eee_groups.i0+eee_groups.i1).mass)
+        invMass_mmmm = ((mmm_groups.i0+mmm_groups.i1).mass)
+        # OS pairs
+        isOSeeee = ((eeee_groups.i0.charge != eeee_groups.i1.charge))
+        isOSmmmm = ((mmmm_groups.i0.charge != mmmm_groups.i1.charge))
+        # Get the ones with a mass closest to the Z mass (and in a range of  thr)
+        clos_eeee = IsClosestToZ(invMass_eeee, thr=15)
+        clos_mmme = IsClosestToZ(invMass_mmmm, thr=15)
+        # Finally, the mask for eee/mmm with/without OS onZ pair
+        eeeeOnZmask  = (clos_eeee)&(isOSeeee)
+        eeeeOffZmask = (eeeeOnZmask==0)
+        mmmmOnZmask  = (clos_mmmm)&(isOSmmmm)
+        mmmmOffZmask = (mmmmOnZmask==0)
+        eeeeOnZmask  = (eeeeOnZmask[eeeeOnZmask].counts>0)
+        eeeeOffZmask = (eeeeOffZmask[eeeeOffZmask].counts>0)
+        mmmmOnZmask  = (mmmmOnZmask[mmmmOnZmask].counts>0)
+        mmmmOffZmask = (mmmmOffZmask[mmmmOffZmask].counts>0)
+        
+        # Get Z and W invariant masses
+        goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
+        eZ0   = goodPairs_eeee.i0[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        eZ1   = goodPairs_eeee.i1[goodPairs_eeee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        goodPairs_mmmm = mmmm_groups[(clos_mmmm)&(isOSmmmm)]
+        mZ0   = goodPairs_mmmm.i0[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        mZ1   = goodPairs_mmmm.i1[goodPairs_mmmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+
+        eeee_reg = eeee[(eeeeOnZmask)].regular()
+        eW = np.append(eeee_reg, eZ0, axis=1)
+        eW = np.append(eW, eZ1,axis=1)
+        eWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, eW)
+        eW = eW[eWmask]
+        mmmm_reg = mmmm[(mmmmOnZmask)].regular()
+        mW = np.append(mmmm_reg, mZ0, axis=1)
+        mW = np.append(mW, mZ1,axis=1)
+        mWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, mW)
+        mW = mW[mWmask]
+        
+        eZ      = [x+y for x,y in zip(eZ0, eZ1)]
+        quadElec = [x+y for x,y in zip(eZ, eW)]
+        mZ_eeee  = [t[0].mass for t in eZ]
+        m4l_eeee = [t[0].mass for t in quadElec]
+        mZ      = [x+y for x,y in zip(mZ0, mZ1)]
+        quadMuon = [x+y for x,y in zip(mZ, mW)]
+        mZ_mmmm  = [t[0].mass for t in mZ]
+        m4l_mmmm = [t[0].mass for t in quadMuon]
 
         # Triggers
         #passTrigger = lambda df, n, m, o : np.ones_like(df['MET_pt'], dtype=np.bool) # XXX
@@ -321,6 +375,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         trig_mmm  = passTrigger(df,'mmm',isData,dataset)
         trig_eem  = passTrigger(df,'eem',isData,dataset)
         trig_mme  = passTrigger(df,'mme',isData,dataset)
+        trig_eeee = passTrigger(df,'eeee',isData,dataset)
+        trig_mmmm = passTrigger(df,'mmmm',isData,dataset)
+        
 
 
         # MET filters
@@ -350,6 +407,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('eeeSSoffZ',  (eeeOffZmask)&(trig_eee))
         selections.add('mmmSSonZ',   (mmmOnZmask)&(trig_mmm))
         selections.add('mmmSSoffZ',  (mmmOffZmask)&(trig_mmm))
+
+        channels4L = ['eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
+        selections.add('eeeeSSonZ',   (eeeeOnZmask)&(trig_eeee))
+        selections.add('eeeeSSoffZ',  (eeeeOffZmask)&(trig_eeee))
+        selections.add('mmmmSSonZ',   (mmmmOnZmask)&(trig_mmmm))
+        selections.add('mmmmSSoffZ',  (mmmmOffZmask)&(trig_mmmm))
 
         levels = ['base', '2jets', '4jets', '4j1b', '4j2b']
         selections.add('base', (nElec+nMuon>=2))
@@ -384,6 +447,10 @@ class AnalysisProcessor(processor.ProcessorABC):
           'eeeSSoffZ' : mZ_eee,
           'mmmSSonZ'  : mZ_mmm,
           'mmmSSoffZ' : mZ_mmm,
+          'eeeeSSonZ'  : mZ_eeee,
+          'eeeeSSoffZ' : mZ_eeee,
+          'mmmmSSonZ'  : mZ_mmmm,
+          'mmmmSSoffZ' : mZ_mmmm,
         }
         varnames['m3l'] = {
           'eemSSonZ'  : m3l_eem,
@@ -394,6 +461,12 @@ class AnalysisProcessor(processor.ProcessorABC):
           'eeeSSoffZ' : m3l_eee,
           'mmmSSonZ'  : m3l_mmm,
           'mmmSSoffZ' : m3l_mmm,
+        }
+        varnames['m4l'] = {
+          'eeeSSonZ'  : m4l_eeee,
+          'eeeSSoffZ' : m4l_eeee,
+          'mmmSSonZ'  : m4l_mmmm,
+          'mmmSSoffZ' : m4l_mmmm,
         }
         varnames['e0pt' ] = e0.pt
         varnames['e0eta'] = e0.eta
@@ -408,19 +481,19 @@ class AnalysisProcessor(processor.ProcessorABC):
         hout['dummy'].fill(sample=dataset, dummy=1, weight=df.size)
 
         for var, v in varnames.items():
-         for ch in channels2LSS+channels3L:
+         for ch in channels2LSS+channels3L+channels4L:
           for lev in levels:
             weight = weights.weight()
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
             if var == 'invmass':
-              if   ch in ['eeeSSoffZ', 'mmmSSoffZ']: continue
-              elif ch in ['eeeSSonZ' , 'mmmSSonZ' ]: continue #values = v[ch]
+              if   ch in ['eeeSSoffZ', 'mmmSSoffZ', 'eeeeSSoffZ', 'mmmmSSoffZ']: continue
+              elif ch in ['eeeSSonZ' , 'mmmSSonZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue #values = v[ch]
               else                                 : values = v[ch][cut].flatten()
               hout['invmass'].fill(sample=dataset, channel=ch, cut=lev, invmass=values, weight=weights_flat)
             elif var == 'm3l': 
-              if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
+              if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ','eeeeSSoffZ', 'mmmmSSoffZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue
               values = v[ch][cut].flatten()
               hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
             else:
@@ -431,16 +504,16 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'nbtags': hout[var].fill(nbtags=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'e0pt'  : 
-                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ']: continue
+                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ', 'mmmmSSoffZ', 'mmmmSSonZ']: continue
                 hout[var].fill(e0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'm0pt'  : 
-                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ']: continue
+                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ', 'eeeeSSoffZ', 'eeeeSSonZ']: continue
                 hout[var].fill(m0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'e0eta' : 
-                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ']: continue
+                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ', 'mmmmSSoffZ', 'mmmmSSonZ']: continue
                 hout[var].fill(e0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'm0eta':
-                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ']: continue
+                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ', 'eeeeSSoffZ', 'eeeeSSonZ']: continue
                 hout[var].fill(m0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'j0pt'  : 
                 if lev == 'base': continue
