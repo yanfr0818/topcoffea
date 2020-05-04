@@ -486,12 +486,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         varnames['j0pt' ] = j0.pt
         varnames['j0eta'] = j0.eta
         varnames['counts'] = np.ones_like(df['MET_pt'], dtype=np.bool)
-        print('test6')
 
         # Fill Histos
         hout = self.accumulator.identity()
         hout['dummy'].fill(sample=dataset, dummy=1, weight=df.size)
-
+        print('test6')
+        
         for var, v in varnames.items():
          for ch in channels2LSS+channels3L:
           for lev in levels:
@@ -500,12 +500,12 @@ class AnalysisProcessor(processor.ProcessorABC):
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
             if var == 'invmass':
-              if   ch in ['eeeSSoffZ', 'mmmSSoffZ', 'eeeeSSoffZ', 'mmmmSSoffZ']: continue
-              elif ch in ['eeeSSonZ' , 'mmmSSonZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue #values = v[ch]
+              if   ch in ['eeeSSoffZ', 'mmmSSoffZ']: continue
+              elif ch in ['eeeSSonZ' , 'mmmSSonZ' ]: continue #values = v[ch]
               else                                 : values = v[ch][cut].flatten()
               hout['invmass'].fill(sample=dataset, channel=ch, cut=lev, invmass=values, weight=weights_flat)
             elif var == 'm3l': 
-              if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ','eeeeSSoffZ', 'mmmmSSoffZ', 'eeeeSSonZ' , 'mmmmSSonZ']: continue
+              if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
               values = v[ch][cut].flatten()
               hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
             else:
@@ -514,26 +514,25 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'met'   : hout[var].fill(met=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'njets' : hout[var].fill(njets=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'nbtags': hout[var].fill(nbtags=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
-              elif var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'e0pt'  : 
-                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ', 'mmmmSSoffZ', 'mmmmSSonZ']: continue
+                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ']: continue
                 hout[var].fill(e0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'm0pt'  : 
-                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ', 'eeeeSSoffZ', 'eeeeSSonZ']: continue
+                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ']: continue
                 hout[var].fill(m0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'e0eta' : 
-                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ', 'mmmmSSoffZ', 'mmmmSSonZ']: continue
+                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ']: continue
                 hout[var].fill(e0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'm0eta':
-                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ', 'eeeeSSoffZ', 'eeeeSSonZ']: continue
+                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ']: continue
                 hout[var].fill(m0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'j0pt'  : 
                 if lev == 'base': continue
                 hout[var].fill(j0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'j0eta' : 
                 if lev == 'base': continue
-                hout[var].fill(j0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
-
+                hout[var].fill(j0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)                
+                
          for ch in channels4L:
           for lev in levels:
             weight = weights.weight()
