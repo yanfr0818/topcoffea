@@ -488,6 +488,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
+            weights_flat = np.ones_like(weights_flat, dtype=np.int)
             if var == 'invmass':
               if   ch in ['eeeSSoffZ', 'mmmSSoffZ']: continue
               elif ch in ['eeeSSonZ' , 'mmmSSonZ' ]: continue #values = v[ch]
@@ -529,6 +530,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
+            weights_flat = np.ones_like(weights_flat, dtype=np.int)
             if var == 'counts':
               values = v[cut].flatten()
               hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
