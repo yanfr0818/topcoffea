@@ -356,7 +356,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         mm_eemm   = muon_eemm.distincts()
         ee_eemmZmask  = (ee_eemm.i0.charge*ee_eemm.i1.charge<1)&(np.abs((ee_eemm.i0+ee_eemm.i1).mass-91)<15)
         mm_eemmZmask  = (mm_eemm.i0.charge*mm_eemm.i1.charge<1)&(np.abs((mm_eemm.i0+mm_eemm.i1).mass-91)<15)
-        eemmOnZmask   = (ee_eemmZmask or mm_eemmZmask)
+        eemmOnZmask   = (ee_eemmZmask|mm_eemmZmask)
         eemmOffZmask  = (eemm_eemmZmask==0)
         eemmOnZmask   = (eemmOnZmask[eemmOnZmask].counts>0)
         eemmOffZmask  = (eemmOffZmask[eemmOffZmask].counts>0)
