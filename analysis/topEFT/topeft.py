@@ -313,6 +313,54 @@ class AnalysisProcessor(processor.ProcessorABC):
         mZ_mmm  = [t[0].mass for t in mZ]
         m3l_mmm = [t[0].mass for t in triMuon]
         
+        
+        
+        ##################################################################
+        ### 4 leptons
+        ##################################################################
+
+        # eeem
+        muon_eeem = mu[(nElec==3)&(nMuon==1)&(mu.pt>-1)]
+        elec_eeem =  e[(nElec==3)&(nMuon==1)&( e.pt>-1)]
+        ee_eeem   = elec_eeem.distincts()
+        ee_eeemZmask     = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)<15)
+        ee_eeemOffZmask  = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)>15)
+        ee_eeemZmask     = (ee_eeemZmask[ee_eeemZmask].counts>0)
+        ee_eeemOffZmask  = (ee_eeemOffZmask[ee_eeemOffZmask].counts>0)
+
+        #eepair_eeem     = (ee_eeem.i0+ee_eeem.i1)
+        #trilep_eeem     = eepair_eeem.cross(muon_eeem)
+        #trilep_eeem     = (trilep_eeem.i0+trilep_eeem.i1) 
+
+        # mmme
+        muon_mmme = mu[(nElec==1)&(nMuon==3)&(mu.pt>-1)]
+        elec_mmme =  e[(nElec==1)&(nMuon==3)&( e.pt>-1)]
+        mm_mmme   = muon_mmme.distincts()
+        mm_mmmeZmask     = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)<15)
+        mm_mmmeOffZmask  = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)>15)
+        mm_mmmeZmask     = (mm_mmmeZmask[mm_mmmeZmask].counts>0)
+        mm_mmmeOffZmask  = (mm_mmmeOffZmask[mm_mmmeOffZmask].counts>0)
+
+        #mmpair_mmme     = (mm_mmme.i0+mm_mmme.i1)
+        #trilep_mmme     = mmpair_mmme.cross(elec_mmme)
+        #trilep_mmme     = (trilep_mmme.i0+trilep_mmme.i1)
+        #mZ_mmme  = mmpair_mmme.mass
+        #mZ_eeem  = eepair_eeem.mass
+        #m3l_eeem = trilep_eeem.mass
+        #m3l_mmme = trilep_mmme.mass
+        
+         # eemm
+        muon_eemm = mu[(nElec==2)&(nMuon==2)&(mu.pt>-1)]
+        elec_eemm =  e[(nElec==2)&(nMuon==2)&( e.pt>-1)]
+        ee_eemm   = elec_eemm.distincts()
+        mm_eemm   = muon_eemm.distincts()
+        ee_eemmZmask  = (ee_eemm.i0.charge*ee_eemm.i1.charge<1)&(np.abs((ee_eemm.i0+ee_eemm.i1).mass-91)<15)
+        mm_eemmZmask  = (mm_eemm.i0.charge*mm_eemm.i1.charge<1)&(np.abs((mm_eemm.i0+mm_eemm.i1).mass-91)<15)
+        eemmOnZmask   = (ee_eemmZmask or mm_eemmZmask)
+        eemmOffZmask  = (eemm_eemmZmask==0)
+        eemmOnZmask   = (eemmOnZmask[eemmOnZmask].counts>0)
+        eemmOffZmask  = (eemmOffZmask[eemmOffZmask].counts>0)
+        
         ### eeee and mmmm
         eeee =   e[(nElec==4)&(nMuon==0)&( e.pt>-1)] 
         mmmm =  mu[(nElec==0)&(nMuon==4)&(mu.pt>-1)] 
@@ -328,7 +376,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Get the ones with a mass closest to the Z mass (and in a range of  thr)
         clos_eeee = IsClosestToZ(invMass_eeee, thr=15)
         clos_mmmm = IsClosestToZ(invMass_mmmm, thr=15)
-        # Finally, the mask for eee/mmm with/without OS onZ pair
+        # Finally, the mask for eeee/mmmm with/without OS onZ pair
         eeeeOnZmask  = (clos_eeee)&(isOSeeee)
         eeeeOffZmask = (eeeeOnZmask==0)
         mmmmOnZmask  = (clos_mmmm)&(isOSmmmm)
@@ -380,6 +428,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         trig_mme  = passTrigger(df,'mme',isData,dataset)
         trig_eeee = passTrigger(df,'eeee',isData,dataset)
         trig_mmmm = passTrigger(df,'mmmm',isData,dataset)
+        trig_eeem = passTrigger(df,'eeem',isData,dataset)
+        trig_eemm = passTrigger(df,'eemm',isData,dataset)
+        trig_mmme = passTrigger(df,'mmme',isData,dataset)
 
         # MET filters
 
@@ -408,8 +459,16 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('eeeSSoffZ',  (eeeOffZmask)&(trig_eee))
         selections.add('mmmSSonZ',   (mmmOnZmask)&(trig_mmm))
         selections.add('mmmSSoffZ',  (mmmOffZmask)&(trig_mmm))
-
-        channels4L = ['eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
+        
+        channels4L = ['eeemSSonZ', 'eeemSSoffZ', 'mmmeSSonZ', 'mmmeSSoffZ', 'eemmSSonZ', 'eemmSSoffZ']
+        selections.add('eeemSSonZ',   (ee_eeemZmask)&(trig_eeem))
+        selections.add('eeemSSoffZ',  (ee_eeemOffZmask)&(trig_eeem))
+        selections.add('mmmeSSonZ',   (mm_mmmeZmask)&(trig_mmme))
+        selections.add('mmmeSSoffZ',  (mm_mmmeOffZmask)&(trig_mmme))
+        selections.add('eemmSSonZ',   (eemmOnZmask)&(trig_eemm))
+        selections.add('eemmSSoffZ',  (eemmOffZmask)&(trig_eemm))
+        
+        channels4L += ['eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
         selections.add('eeeeSSonZ',   (eeeeOnZmask)&(trig_eeee))
         selections.add('eeeeSSoffZ',  (eeeeOffZmask)&(trig_eeee))
         selections.add('mmmmSSonZ',   (mmmmOnZmask)&(trig_mmmm))
