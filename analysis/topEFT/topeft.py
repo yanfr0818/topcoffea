@@ -234,7 +234,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         elec_eem =  e[(nElec==2)&(nMuon==1)&( e.pt>-1)]
         ee_eem   = elec_eem.distincts()
         ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)<15)
-        ee_eemOffZmask  = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)>15)
+        ee_eemOffZmask  = (ee_eemZmask==0)#(ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)>15)
         ee_eemZmask     = (ee_eemZmask[ee_eemZmask].counts>0)
         ee_eemOffZmask  = (ee_eemOffZmask[ee_eemOffZmask].counts>0)
 
@@ -247,7 +247,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         elec_mme =  e[(nElec==1)&(nMuon==2)&( e.pt>-1)]
         mm_mme   = muon_mme.distincts()
         mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)<15)
-        mm_mmeOffZmask  = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
+        mm_mmeOffZmask  = (mm_mmeZmask==0)#(mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
         mm_mmeZmask     = (mm_mmeZmask[mm_mmeZmask].counts>0)
         mm_mmeOffZmask  = (mm_mmeOffZmask[mm_mmeOffZmask].counts>0)
 
@@ -324,7 +324,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         elec_eeem =  e[(nElec==3)&(nMuon==1)&( e.pt>-1)]
         ee_eeem   = elec_eeem.distincts()
         ee_eeemZmask     = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)<15)
-        ee_eeemOffZmask  = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)>15)
+        ee_eeemOffZmask  = (ee_eeemZmask==0)#(ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)>15)
         ee_eeemZmask     = (ee_eeemZmask[ee_eeemZmask].counts>0)
         ee_eeemOffZmask  = (ee_eeemOffZmask[ee_eeemOffZmask].counts>0)
 
@@ -337,7 +337,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         elec_mmme =  e[(nElec==1)&(nMuon==3)&( e.pt>-1)]
         mm_mmme   = muon_mmme.distincts()
         mm_mmmeZmask     = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)<15)
-        mm_mmmeOffZmask  = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)>15)
+        mm_mmmeOffZmask  = (mm_mmmeZmask==0)#(mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)>15)
         mm_mmmeZmask     = (mm_mmmeZmask[mm_mmmeZmask].counts>0)
         mm_mmmeOffZmask  = (mm_mmmeOffZmask[mm_mmmeOffZmask].counts>0)
 
