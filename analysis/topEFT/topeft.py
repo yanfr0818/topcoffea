@@ -590,6 +590,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
             weights_flat = np.ones_like(weights_flat, dtype=np.int)
+            if  var == 'invmass': continue
+            elif var == 'm3l'   : continue
             values = v[cut].flatten()
             if   var == 'ht'    : hout[var].fill(ht=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
             elif var == 'met'   : hout[var].fill(met=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
