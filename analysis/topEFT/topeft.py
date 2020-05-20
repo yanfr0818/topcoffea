@@ -573,7 +573,7 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'e0eta' : 
                 if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ']: continue
                 hout[var].fill(e0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
-              elif var == 'm0eta':
+              elif var == 'm0eta' :
                 if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ']: continue
                 hout[var].fill(m0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'j0pt'  : 
@@ -590,9 +590,12 @@ class AnalysisProcessor(processor.ProcessorABC):
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
             weights_flat = np.ones_like(weights_flat, dtype=np.int)
-            if var == 'counts':
-              values = v[cut].flatten()
-              hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+            values = v[cut].flatten()
+            if   var == 'ht'    : hout[var].fill(ht=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+            elif var == 'met'   : hout[var].fill(met=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+            elif var == 'njets' : hout[var].fill(njets=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+            elif var == 'nbtags': hout[var].fill(nbtags=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
+            elif var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
 
         return hout
 
