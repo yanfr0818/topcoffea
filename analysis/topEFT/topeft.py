@@ -517,10 +517,10 @@ class AnalysisProcessor(processor.ProcessorABC):
           'eemSSoffZ' : m3l_eem,
           'mmeSSonZ'  : m3l_mme,
           'mmeSSoffZ' : m3l_mme,
-          'eeeSSonZ'  : m3l_eee,
-          'eeeSSoffZ' : m3l_eee,
-          'mmmSSonZ'  : m3l_mmm,
-          'mmmSSoffZ' : m3l_mmm,
+          #'eeeSSonZ'  : m3l_eee,
+          #'eeeSSoffZ' : m3l_eee,
+          #'mmmSSonZ'  : m3l_mmm,
+          #'mmmSSoffZ' : m3l_mmm,
         }
         #varnames['m4l'] = {
           #'eeeSSonZ'  : m4l_eeee,
