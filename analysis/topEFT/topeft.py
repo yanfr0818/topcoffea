@@ -286,32 +286,32 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
         
         # Get Z and W invariant masses
-        goodPairs_eee = eee_groups[(clos_eee)&(isOSeee)]
-        eZ0   = goodPairs_eee.i0[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        eZ1   = goodPairs_eee.i1[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        goodPairs_mmm = mmm_groups[(clos_mmm)&(isOSmmm)]
-        mZ0   = goodPairs_mmm.i0[goodPairs_mmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        mZ1   = goodPairs_mmm.i1[goodPairs_mmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #goodPairs_eee = eee_groups[(clos_eee)&(isOSeee)]
+        #eZ0   = goodPairs_eee.i0[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #eZ1   = goodPairs_eee.i1[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #goodPairs_mmm = mmm_groups[(clos_mmm)&(isOSmmm)]
+        #mZ0   = goodPairs_mmm.i0[goodPairs_mmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        #mZ1   = goodPairs_mmm.i1[goodPairs_mmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
 
-        eee_reg = eee[(eeeOnZmask)].regular()
-        eW = np.append(eee_reg, eZ0, axis=1)
-        eW = np.append(eW, eZ1,axis=1)
-        eWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, eW)
-        eW = eW[eWmask]
-        mmm_reg = mmm[(mmmOnZmask)].regular()
-        mW = np.append(mmm_reg, mZ0, axis=1)
-        mW = np.append(mW, mZ1,axis=1)
-        mWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, mW)
-        mW = mW[mWmask]
+        #eee_reg = eee[(eeeOnZmask)].regular()
+        #eW = np.append(eee_reg, eZ0, axis=1)
+        #eW = np.append(eW, eZ1,axis=1)
+        #eWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, eW)
+        #eW = eW[eWmask]
+        #mmm_reg = mmm[(mmmOnZmask)].regular()
+        #mW = np.append(mmm_reg, mZ0, axis=1)
+        #mW = np.append(mW, mZ1,axis=1)
+        #mWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, mW)
+        #mW = mW[mWmask]
         
-        eZ      = [x+y for x,y in zip(eZ0, eZ1)]
-        triElec = [x+y for x,y in zip(eZ, eW)]
-        mZ_eee  = [t[0].mass for t in eZ]
-        m3l_eee = [t[0].mass for t in triElec]
-        mZ      = [x+y for x,y in zip(mZ0, mZ1)]
-        triMuon = [x+y for x,y in zip(mZ, mW)]
-        mZ_mmm  = [t[0].mass for t in mZ]
-        m3l_mmm = [t[0].mass for t in triMuon]
+        #eZ      = [x+y for x,y in zip(eZ0, eZ1)]
+        #triElec = [x+y for x,y in zip(eZ, eW)]
+        #mZ_eee  = [t[0].mass for t in eZ]
+        #m3l_eee = [t[0].mass for t in triElec]
+        #mZ      = [x+y for x,y in zip(mZ0, mZ1)]
+        #triMuon = [x+y for x,y in zip(mZ, mW)]
+        #mZ_mmm  = [t[0].mass for t in mZ]
+        #m3l_mmm = [t[0].mass for t in triMuon]
         
         
         
@@ -553,10 +553,10 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif ch in ['eeeSSonZ' , 'mmmSSonZ' ]: continue #values = v[ch]
               else: values = v[ch][cut].flatten()
               hout['invmass'].fill(sample=dataset, channel=ch, cut=lev, invmass=values, weight=weights_flat)
-            elif var == 'm3l': 
-              if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
-              values = v[ch][cut].flatten()
-              hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
+            #elif var == 'm3l': 
+            #  if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
+            #  values = v[ch][cut].flatten()
+            #  hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
             else:
               values = v[cut].flatten()
               if   var == 'ht'    : hout[var].fill(ht=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
