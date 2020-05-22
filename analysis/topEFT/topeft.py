@@ -503,10 +503,10 @@ class AnalysisProcessor(processor.ProcessorABC):
           'eemSSoffZ' : mZ_eem,
           'mmeSSonZ'  : mZ_mme,
           'mmeSSoffZ' : mZ_mme,
-          'eeeSSonZ'  : mZ_eee,
-          'eeeSSoffZ' : mZ_eee,
-          'mmmSSonZ'  : mZ_mmm,
-          'mmmSSoffZ' : mZ_mmm,
+          #'eeeSSonZ'  : mZ_eee,
+          #'eeeSSoffZ' : mZ_eee,
+          #'mmmSSonZ'  : mZ_mmm,
+          #'mmmSSoffZ' : mZ_mmm,
           #'eeeeSSonZ'  : mZ_eeee,
           #'eeeeSSoffZ' : mZ_eeee,
           #'mmmmSSonZ'  : mZ_mmmm,
@@ -553,10 +553,10 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif ch in ['eeeSSonZ' , 'mmmSSonZ' ]: continue #values = v[ch]
               else: values = v[ch][cut].flatten()
               hout['invmass'].fill(sample=dataset, channel=ch, cut=lev, invmass=values, weight=weights_flat)
-            #elif var == 'm3l': 
-            #  if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
-            #  values = v[ch][cut].flatten()
-            #  hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
+            elif var == 'm3l': 
+              if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
+              values = v[ch][cut].flatten()
+              hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
             else:
               values = v[cut].flatten()
               if   var == 'ht'    : hout[var].fill(ht=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
