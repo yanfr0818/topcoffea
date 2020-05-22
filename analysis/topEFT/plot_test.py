@@ -26,17 +26,17 @@ sys.path.append(basepath)
 path = 'histos/plotsTopEFT.pkl.gz'
 
 processDic = {
-  'Nonprompt' : 'TTTo2L2Nu',# tW_noFullHad, tbarW_noFullHad, WJetsToLNu_MLM, WWTo2L2Nu',
-  #'DY' : 'DYJetsToLL_M_10to50_MLM, DYJetsToLL_M_50_a',
-  #'Other': 'WWW,WZG,WWZ,WZZ,ZZZ,tttt,ttWW,ttWZ,ttZH,ttZZ,ttHH,tZq,TTG',
-  #'WZ' : 'WZTo2L2Q,WZTo3LNu',
-  #'ZZ' : 'ZZTo2L2Nu,ZZTo2L2Q,ZZTo4L',
-  #'ttW': 'TTWJetsToLNu',
-  #'ttZ': 'TTZToLL_M_1to10,TTZToLLNuNu_M_10_a',
-  'ttH' : 'ttHnobb',#tHq',
-  #'data' : 'EGamma, SingleMuon, DoubleMuon',
+  'Nonprompt' : 'TTTo2L2Nu, tW_noFullHad, tbarW_noFullHad, WJetsToLNu_MLM, WWTo2L2Nu',
+  'DY' : 'DYJetsToLL_M_10to50_MLM, DYJetsToLL_M_50_a',
+  'Other': 'WWW,WZG,WWZ,WZZ,ZZZ,tttt,ttWW,ttWZ,ttZH,ttZZ,ttHH,tZq,TTG',
+  'WZ' : 'WZTo2L2Q,WZTo3LNu',
+  'ZZ' : 'ZZTo2L2Nu,ZZTo2L2Q,ZZTo4L',
+  'ttW': 'TTWJetsToLNu',
+  'ttZ': 'TTZToLL_M_1to10,TTZToLLNuNu_M_10_a',
+  'ttH' : 'ttHnobb,tHq',
+  'data' : 'EGamma, SingleMuon, DoubleMuon',
 }
-bkglist = ['Nonprompt', 'ttH']#, 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
+bkglist = ['Nonprompt', 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
 allbkg  = ['tt', 'tW', 'WW', 'ttG', 'WW', 'WJets', 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
 
 colordic ={
