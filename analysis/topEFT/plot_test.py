@@ -1,4 +1,4 @@
-#Arg settings: -v <var> -c <channel> -l <cut>
+#Arg settings: -v <var> -c <channel> -l <cut> -t <title>
 #For example:
 #  python plot_test.py -c em
 #  python plot_test.py -v met -c ch4l -l 4j2b
@@ -67,9 +67,10 @@ ch2lss = ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS']
 
 usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
-parser.add_option('-v', '--variable',  dest='variable',  help='variable',   default='counts',  type='string')
-parser.add_option('-c', '--channel',   dest='channel',   help='channels',   default='ch3l',    type='string')
-parser.add_option('-l', '--level',     dest='level',     help='cut',        default='base',    type='string')
+parser.add_option('-v', '--variable',  dest='variable',  help='variable',   default='counts',    type='string')
+parser.add_option('-c', '--channel',   dest='channel',   help='channels',   default='ch3l',      type='string')
+parser.add_option('-l', '--level',     dest='level',     help='cut',        default='base',      type='string')
+parser.add_option('-t', '--title',     dest='title',     help='title',      default='3 leptons', type='string')
 (opt, args) = parser.parse_args()
 
 if   opt.channel == 'ch4l'     : channel = ch4l
@@ -99,8 +100,8 @@ def Draw(var, categories, label=''):
   plt.SetColors(colors)
   plt.SetCategories(categories)
   plt.SetRegion(label)
-  plt.SetLumi(1./1000)
+  #plt.SetLumi(1./1000)
   plt.Stack(var, xtit='', ytit='')
-  plt.GetYields(var='counts')
+  plt.GetYields()
 
-Draw(opt.variable, categories, '4 leptons')
+Draw(opt.variable, categories, opt.title)
