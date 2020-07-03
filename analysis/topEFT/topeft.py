@@ -245,7 +245,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # mme
         muon_mme = mu[(nElec==1)&(nMuon==2)&(mu.pt>-1)]
         elec_mme =  e[(nElec==1)&(nMuon==2)&( e.pt>-1)]
-        mm_mme   = muon_mme.distincts()
+        mm_mme   = muon_mme.distincts() 
         mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)<15)
         mm_mmeOffZmask  = (mm_mmeZmask==0)#(mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
         mm_mmeZmask     = (mm_mmeZmask[mm_mmeZmask].counts>0)
@@ -474,12 +474,21 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('mmmmSSonZ',   (mmmmOnZmask)&(trig_mmmm))
         selections.add('mmmmSSoffZ',  (mmmmOffZmask)&(trig_mmmm))
 
-        levels = ['base', '2jets', '4jets', '4j1b', '4j2b']
+        levels = ['base', '2jets', '2j1b', '2j2b', '3jets', '3j1b', '3j2b', '4jets', '4j1b', '4j2b', '5j1b', '5j2b', '6j1b', '6j2b']
         selections.add('base', (nElec+nMuon>=2))
         selections.add('2jets',(njets>=2))
+        selections.add('2j1b',(njets>=2)&(nbtags>=1))
+        selections.add('2j2b',(njets>=2)&(nbtags>=2))
+        selections.add('3jets',(njets>=3))
+        selections.add('3j1b',(njets>=3)&(nbtags>=1))
+        selections.add('3j2b',(njets>=3)&(nbtags>=2))
         selections.add('4jets',(njets>=4))
         selections.add('4j1b',(njets>=4)&(nbtags>=1))
         selections.add('4j2b',(njets>=4)&(nbtags>=2))
+        selections.add('5j1b',(njets>=5)&(nbtags>=1))
+        selections.add('5j2b',(njets>=5)&(nbtags>=2))
+        selections.add('6j1b',(njets>=6)&(nbtags>=1))
+        selections.add('6j2b',(njets>=6)&(nbtags>=2))
 
         # Variables
         invMass_eeSSonZ  = ( eeSSonZ.i0+ eeSSonZ.i1).mass
