@@ -60,11 +60,13 @@ colordic ={
   'WJets' : '#00065b',
 }
 
-ch4l = ['eeemSSonZ', 'eeemSSoffZ', 'mmmeSSonZ', 'mmmeSSoffZ', 'eemmSSonZ', 'eemmSSoffZ', 'eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
-ch3l = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ','eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ']
-ch2lss = ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS']
-ch2lssp = ['eeSSonZ_p', 'eeSSoffZ_p', 'mmSSonZ_p', 'mmSSoffZ_p', 'emSS_p']
-ch2lssm = ['eeSSonZ_m', 'eeSSoffZ_m', 'mmSSonZ_m', 'mmSSoffZ_m', 'emSS_m']
+ch4l    = ['eeemSSonZ', 'eeemSSoffZ', 'mmmeSSonZ', 'mmmeSSoffZ', 'eemmSSonZ', 'eemmSSoffZ', 'eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
+ch3l    = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ','eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ']
+ch3lp   = [x+'_p' for x in ch3l]
+ch3lm   = [x+'_m' for x in ch3l]
+ch2lss  = ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS']
+ch2lssp = [x+'_p' for x in ch2lss]
+ch2lssm = [x+'_m' for x in ch2lss]
 
 
 usage = 'usage: %prog [options]'
