@@ -248,8 +248,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         trilep_eem      = eepair_eem.cross(muon_eem)
         trilep_eem      = (trilep_eem.i0+trilep_eem.i1)
         
-        eem      = ee_eem.cross(muon_eem)
-        eemSign  = (np.sign(eem.i0.charge+eem.i1.charge+eem.i2.charge)>0)
+        #eem      = ee_eem.cross(muon_eem)
+        eemSign  = (np.sign(ee_eem.i0.charge+ee_eem.i1.charge+muon_eem.i0.charge)>0)
         eemSign  = (eemSign[eemSign].counts>0)
 
         # mme
@@ -265,8 +265,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         trilep_mme     = mmpair_mme.cross(elec_mme)
         trilep_mme     = (trilep_mme.i0+trilep_mme.i1)
         
-        mme      = mm_mme.cross(elec_mme)
-        mmeSign  = (np.sign(mme.i0.charge+mme.i1.charge+mme.i2.charge)>0)
+        #mme      = mm_mme.cross(elec_mme)
+        mmeSign  = (np.sign(mm_mme.i0.charge+mm_mme.i1.charge+elec_mme.i0.charge)>0)
         mmeSign  = (mmeSign[mmeSign].counts>0)
         
         mZ_mme  = mmpair_mme.mass
