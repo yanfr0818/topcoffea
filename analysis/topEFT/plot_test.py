@@ -37,7 +37,7 @@ processDic = {
   #'data' : 'EGamma, SingleMuon, DoubleMuon',
 }
 bkglist = ['Nonprompt', 'ttH']# 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
-allbkg  = ['tt', 'tW', 'WW', 'ttG', 'WW', 'WJets', 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
+allbkg  = ['ttH']#['tt', 'tW', 'WW', 'ttG', 'WW', 'WJets', 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
 
 colordic ={
   'Other' : '#808080',
