@@ -63,6 +63,8 @@ colordic ={
 ch4l = ['eeemSSonZ', 'eeemSSoffZ', 'mmmeSSonZ', 'mmmeSSoffZ', 'eemmSSonZ', 'eemmSSoffZ', 'eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
 ch3l = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ','eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ']
 ch2lss = ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS']
+ch2lssp = ['eeSSonZ_p', 'eeSSoffZ_p', 'mmSSonZ_p', 'mmSSoffZ_p', 'emSS_p']
+ch2lssm = ['eeSSonZ_m', 'eeSSoffZ_m', 'mmSSonZ_m', 'mmSSoffZ_m', 'emSS_m']
 
 
 usage = 'usage: %prog [options]'
@@ -76,9 +78,11 @@ parser.add_option('-t', '--title',     dest='title',     help='title',      defa
 if   opt.channel == 'ch4l'     : channel = ch4l
 elif opt.channel == 'ch3l'     : channel = ch3l
 elif opt.channel == 'ch2lss'   : channel = ch2lss
-elif (opt.channel[0] == 'e' or opt.channel[0] == 'm') and opt.channel[-1] != 'Z':
-    if opt.channel[:2] == 'em' : channel = 'emSS'
-    else                       : channel = [opt.channel+'SSonZ', opt.channel+'SSoffZ']
+elif opt.channel == 'ch2lssp'   : channel = ch2lssp
+elif opt.channel == 'ch2lssm'   : channel = ch2lssm
+#elif (opt.channel[0] == 'e' or opt.channel[0] == 'm') and opt.channel[-1] != 'Z':
+#    if opt.channel[:2] == 'em' : channel = 'emSS'
+#    else                       : channel = [opt.channel+'SSonZ', opt.channel+'SSoffZ']
 else                           : channel = opt.channel
 level = opt.level
 
