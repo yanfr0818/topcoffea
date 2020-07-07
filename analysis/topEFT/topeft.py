@@ -180,7 +180,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         emSSmask = (em.i0.charge*em.i1.charge>0)
         emSS = em[emSSmask]
         nemSS = len(emSS.flatten())
-
+        emSSSign = (np.sign(empairs.i0.charge+empairs.i1.charge)>0)
+        
         # ee and mumu
         # pt>-1 to preserve jagged dimensions
         ee = e [(nElec==2)&(nMuon==0)&(e.pt>-1)]
@@ -190,11 +191,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeSSmask = (eepairs.i0.charge*eepairs.i1.charge>0)
         eeonZmask  = (np.abs((eepairs.i0+eepairs.i1).mass-91)<15)
         eeoffZmask = (eeonZmask==0)
+        eeSSSign = (np.sign(eepairs.i0.charge+eepairs.i1.charge)>0)
 
         mmpairs = mm.distincts()
         mmSSmask = (mmpairs.i0.charge*mmpairs.i1.charge>0)
         mmonZmask  = (np.abs((mmpairs.i0+mmpairs.i1).mass-91)<15)
         mmoffZmask = (mmonZmask==0)
+        mmSSSign = (np.sign(mmpairs.i0.charge+mmpairs.i1.charge)>0)
 
         eeSSonZ  = eepairs[eeSSmask &  eeonZmask]
         eeSSoffZ = eepairs[eeSSmask & eeoffZmask]
@@ -212,8 +215,11 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeoffZmask = (eeoffZmask[eeoffZmask].counts>0)
         mmonZmask  = (mmonZmask[mmonZmask].counts>0)
         mmoffZmask = (mmoffZmask[mmoffZmask].counts>0)
-        emSSmask    = (emSSmask[emSSmask].counts>0)
-
+        emSSmask   = (emSSmask[emSSmask].counts>0)
+        eeSSSign   = (eeSSSign[eeSSSign].counts>0)
+        mmSSSign   = (mmSSSign[mmSSSign].counts>0)        
+        emSSSign   = (emSSSign[emSSSign].counts>0)        
+        
         # njets
         goodJets = j[(j.isclean)&(j.isgood)]
         njets = goodJets.counts
@@ -446,8 +452,22 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('eeSSoffZ', (eeoffZmask)&(eeSSmask)&(trig_eeSS))
         selections.add('mmSSonZ',  (mmonZmask)&(mmSSmask)&(trig_mmSS))
         selections.add('mmSSoffZ', (mmoffZmask)&(mmSSmask)&(trig_mmSS))
-        selections.add('emSS',     (emSSmask)&(trig_emSS))
 
+        channels2LSS += ['eeSSonZ_p', 'eeSSoffZ_p', 'mmSSonZ_p', 'mmSSoffZ_p', 'emSS_p']
+        selections.add('eeSSonZ_p',  (eeonZmask)&(eeSSmask)&(trig_eeSS)&(eeSSSign))
+        selections.add('eeSSoffZ_p', (eeoffZmask)&(eeSSmask)&(trig_eeSS)&(eeSSSign))
+        selections.add('mmSSonZ_p',  (mmonZmask)&(mmSSmask)&(trig_mmSS)&(mmSSSign))
+        selections.add('mmSSoffZ_p', (mmoffZmask)&(mmSSmask)&(trig_mmSS)&(mmSSSign))
+        selections.add('emSS_p',     (emSSmask)&(trig_emSS)&(emSSSign))
+
+        channels2LSS += ['eeSSonZ_m', 'eeSSoffZ_m', 'mmSSonZ_m', 'mmSSoffZ_m', 'emSS_m']
+        selections.add('eeSSonZ_m',  (eeonZmask)&(eeSSmask)&(trig_eeSS)&(eeSSSign==0))
+        selections.add('eeSSoffZ_m', (eeoffZmask)&(eeSSmask)&(trig_eeSS)&(eeSSSign==0))
+        selections.add('mmSSonZ_m',  (mmonZmask)&(mmSSmask)&(trig_mmSS)&(mmSSSign==0))
+        selections.add('mmSSoffZ_m', (mmoffZmask)&(mmSSmask)&(trig_mmSS)&(mmSSSign==0))
+        selections.add('emSS_m',     (emSSmask)&(trig_emSS)&(emSSSign==0))
+
+        
         channels3L = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ']
         selections.add('eemSSonZ',   (ee_eemZmask)&(trig_eem))
         selections.add('eemSSoffZ',  (ee_eemOffZmask)&(trig_eem))
@@ -563,6 +583,7 @@ class AnalysisProcessor(processor.ProcessorABC):
               else: values = v[ch][cut].flatten()
               hout['invmass'].fill(sample=dataset, channel=ch, cut=lev, invmass=values, weight=weights_flat)
             elif var == 'm3l': 
+              if ch in channels2LSS: continue
               if ch in ['eeSSonZ','eeSSoffZ', 'mmSSonZ', 'mmSSoffZ','emSS', 'eeeSSoffZ', 'mmmSSoffZ', 'eeeSSonZ' , 'mmmSSonZ']: continue
               values = v[ch][cut].flatten()
               hout['m3l'].fill(sample=dataset, channel=ch, cut=lev, m3l=values, weight=weights_flat)
@@ -574,16 +595,16 @@ class AnalysisProcessor(processor.ProcessorABC):
               elif var == 'nbtags': hout[var].fill(nbtags=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'counts': hout[var].fill(counts=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'e0pt'  : 
-                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ']: continue
+                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmSSonZ_p', 'mmSSoffZ_p', 'mmSSonZ_m', 'mmSSoffZ_m', 'mmmSSoffZ', 'mmmSSonZ']: continue
                 hout[var].fill(e0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'm0pt'  : 
-                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ']: continue
+                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeSSonZ_p', 'eeSSoffZ_p', 'eeSSonZ_m', 'eeSSoffZ_m', 'eeeSSoffZ', 'eeeSSonZ']: continue
                 hout[var].fill(m0pt=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'e0eta' : 
-                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmmSSoffZ', 'mmmSSonZ']: continue
+                if ch in ['mmSSonZ', 'mmSSoffZ', 'mmSSonZ_p', 'mmSSoffZ_p', 'mmSSonZ_m', 'mmSSoffZ_m', 'mmmSSoffZ', 'mmmSSonZ']: continue
                 hout[var].fill(e0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'm0eta' :
-                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeeSSoffZ', 'eeeSSonZ']: continue
+                if ch in ['eeSSonZ', 'eeSSoffZ', 'eeSSonZ_p', 'eeSSoffZ_p', 'eeSSonZ_m', 'eeSSoffZ_m', 'eeeSSoffZ', 'eeeSSonZ']: continue
                 hout[var].fill(m0eta=values, sample=dataset, channel=ch, cut=lev, weight=weights_flat)
               elif var == 'j0pt'  : 
                 if lev == 'base': continue
