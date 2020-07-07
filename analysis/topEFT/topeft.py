@@ -265,6 +265,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         trilep_mme     = mmpair_mme.cross(elec_mme)
         trilep_mme     = (trilep_mme.i0+trilep_mme.i1)
         
+        print(trilep_mme.charge)
+        
         #mme      = awkward.concatenate([mm_mme, elec_mme], axis=0)#mm_mme.cross(elec_mme)
         mmeSign  = (np.sign(mm_mme.i0.charge+mm_mme.i1.charge+elec_mme.charge)>0)
         mmeSign  = (mmeSign[mmeSign].counts>0)
@@ -301,9 +303,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmOnZmask  = (mmmOnZmask[mmmOnZmask].counts>0)
         mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
         
-        eeeSign  = (np.sign(eee_groups.i0.charge+eee_groups.i1.charge+eee_groups.i2.charge)>0)
+        eeeSign  = (np.sign(eee.i0.charge+eee.i1.charge+eee.i2.charge)>0)
         eeeSign  = (eeeSign[eeeSign].counts>0)
-        mmmSign  = (np.sign(mmm_groups.i0.charge+mmm_groups.i1.charge+mmm_groups.i2.charge)>0)
+        mmmSign  = (np.sign(mmm.i0.charge+mmm.i1.charge+mmm.i2.charge)>0)
         mmmSign  = (mmmSign[mmmSign].counts>0)
         
         # Get Z and W invariant masses
