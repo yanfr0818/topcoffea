@@ -301,7 +301,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmOnZmask  = (mmmOnZmask[mmmOnZmask].counts>0)
         mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
         
-        eeeSign  = (np.sign(eee.i0.charge+eee.i1.charge+eee.i2.charge)>0)
+        print('eee: '+eee)
+        print('eee_groups: 'eee_groups)
+        print('eee[0]: '+eee[0])
+        print('eee[0][0]: '+eee[0][0])
+        
+        eeeSign  = (np.sign(eee[0][0].charge+eee.i1.charge+eee.i2.charge)>0)
         eeeSign  = (eeeSign[eeeSign].counts>0)
         mmmSign  = (np.sign(mmm.i0.charge+mmm.i1.charge+mmm.i2.charge)>0)
         mmmSign  = (mmmSign[mmmSign].counts>0)
