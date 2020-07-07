@@ -302,10 +302,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
         
         eeeSign  = (eee_groups.i0.charge+eee_groups.i1.charge)
-        eeeSign  = (np.sign(eeeSign.sum().sum())>0)
+        eeeSign  = (np.sign(eeeSign.sum())>0)
         eeeSign  = (eeeSign[eeeSign].counts>0)
         mmmSign  = (mmm_groups.i0.charge+mmm_groups.i1.charge)
-        mmmSign  = (np.sign(mmmSign.sum().sum())>0)
+        mmmSign  = (np.sign(mmmSign.sum())>0)
         mmmSign  = (mmmSign[mmmSign].counts>0)
         
         # Get Z and W invariant masses
