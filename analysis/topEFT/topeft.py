@@ -452,6 +452,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('eeSSoffZ', (eeoffZmask)&(eeSSmask)&(trig_eeSS))
         selections.add('mmSSonZ',  (mmonZmask)&(mmSSmask)&(trig_mmSS))
         selections.add('mmSSoffZ', (mmoffZmask)&(mmSSmask)&(trig_mmSS))
+        selections.add('emSS',     (emSSmask)&(trig_emSS))
 
         channels2LSS += ['eeSSonZ_p', 'eeSSoffZ_p', 'mmSSonZ_p', 'mmSSoffZ_p', 'emSS_p']
         selections.add('eeSSonZ_p',  (eeonZmask)&(eeSSmask)&(trig_eeSS)&(eeSSSign))
