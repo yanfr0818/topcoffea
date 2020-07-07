@@ -265,8 +265,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         trilep_mme     = mmpair_mme.cross(elec_mme)
         trilep_mme     = (trilep_mme.i0+trilep_mme.i1)
         
-        print(trilep_mme.i0.charge)
-        
         #mme      = awkward.concatenate([mm_mme, elec_mme], axis=0)#mm_mme.cross(elec_mme)
         mmeSign  = (np.sign(mm_mme.i0.charge+mm_mme.i1.charge+elec_mme.charge)>0)
         mmeSign  = (mmeSign[mmeSign].counts>0)
