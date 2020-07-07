@@ -301,8 +301,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmOnZmask  = (mmmOnZmask[mmmOnZmask].counts>0)
         mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
         
-        print('eee: '+eee)
-        print('eee_groups: 'eee_groups)
+        print('eee_groups: '+eee_groups)
         print('eee[0]: '+eee[0])
         print('eee[0][0]: '+eee[0][0])
         
