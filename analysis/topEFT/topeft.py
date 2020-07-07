@@ -300,15 +300,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeeOffZmask = (eeeOffZmask[eeeOffZmask].counts>0)
         mmmOnZmask  = (mmmOnZmask[mmmOnZmask].counts>0)
         mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
-
-        print('eee: ',eee)
-        print('eee_groups: ',eee_groups)
-        print('eee[0]: ',eee[0])
-        print('eee[0][0]: ',eee[0][0])
         
-        eeeSign  = (np.sign(eee[0][0].charge+eee.i1.charge+eee.i2.charge)>0)
+        eeeSign  = (eee_groups.i0.charge+eee_groups.i1.charge)
+        eeeSign  = (np.sign(eeeSign.sum().sum())>0)
         eeeSign  = (eeeSign[eeeSign].counts>0)
-        mmmSign  = (np.sign(mmm.i0.charge+mmm.i1.charge+mmm.i2.charge)>0)
+        mmmSign  = (mmm_groups.i0.charge+mmm_groups.i1.charge)
+        mmmSign  = (np.sign(mmmSign.sum().sum())>0)
         mmmSign  = (mmmSign[mmmSign].counts>0)
         
         # Get Z and W invariant masses
