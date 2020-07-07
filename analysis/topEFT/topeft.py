@@ -180,7 +180,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         emSSmask = (em.i0.charge*em.i1.charge>0)
         emSS = em[emSSmask]
         nemSS = len(emSS.flatten())
-        emSSSign = (np.sign(empairs.i0.charge+empairs.i1.charge)>0)
+        emSSSign = (np.sign(em.i0.charge+em.i1.charge)>0)
         
         # ee and mumu
         # pt>-1 to preserve jagged dimensions
