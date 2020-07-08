@@ -301,12 +301,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmOnZmask  = (mmmOnZmask[mmmOnZmask].counts>0)
         mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
         
-        eeeSign  = (eee_groups.i0.charge+eee_groups.i1.charge)
-        eeeSign  = (np.sign(eeeSign.sum().sum())>0)
-        #eeeSign  = (eeeSign[eeeSign].counts>0)
-        mmmSign  = (mmm_groups.i0.charge+mmm_groups.i1.charge)
-        mmmSign  = (np.sign(mmmSign.sum().sum())>0)
-        #mmmSign  = (mmmSign[mmmSign].counts>0)
+        eee_trilep = eee.choose(3)
+        eeeSign  = (np.sign(eee_trilep.charge>0))
+        eeeSign  = (eeeSign[eeeSign].counts>0)
+        mmm_trilep = mmm.choose(3)
+        mmmSign  = (np.sign(mmm_trilep.charge>0))
+        mmmSign  = (mmmSign[eeeSign].counts>0)
         
         # Get Z and W invariant masses
         #goodPairs_eee = eee_groups[(clos_eee)&(isOSeee)]
