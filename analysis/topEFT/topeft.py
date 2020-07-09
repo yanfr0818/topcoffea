@@ -248,10 +248,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         trilep_eem      = eepair_eem.cross(muon_eem)
         trilep_eem      = (trilep_eem.i0+trilep_eem.i1)
         
-        #eem      = awkward.concatenate([ee_eem, muon_eem], axis=0)#ee_eem.cross(muon_eem)
         group_eem= ee_eem.cross(muon_eem)
         eemSign  = (np.sign(group_eem.i0.charge+group_eem.i1.charge+group_eem.i2.charge)>0)
-        #eemSign  = (np.sign(ee_eem.i0.charge+ee_eem.i1.charge+muon_eem.charge)>0)
         eemSign  = (eemSign[eemSign].counts>0)
 
         # mme
@@ -267,9 +265,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         trilep_mme     = mmpair_mme.cross(elec_mme)
         trilep_mme     = (trilep_mme.i0+trilep_mme.i1)
         
-        #mme      = awkward.concatenate([mm_mme, elec_mme], axis=0)#mm_mme.cross(elec_mme)
-        mmeSign  = (np.sign(mm_mme.i0.charge+mm_mme.i1.charge+elec_mme.charge)>0)
-        mmeSign  = (mmeSign[mmeSign].counts>0)
+        group_mme= mm_mme.cross(elec_mme)
+        mmeSign  = (np.sign(group_mme.i0.charge+group_mme.i1.charge+group_mme.i2.charge)>0)
+        eemSign  = (mmeSign[mmeSign].counts>0)
         
         mZ_mme  = mmpair_mme.mass
         mZ_eem  = eepair_eem.mass
