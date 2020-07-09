@@ -249,7 +249,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         trilep_eem      = (trilep_eem.i0+trilep_eem.i1)
         
         #eem      = awkward.concatenate([ee_eem, muon_eem], axis=0)#ee_eem.cross(muon_eem)
-        eemSign  = (np.sign(ee_eem.i0.charge+ee_eem.i1.charge+muon_eem.charge)>0)
+        group_eem= ee_eem.cross(muon_eem)
+        eemSign  = (np.sign(group_eem.i0.charge+group_eem.i1.charge+group_eem.i2.charge)>0)
+        #eemSign  = (np.sign(ee_eem.i0.charge+ee_eem.i1.charge+muon_eem.charge)>0)
         eemSign  = (eemSign[eemSign].counts>0)
 
         # mme
