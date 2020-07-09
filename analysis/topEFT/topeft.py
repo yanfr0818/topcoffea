@@ -267,7 +267,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         group_mme= mm_mme.cross(elec_mme)
         mmeSign  = (np.sign(group_mme.i0.charge+group_mme.i1.charge+group_mme.i2.charge)>0)
-        eemSign  = (mmeSign[mmeSign].counts>0)
+        mmeSign  = (mmeSign[mmeSign].counts>0)
         
         mZ_mme  = mmpair_mme.mass
         mZ_eem  = eepair_eem.mass
