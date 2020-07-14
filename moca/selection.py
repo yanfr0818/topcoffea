@@ -87,29 +87,29 @@ triggersForFinalState = {
       'DoubleMuon' : triggers['DoubleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
   },
-  'eeee' : {#Same as eee. Not sure if anything should be added.
+  'eeee' : {
       'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
       'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
   },
-  'mmmm' : {#Same as mmm.
+  'mmmm' : {
       'MC': triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
       'DoubleMuon' : triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
   },
-  'eeem' : {#The eem list + eee
+  'eeem' : {
       'MC': triggers['TripleElecTrig']+triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'EGamma' : triggers['TripleElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
   },
-  'eemm' : {#The eem list + mm + mme
+  'eemm' : {
       'MC': triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
       'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
       'DoubleMuon' : triggers['DoubleMuonTrig'],
   },
-  'mmme' : {#The mme list + mmm
+  'mmme' : {
       'MC': triggers['TripleMuonTrig']+triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'EGamma' : triggers['SingleElecTriggers'],
