@@ -178,14 +178,14 @@ def GetAllInfoFromFile(fname, treeName = 'Events'):
       if nSumOfWeights == 0: 
         nSumOfWeights = nGenEvents
     # Method 2: from 'Runs' tree
-    elif 'Runs' in f:
+    try:#elif 'Runs' in f:
       r = f['Runs']
       genEventSumw  = 'genEventSumw'  if 'genEventSumw'  in r else 'genEventSumw_'
       genEventCount = 'genEventCount' if 'genEventCount' in r else 'genEventCount_'
       nGenEvents    = sum(r[genEventSumw] .array())
       nSumOfWeights = sum(r[genEventCount].array())
     # Method 3: from unskimmed file
-    else:
+    except:#else:
       nGenEvents = nEvents
       nSumOfWeights = sum(t['genWeight']) if not isData else nEvents
     return [nEvents, nGenEvents, nSumOfWeights, isData]
