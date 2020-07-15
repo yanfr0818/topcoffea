@@ -178,6 +178,12 @@ def main():
 
   for sname in samplefiles.keys():
     sampdic[sname] = {}
+    subsname = ''
+    if(samplefiles[sname].find('/')!=-1):
+        subsname = samplefiles[sname].split('/')[-1]
+        subpath  = samplefiles[sname].replace(subsname,'')
+        path    += subpath
+        samplefiles[sname] = subsname
     sampdic[sname]['files']      = GetFiles(path, samplefiles[sname])
     extraOption = GetOptions(path, sampdic[sname]['files'][0].split('/')[-1])
     sampdic[sname]['options']    = fileopt[sname] + ', ' + extraOption
@@ -189,6 +195,8 @@ def main():
     sampdic[sname]['nGenEvents']    = nGenEvents
     sampdic[sname]['nSumOfWeights'] = nSumOfWeights
     sampdic[sname]['isData']        = isData
+    if subsname != '':
+        path = path.replace(subpath,'')
 
   if verbose:
     for sname in samplefiles.keys():
@@ -211,4 +219,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-
