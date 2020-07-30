@@ -49,131 +49,142 @@ triggers = {
   'DoubleElecMuonTrig' : ['HLT_Mu8_DiEle12_CaloIdL_TrackIdL'],
 }
 
-triggersForFinalState = {
-  'ee' : {
+triggersForFinalState = {}
+triggersNotForFinalState = {}
+
+
+def changeHLT():
+  triggers['DoubleMuonTrig'] = ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ', 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8']
+  triggers['MuonEGTrig'] = ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ']
+  triggers['SingleElecTriggers'] = ['HLT_Ele32_WPTight_Gsf_L1DoubleEG', 'HLT_Ele35_WPTight_Gsf']
+
+def updateStates():
+  triggersForFinalState['ee'] = {
       'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
       'EGamma'     : triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
-  },
-  'em' : {
+  }
+  triggersForFinalState['em'] = {
       'MC': triggers['SingleElecTriggers']+triggers['SingleMuonTriggers']+triggers['MuonEGTrig'],
       'EGamma'     : triggers['SingleElecTriggers'],
       'MuonEG'     : triggers['MuonEGTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
-  },
-  'mm' : {
+  }
+  triggersForFinalState['mm'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig'],
       'DoubleMuon' : triggers['DoubleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
-  },
-  'eee' : {
+  }
+  triggersForFinalState['eee'] = {
       'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
       'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
-  },
-  'mmm' : {
+  }
+  triggersForFinalState['mmm'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
       'DoubleMuon' : triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
-  },
-  'eem' : {
+  }
+  triggersForFinalState['eem'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
-  },
-  'mme' : {
+  }
+  triggersForFinalState['mme'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'EGamma' : triggers['SingleElecTriggers'],
       'DoubleMuon' : triggers['DoubleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
-  },
-  'eeee' : {
+  }
+  triggersForFinalState['eeee'] = {
       'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
       'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
-  },
-  'mmmm' : {
+  }
+  triggersForFinalState['mmmm'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
       'DoubleMuon' : triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
-  },
-  'eeem' : {
+  }
+  triggersForFinalState['eeem'] = {
       'MC': triggers['TripleElecTrig']+triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'EGamma' : triggers['TripleElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
-  },
-  'eemm' : {
+  }
+  triggersForFinalState['eemm'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
       'EGamma' : triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
       'DoubleMuon' : triggers['DoubleMuonTrig'],
-  },
-  'mmme' : {
+  }
+  triggersForFinalState['mmme'] = {
       'MC': triggers['TripleMuonTrig']+triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'EGamma' : triggers['SingleElecTriggers'],
       'DoubleMuon' : triggers['TripleMuonTrig']+triggers['DoubleMuonTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],   
   }
-}
 
-triggersNotForFinalState = {
-  'ee' : {'EGamma' : [],},
-  'em' : {
+  triggersNotForFinalState['ee'] = {'EGamma' : [],}
+  triggersNotForFinalState['em'] = {
       'MuonEG'     : [],
       'EGamma'     : triggers['MuonEGTrig'],
       'SingleMuon' : triggers['MuonEGTrig'],
-  },
-  'mm' : {
+  }
+  triggersNotForFinalState['mm'] = {
       'DoubleMuon' : [],
       'SingleMuon' : triggers['DoubleMuonTrig'],
-  },
-  'eee' : { 'EGamma' : [],},
-  'mmm' : {
+  }
+  triggersNotForFinalState['eee'] = { 'EGamma' : [],}
+  triggersNotForFinalState['mmm'] = {
       'DoubleMuon' : [],
       'SingleMuon' : triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
-  },
-  'eem' : {
+  }
+  triggersNotForFinalState['eem'] = {
       'MuonEG' : [], 
       'EGamma' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'SingleMuon' :  triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
-  },
-  'mme' : {
+  }
+  triggersNotForFinalState['mme'] = {
       'MuonEG' : [],
       'EGamma' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'DoubleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers'],
       'SingleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig'],
-  },
-  'eeee' : { 'EGamma' : [],},
-  'mmmm' : {
+  }
+  triggersNotForFinalState['eeee'] = { 'EGamma' : [],}
+  triggersNotForFinalState['mmmm'] = {
       'DoubleMuon' : [],
       'SingleMuon' : triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],   
-  },
-  'eeem' : {
+  }
+  triggersNotForFinalState['eeem'] = {
       'MuonEG' : [], 
       'EGamma' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'SingleMuon' :  triggers['TripleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],   
-  },
-  'eemm' : {
+  }
+  triggersNotForFinalState['eemm'] = {
       'MuonEG' : [], 
       'EGamma' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
       'SingleMuon' :  triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['DoubleMuonTrig'], 
-  },
-  'mmme' : {
+  }
+  triggersNotForFinalState['mmme'] = {
       'MuonEG' : [],
       'EGamma' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig'],
       'DoubleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers'],
       'SingleMuon' : triggers['MuonEGTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],   
   }
-}
+
 
 def PassTrigger(df, cat, isData=False, dataName=''):
   tpass = np.zeros_like(df['MET_pt'], dtype=np.bool)
-  if not isData: 
+  if not isData:
+    updateStates()
     paths = triggersForFinalState[cat]['MC']
     for path in paths: tpass |= df[path]
   else:
+    if df['run'].any() < 299368:
+      changeHLT()
+    updateStates()
     passTriggers    = triggersForFinalState[cat][dataName] if dataName in triggersForFinalState[cat].keys() else []
     notPassTriggers = triggersNotForFinalState[cat][dataName] if dataName in triggersNotForFinalState[cat].keys() else []
     for path in passTriggers: tpass |= df[path]
