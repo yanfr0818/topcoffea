@@ -177,7 +177,6 @@ def main():
   xsecdic = loadxsecdic(xsec, verbose)
 
   for sname in samplefiles.keys():
-    print(sname)
     sampdic[sname] = {}
     subpath = ''
     if(samplefiles[sname].find('/')!=-1):
