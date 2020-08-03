@@ -177,25 +177,28 @@ def main():
   xsecdic = loadxsecdic(xsec, verbose)
 
   for sname in samplefiles.keys():
+    print(sname)
     sampdic[sname] = {}
-    subsname = ''
+    subpath = ''
     if(samplefiles[sname].find('/')!=-1):
-        subsname = samplefiles[sname].split('/')[-1]
-        subpath  = samplefiles[sname].replace(subsname,'')
-        path    += subpath
-        samplefiles[sname] = subsname
-    sampdic[sname]['files']      = GetFiles(path, samplefiles[sname])
-    extraOption = GetOptions(path, sampdic[sname]['files'][0].split('/')[-1])
-    sampdic[sname]['options']    = fileopt[sname] + ', ' + extraOption
-    sampdic[sname]['xsec']       = xsecdic[sname] if sname in xsecdic.keys() else 1
-    sampdic[sname]['year']       = year
-    sampdic[sname]['treeName']   = treeName
+      subsname = samplefiles[sname].split('/')[-1]
+      subpath  = samplefiles[sname].replace(subsname,'')
+      path    += subpath
+      samplefiles[sname] = subsname
+    sampdic[sname]['files']         = GetFiles(path, samplefiles[sname])
+    try:
+      extraOption = GetOptions(path, sampdic[sname]['files'][0].split('/')[-1])
+      sampdic[sname]['options']     = fileopt[sname] + ', ' + extraOption
+    except:sampdic[sname]['options']= 'No Options'
+    sampdic[sname]['xsec']          = xsecdic[sname] if sname in xsecdic.keys() else 1
+    sampdic[sname]['year']          = year
+    sampdic[sname]['treeName']      = treeName
     nEvents, nGenEvents, nSumOfWeights, isData = GetAllInfoFromFile(sampdic[sname]['files'], sampdic[sname]['treeName'])
     sampdic[sname]['nEvents']       = nEvents
     sampdic[sname]['nGenEvents']    = nGenEvents
     sampdic[sname]['nSumOfWeights'] = nSumOfWeights
     sampdic[sname]['isData']        = isData
-    if subsname != '':
+    if subpath != '':
         path = path.replace(subpath,'')
 
   if verbose:
