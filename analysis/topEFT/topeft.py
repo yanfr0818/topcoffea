@@ -137,7 +137,9 @@ class AnalysisProcessor(processor.ProcessorABC):
             if self._mu[key] in df:
                 mu[key] = df[self._mu[key]]
         #mu['istight'] = isTightMuon(mu.pt, mu.eta, mu.dxy, mu.dz, mu.iso, mu.tight_id, mu.tightCharge, year)
-        mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniIso, mu.sip3d, mu.mvaTTH, mu.mediumPrompt, mu.tightCharge, minpt=10)
+        #print(len(abs(mu.dz)<0.1),len(mu.miniIso<0.4),len(mu.sip3d<5),len(mu.mvaTTH>0.55),len(mu.mediumPrompt),len(mu.tightCharge==2))
+        mu['isGood'] = ((mu.pt>10)&(abs(mu.eta)<2.4)&(abs(mu.dxy)<0.05)&(abs(mu.dz)<0.1)&(mu.miniIso<0.4)&(mu.sip3d<5)&(mu.mvaTTH>0.55)&(mu.tightCharge==2))#&(mu.mediumPrompt))#&(mu.tightCharge==2))
+        #mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniIso, mu.sip3d, mu.mvaTTH, mu.mediumPrompt, mu.tightCharge, minpt=10)
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
         
