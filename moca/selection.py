@@ -188,11 +188,13 @@ def PassTrigger(df, cat, isData=False, dataName=''):
     passTriggers    = triggersForFinalState[cat][dataName] if dataName in triggersForFinalState[cat].keys() else []
     notPassTriggers = triggersNotForFinalState[cat][dataName] if dataName in triggersNotForFinalState[cat].keys() else []
     for path in passTriggers: 
-      print(path)
+      print(df[path])
+      print(sum(df[path]))
       tpass |= df[path]
     for path in notPassTriggers: 
       tpass = (tpass)&(df[path]==0)
-      print(path)
+      print(df[path])
+      print(sum(df[path]))
   return tpass
 
 
