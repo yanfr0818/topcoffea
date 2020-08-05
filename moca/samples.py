@@ -102,25 +102,25 @@ def GetOptions(path, sample, options = ""):
 def SortDic(sampdic1):
   sampdic2 = {}
   dataGroup = ['DoubleMuon', 'DoubleEG', 'MuonEG', 'SingleMuon', 'SingleElectron']
-  for sname in sampdic1.keys():
-    for dataName in dataGroup:
-      sampdic2[dataName] = {}
-      sampdic2[dataName]['files'] = []
-      EventCount = 0
+  for dataName in dataGroup:
+    sampdic2[dataName] = {}
+    sampdic2[dataName]['files'] = []
+    EventCount = 0
+    for sname in sampdic1.keys():
       if sname.find(dataName) != -1:
         for fname in sampdic1[sname]['files']:
           sampdic2[dataName]['files'] = [sampdic2[dataName]['files'], fname]
         EventCount += sampdic1[sname]['nEvents']
-      if EventCount != 0:
-        sampdic2[dataName]['xsec']          = 1
-        sampdic2[dataName]['year']          = -1
-        sampdic2[dataName]['options']       = 'No options'
-        sampdic2[dataName]['treeName']      = 'Events'
-        sampdic2[dataName]['nEvents']       = EventCount
-        sampdic2[dataName]['nGenEvents']    = EventCount
-        sampdic2[dataName]['nSumOfWeights'] = EventCount
-        sampdic2[dataName]['isData']        = 'YES'
-      if sname == dataName: sampdic2[dataName] = sampdic1[sname]
+    if EventCount != 0:
+      sampdic2[dataName]['xsec']          = 1
+      sampdic2[dataName]['year']          = -1
+      sampdic2[dataName]['options']       = 'No options'
+      sampdic2[dataName]['treeName']      = 'Events'
+      sampdic2[dataName]['nEvents']       = EventCount
+      sampdic2[dataName]['nGenEvents']    = EventCount
+      sampdic2[dataName]['nSumOfWeights'] = EventCount
+      sampdic2[dataName]['isData']        = 'YES'
+      #if sname == dataName: sampdic2[dataName] = sampdic1[sname]
   if sampdic2 == {}: return sampdic1
   else:              return sampdic2
 
