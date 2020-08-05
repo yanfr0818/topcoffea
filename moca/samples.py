@@ -227,6 +227,8 @@ def main():
     if subpath != '':
         path = path.replace(subpath,'')
         
+    for sanme in sampdic.keys():
+      print(sampdic[sname]['nEvents'])
     sampdic = SortDic(sampdic)
 
   if verbose:
