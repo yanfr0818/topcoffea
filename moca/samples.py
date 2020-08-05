@@ -27,6 +27,8 @@ from modules.fileReader import GetFiles, GetAllInfoFromFile
 
 outdir  = basepath+'coffeaFiles/'
 
+dataGroup = ['DoubleMuon', 'DoubleEG', 'MuonEG', 'SingleMuon', 'SingleElectron']
+
 def FindFileInDir(fname, dname = '.'):
   if not os.path.isfile(dname+'/'+fname):
     l = list(filter(lambda x: x[0] == fname, [x.split('.') for x in os.listdir(dname)]))
@@ -96,6 +98,29 @@ def GetOptions(path, sample, options = ""):
   #options += doPUweight + doJECunc + doIFSR + useJetPtNom + options
   if options.endswith(','): options = options[:-1]
   return options
+
+def SortDic(sampdic1):
+  sampdic2 = {}
+  dataGroup = ['DoubleMuon', 'DoubleEG', 'MuonEG', 'SingleMuon', 'SingleElectron']
+  for sname in sampdic1.keys():
+    for dataName in dataGroup:
+      EventCount = 0
+      if sname.find(dataName) != -1:
+        for fname in sampdic1[sname]['files']:
+          sampdic2[dataName]['files'] = [sampdic2[dataName]['files'], fname]
+        EventCount += sampdic[sname]['nEvents']
+      if EventCount != 0:
+        sampdic2[dataName]['xsec']          = 1
+        sampdic2[dataName]['year']          = -1
+        sampdic2[dataName]['options']       = 'No options'
+        sampdic2[dataName]['treeName']      = 'Events'
+        sampdic2[dataName]['nEvents']       = EventCount
+        sampdic2[dataName]['nGenEvents']    = EventCount
+        sampdic2[dataName]['nSumOfWeights'] = EventCount
+        sampdic2[dataName]['isData']        = 'YES'
+      if sname == dataName: sampdic2[dataName] = sampdic1[sname]
+  if sampdic2 == {}: return sampdic1
+  else:              return sampdic2
 
 def main():
   import argparse
@@ -199,9 +224,11 @@ def main():
     sampdic[sname]['isData']        = isData
     if subpath != '':
         path = path.replace(subpath,'')
+        
+    sampdic = SortDic(sampdic)
 
   if verbose:
-    for sname in samplefiles.keys():
+    for sname in sampdic.keys():
       print('>> '+sname)
       print('   - isData?    : %s'   %('YES' if sampdic[sname]['isData'] else 'NO'))
       print('   - year       : %i'   %sampdic[sname]['year'])
