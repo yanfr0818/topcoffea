@@ -104,6 +104,7 @@ def SortDic(sampdic1):
   dataGroup = ['DoubleMuon', 'DoubleEG', 'MuonEG', 'SingleMuon', 'SingleElectron']
   for sname in sampdic1.keys():
     for dataName in dataGroup:
+      sampdic2[dataName] = {}
       EventCount = 0
       if sname.find(dataName) != -1:
         for fname in sampdic1[sname]['files']:
