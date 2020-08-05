@@ -110,7 +110,7 @@ def SortDic(sampdic1):
       if sname.find(dataName) != -1:
         for fname in sampdic1[sname]['files']:
           sampdic2[dataName]['files'] = [sampdic2[dataName]['files'], fname]
-        EventCount += sampdic[sname]['nEvents']
+        EventCount += sampdic1[sname]['nEvents']
       if EventCount != 0:
         sampdic2[dataName]['xsec']          = 1
         sampdic2[dataName]['year']          = -1
