@@ -105,6 +105,7 @@ def SortDic(sampdic1):
   for sname in sampdic1.keys():
     for dataName in dataGroup:
       sampdic2[dataName] = {}
+      sampdic2[dataName]['files'] = []
       EventCount = 0
       if sname.find(dataName) != -1:
         for fname in sampdic1[sname]['files']:
