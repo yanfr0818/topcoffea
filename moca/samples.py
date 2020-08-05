@@ -109,7 +109,7 @@ def SortDic(sampdic1):
     for sname in sampdic1.keys():
       if sname.find(dataName) != -1:
         for fname in sampdic1[sname]['files']:
-          sampdic2[dataName]['files'] = [sampdic2[dataName]['files'], fname]
+          sampdic2[dataName]['files'].append(fname)
         #EventCount += sampdic1[sname]['nEvents']
     if 1:#if EventCount != 0:
       sampdic2[dataName]['xsec']          = 1
@@ -121,6 +121,7 @@ def SortDic(sampdic1):
       sampdic2[dataName]['nSumOfWeights'] = -1#EventCount
       sampdic2[dataName]['isData']        = 'YES'
       #if sname == dataName: sampdic2[dataName] = sampdic1[sname]
+    if len(sampdic2[dataName]['files']) == 0: del sampdic2[dataName]
   if sampdic2 == {}: return sampdic1
   else:              return sampdic2
 
