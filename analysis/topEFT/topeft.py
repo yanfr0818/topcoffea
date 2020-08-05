@@ -129,7 +129,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
         #e['isGood'] = e.pt.ones_like()
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge, minpt=10)
-        print(e['isGood'])
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
 
@@ -141,7 +140,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         #mu['istight'] = isTightMuon(mu.pt, mu.eta, mu.dxy, mu.dz, mu.iso, mu.tight_id, mu.tightCharge, year)
         #mu['isGood'] = mu.pt.ones_like()
         mu['isGood'] = ((mu.pt>10)&(abs(mu.eta)<2.4)&(abs(mu.dxy)<0.05)&(abs(mu.dz)<0.1)&(mu.miniIso<0.4)&(mu.sip3d<5)&(mu.mvaTTH>0.55)&(mu.tightCharge==2))#&(mu.mediumPrompt))#&(mu.tightCharge==2))
-        print(mu['isGood'])
         #mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniIso, mu.sip3d, mu.mvaTTH, mu.mediumPrompt, mu.tightCharge, minpt=10)
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
