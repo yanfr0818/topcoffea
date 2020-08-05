@@ -191,7 +191,7 @@ def PassTrigger(df, cat, isData=False, dataName=''):
       tpass |= df[path]
     for path in notPassTriggers: 
       tpass = (tpass)&(df[path]==0)
-    print(sum(tpass))
+    #print(sum(tpass))
     tpass=np.ones_like(tpass)
   return tpass
 
