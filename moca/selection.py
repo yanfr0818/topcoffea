@@ -182,7 +182,7 @@ def PassTrigger(df, cat, isData=False, dataName=''):
     paths = triggersForFinalState[cat]['MC']
     for path in paths: tpass |= df[path]
   else:
-    if df['run'].any() < 299368:
+    if df['run'][0] < 299368:
       changeHLT()
     updateStates()
     passTriggers    = triggersForFinalState[cat][dataName] if dataName in triggersForFinalState[cat].keys() else []
