@@ -127,14 +127,14 @@ class AnalysisProcessor(processor.ProcessorABC):
             if self._e[key] in df:
                 e[key] = df[self._e[key]]
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
-        e['isGood'] = e.pt.zeros_like()
+        e['isGood'] = e.pt.ones_like()
         #e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge, minpt=10)
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
 
         # Muon selection
         for key in self._mu:
-            mu[key] = mu.pt.zeros_like()
+            mu[key] = mu.pt.ones_like()
             if self._mu[key] in df:
                 mu[key] = df[self._mu[key]]
         #mu['istight'] = isTightMuon(mu.pt, mu.eta, mu.dxy, mu.dz, mu.iso, mu.tight_id, mu.tightCharge, year)
