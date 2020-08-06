@@ -41,7 +41,7 @@ def isGoodJet(pt, eta, jet_id, jetPtCut=30):
     return mask
 
 def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=10):
-  mask = (pt>minpt)&(abs(eta)<2.4)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)&(mvaTTH>0.55)&(tightCharge==2)&(jetDeepB<0.4941)&(mediumPrompt)
+  mask = (pt>minpt)&(abs(eta)<2.4)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)&(mvaTTH>0.55)&(tightCharge==2)&(jetDeepB<0.4941)#&(mediumPrompt)
   return mask
 
 def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=10):
