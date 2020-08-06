@@ -40,13 +40,12 @@ def isGoodJet(pt, eta, jet_id, jetPtCut=30):
     mask = (pt>jetPtCut) & (abs(eta)<2.4) & ((jet_id&2)==2)
     return mask
 
-def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=15):
-  mask = (pt>minpt)&(abs(eta)<2.4)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<5)&(mvaTTH>0.55)&(mediumPrompt)&(tightCharge==2)&(jetDeepB<0.1522)
+def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=10):
+  mask = (pt>minpt)&(abs(eta)<2.4)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)&(mvaTTH>0.55)&(tightCharge==2)&(jetDeepB<0.4941)#&(mediumPrompt)
   return mask
 
-def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=15):
-  miniIsoCut = 0.085 # Tight
-  mask = (pt>minpt)&(abs(eta)<2.4)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<miniIsoCut)&(sip3D<8)&(mvaTTH>0.125)&(elecMVA>0.80)&(jetDeepB<0.1522)&(lostHits<1)&(convVeto)&(tightCharge==2)
+def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=10):
+  mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)&(mvaTTH>0.125)&(elecMVA>0.90)&(jetDeepB<0.4941)&(lostHits<1)&(convVeto)&(tightCharge==2)
   return mask 
 
 ids = {}
