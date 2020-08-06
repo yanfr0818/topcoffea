@@ -39,7 +39,7 @@ def passMETcut(met, metCut=40):
 
 triggers = {
   'SingleMuonTriggers' : ['HLT_IsoMu24', 'HLT_IsoMu27'],
-  'SingleElecTriggers' : ['HLT_Ele32_WPTight_Gsf', 'HLT_Ele35_WPTight_Gsf'],
+  'SingleElecTriggers' : ['HLT_Ele32_WPTight_Gsf_L1DoubleEG', 'HLT_Ele35_WPTight_Gsf'],
   'DoubleMuonTrig' : ['HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ', 'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8'],
   'DoubleElecTrig' : ['HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ'],
   'MuonEGTrig' : ['HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL', 'HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ', 'HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ'],
