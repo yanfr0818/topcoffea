@@ -12,17 +12,19 @@ from coffea.hist import plot
 from cycler import cycler
 
 class plotter:
-  def __init__(self, path, prDic={}, colors={}, bkgList=[], dataName='data', outpath='./temp/', lumi=59.7):
+  def __init__(self, path, prDic={}, colors={}, bkgList=[], category={}, dataName='data', outpath='./temp/', lumi=59.7, dataOnly=False, allprocess=False):
     self.SetPath(path)
     self.SetProcessDic(prDic)
     self.SetBkgProcesses(bkgList)
+    self.categories = category
     self.SetDataName(dataName)
+    self.dataOnly=dataOnly
+    self.allprocess=allprocess
     self.Load()
     self.SetOutpath(outpath)
     self.SetLumi(lumi)
     self.SetColors(colors)
     self.SetRegion()
-    self.categories = {}
     self.doLegend = True
     self.doRatio = True
     self.doStack = True
@@ -50,6 +52,17 @@ class plotter:
       for k in hin.keys():
         if k in self.hists: self.hists[k]+=hin[k]
         else:               self.hists[k]=hin[k]
+
+    if self.dataOnly and self.allprocess:
+      h = self.hists['counts']
+      for cat in self.categories: 
+        h = h.integrate(cat, self.categories[cat])
+      hc=h.sum('sample')
+      y=hc.values(overflow='all')
+      ny = y[list(y.keys())[0]].sum()
+      print(ny)
+      exit(0)
+
     self.GroupProcesses()
 
   def SetProcessDic(self, prdic, sampleLabel='sample', processLabel='process'):
@@ -62,9 +75,9 @@ class plotter:
     if isinstance(var, str):
       for k in prdic:
         self.prDic[k] = (prdic[k].replace(' ', '').split(','))
-    else:
-      for k in groupDic:
-        self.prDic[k] = (prdic[k])
+    #else:
+    #  for k in groupDic:
+    #    self.prDic[k] = (prdic[k])
 
   def GroupProcesses(self, prdic={}):
     ''' Move from grouping in samples to groping in processes '''
@@ -236,7 +249,7 @@ class plotter:
         labels = ['Data']+labels[:-1]            
       ax.legend(handles, labels)#,bbox_to_anchor=leg_anchor,loc=leg_loc)
     
-    if self.doData(hname) and self.doRatio:
+    if self.doData(hname) and self.doRatio and not self.dataOnly:
       hist.plotratio(hData, h.sum("process"), clear=False,ax=rax, error_opts=data_err_opts, denom_fill_opts={}, guide_opts={}, unc='num')
       rax.set_ylabel(self.yRatioTit)
       rax.set_ylim(self.ratioRange[0], self.ratioRange[1])
@@ -264,7 +277,7 @@ class plotter:
   def GetYields(self, var='met'):
     sumy = 0
     h = self.GetHistogram(var, self.bkglist)
-    h.scale(1000.*self.lumi)
+    #h.scale(1000.*self.lumi)
     print('==============================================')
     for bkg in self.bkglist:
       y = h[bkg].integrate("process").values(overflow='all')
