@@ -38,7 +38,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         self._e['charge' ]       = 'Electron_charge'
         self._e['sieie']         = 'Electron_sieie'
         self._e['hoe']           = 'Electron_hoe'
-        self._e['1oeM1op']       = 'Electron_eInvMinusPInv'
+        self._e['eInvMinusPInv'] = 'Electron_eInvMinusPInv'
 
         self._mu['tight_id']     = 'Muon_tightId'
         self._mu['mediumId']     = 'Muon_mediumId'
@@ -131,7 +131,7 @@ class AnalysisProcessor(processor.ProcessorABC):
                 e[key] = df[self._e[key]]
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge, 
-                                e.siesie, e.hoe, e.1oeM1op, minpt=10)
+                                e.siesie, e.hoe, e.eInvMinusPInv, minpt=10)
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
 
