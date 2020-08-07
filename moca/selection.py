@@ -62,7 +62,7 @@ def updateStates():
   triggersForFinalState['ee'] = {
       'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
       'SingleElectron'     : triggers['SingleElecTriggers'],
-      'DoubleElectron'     : triggers['DoubleElecTrig'],
+      'DoubleEG'     : triggers['DoubleElecTrig'],
   }
   triggersForFinalState['em'] = {
       'MC': triggers['SingleElecTriggers']+triggers['SingleMuonTriggers']+triggers['MuonEGTrig'],
@@ -78,7 +78,7 @@ def updateStates():
   triggersForFinalState['eee'] = {
       'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
       'SingleElectron' : triggers['SingleElecTriggers'],
-      'DoubleElectron' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
+      'DoubleEG' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
   }
   triggersForFinalState['mmm'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
@@ -89,7 +89,7 @@ def updateStates():
       'MC': triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'SingleElectron' : triggers['SingleElecTriggers'],
-      'DoubleElectron' : triggers['DoubleElecTrig'],
+      'DoubleEG' : triggers['DoubleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
   }
   triggersForFinalState['mme'] = {
@@ -102,7 +102,7 @@ def updateStates():
   triggersForFinalState['eeee'] = {
       'MC': triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
       'SingleElectron' : triggers['SingleElecTriggers'],
-      'DoubleElectron' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
+      'DoubleEG' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
   }
   triggersForFinalState['mmmm'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig']+triggers['TripleMuonTrig'],
@@ -113,14 +113,14 @@ def updateStates():
       'MC': triggers['TripleElecTrig']+triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig'],
       'SingleElectron' : triggers['SingleElecTriggers'],
-      'DoubleElectron' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
+      'DoubleEG' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
   }
   triggersForFinalState['eemm'] = {
       'MC': triggers['SingleMuonTriggers']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['DoubleMuonTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
       'MuonEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig'],
       'SingleElectron' : triggers['SingleElecTriggers'],
-      'DoubleElectron' : triggers['DoubleElecTrig'],
+      'DoubleEG' : triggers['DoubleElecTrig'],
       'SingleMuon' : triggers['SingleMuonTriggers'],
       'DoubleMuon' : triggers['DoubleMuonTrig'],
   }
@@ -134,7 +134,7 @@ def updateStates():
 
   triggersNotForFinalState['ee'] = {
       'SingleElectron' : triggers['DoubleElecTrig'],
-      'DoubleElectron' : [],
+      'DoubleEG' : [],
   }
   triggersNotForFinalState['em'] = {
       'MuonEG'     : [],
@@ -147,7 +147,7 @@ def updateStates():
   }
   triggersNotForFinalState['eee'] = { 
       'SingleElectron' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
-      'DoubleElectron' : [],
+      'DoubleEG' : [],
   }
   triggersNotForFinalState['mmm'] = {
       'DoubleMuon' : [],
@@ -156,7 +156,7 @@ def updateStates():
   triggersNotForFinalState['eem'] = {
       'MuonEG' : [], 
       'SingleElectron' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleMuonTriggers']+triggers['DoubleElecTrig'],
-      'DoubleElectron' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleMuonTriggers'],
+      'DoubleEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleMuonTriggers'],
       'SingleMuon' :  triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
   }
   triggersNotForFinalState['mme'] = {
@@ -167,7 +167,7 @@ def updateStates():
   }
   triggersNotForFinalState['eeee'] = {
       'SingleElectron' : triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
-      'DoubleElectron' : [],
+      'DoubleEG' : [],
   }
   triggersNotForFinalState['mmmm'] = {
       'DoubleMuon' : [],
@@ -176,7 +176,7 @@ def updateStates():
   triggersNotForFinalState['eeem'] = {
       'MuonEG' : [], 
       'SingleElectron' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleMuonTriggers']+triggers['DoubleElecTrig']+triggers['TripleElecTrig'],
-      'DoubleElectron' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleMuonTriggers'],
+      'DoubleEG' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleMuonTriggers'],
       'SingleMuon' :  triggers['TripleElecTrig']+triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],   
   }
   triggersNotForFinalState['eemm'] = {
