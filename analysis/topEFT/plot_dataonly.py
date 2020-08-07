@@ -79,9 +79,11 @@ parser.add_option('-t', '--title',     dest='title',     help='title',      defa
 
 if   opt.channel == 'ch4l'     : channel = ch4l
 elif opt.channel == 'ch3l'     : channel = ch3l
+elif opt.channel == 'ch3lp'    : channel = ch3lp
+elif opt.channel == 'ch3lm'    : channel = ch3lm
 elif opt.channel == 'ch2lss'   : channel = ch2lss
-elif opt.channel == 'ch2lssp'   : channel = ch2lssp
-elif opt.channel == 'ch2lssm'   : channel = ch2lssm
+elif opt.channel == 'ch2lssp'  : channel = ch2lssp
+elif opt.channel == 'ch2lssm'  : channel = ch2lssm
 #elif (opt.channel[0] == 'e' or opt.channel[0] == 'm') and opt.channel[-1] != 'Z':
 #    if opt.channel[:2] == 'em' : channel = 'emSS'
 #    else                       : channel = [opt.channel+'SSonZ', opt.channel+'SSoffZ']
