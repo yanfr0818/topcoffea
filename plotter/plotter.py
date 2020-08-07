@@ -57,11 +57,8 @@ class plotter:
       h = self.hists['counts']
       for cat in self.categories: 
         h = h.integrate(cat, self.categories[cat])
-      for ch in self.categories['channel']: print(ch)
       hc=h.sum('sample')
       y=hc.values(overflow='all')
-      print(y)
-      print(list(y.keys()))
       ny = y[list(y.keys())[0]].sum()
       print(ny)
       exit(0)
