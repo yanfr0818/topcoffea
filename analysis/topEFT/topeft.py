@@ -32,10 +32,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         self._e['miniIso' ]      = 'Electron_miniPFRelIso_all'
         self._e['sip3d' ]        = 'Electron_sip3d'
         self._e['mvaTTH' ]       = 'Electron_mvaTTH'
-        self._e['elecMVA' ]      = 'Electron_mvaFall17V2Iso'
+        self._e['elecMVA' ]      = 'Electron_mvaFall17V2noIso'#mvaFall17V2Iso
         self._e['lostHits' ]     = 'Electron_lostHits'
         self._e['convVeto' ]     = 'Electron_convVeto'
         self._e['charge' ]       = 'Electron_charge'
+        self._e['sieie']         = 'Electron_sieie'
+        self._e['hoe']           = 'Electron_hoe'
+        self._e['1oeM1op']       = 'Electron_eInvMinusPInv'
 
         self._mu['tight_id']     = 'Muon_tightId'
         self._mu['mediumId']     = 'Muon_mediumId'
@@ -88,7 +91,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         xsec   = self._samples[dataset]['xsec']
         sow    = self._samples[dataset]['nSumOfWeights' ]
         isData = self._samples[dataset]['isData']
-        datasets = ['SingleMuon', 'SingleElectron', 'EGamma', 'MuonEG', 'DoubleMuon', 'DoubleElectron']
+        datasets = ['DoubleMuon', 'DoubleEG', 'MuonEG', 'SingleMuon', 'SingleElectron']
         for d in datasets: 
           if d in dataset: dataset = dataset.split('_')[0]
 
@@ -127,7 +130,8 @@ class AnalysisProcessor(processor.ProcessorABC):
             if self._e[key] in df:
                 e[key] = df[self._e[key]]
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
-        e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge, minpt=10)
+        e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge, 
+                                e.siesie, e.hoe, e.1oeM1op, minpt=10)
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
 
