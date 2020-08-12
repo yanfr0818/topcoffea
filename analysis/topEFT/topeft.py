@@ -145,11 +145,10 @@ class AnalysisProcessor(processor.ProcessorABC):
             for index2 in range(len(e.pt[index1])):
                 if e.jetIdx[index1][index2] == -1: e.btagDeepB[index1][index2] = 0
                 else:                              e.btagDeepB[index1][index2] = j.deepjet[index1][e.jetIdx[index1][index2]]
-            if np.size(e.jetIdx[index1]) != np.size(e.btagDeepB[index1]): print('inequal size!')
                 
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge,
-                                e.sieie, e.hoe, e.eInvMinusPInv, minpt=10)
+                                e.sieie, e.hoe, e.eInvMinusPInv, e.btagDeepB, minpt=10)
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
 
@@ -158,8 +157,13 @@ class AnalysisProcessor(processor.ProcessorABC):
             mu[key] = mu.pt.ones_like()
             if self._mu[key] in df:
                 mu[key] = df[self._mu[key]]
+        for index1 in range(len(mu.pt)):
+            for index2 in range(len(mu.pt[index1])):
+                if mu.jetIdx[index1][index2] == -1: mu.btagDeepB[index1][index2] = 0
+                else:                               mu.btagDeepB[index1][index2] = j.deepjet[index1][mu.jetIdx[index1][index2]]
+                
         #mu['istight'] = isTightMuon(mu.pt, mu.eta, mu.dxy, mu.dz, mu.iso, mu.tight_id, mu.tightCharge, year)
-        mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniIso, mu.sip3d, mu.mvaTTH, mu.mediumPrompt, mu.tightCharge, minpt=10)
+        mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniIso, mu.sip3d, mu.mvaTTH, mu.mediumPrompt, mu.tightCharge, mu.btagDeepB, minpt=10)
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
         
