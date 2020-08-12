@@ -146,7 +146,7 @@ class AnalysisProcessor(processor.ProcessorABC):
                 e.btagDeepB[index1][index2] = j.deepjet[index1][e.jetIdx[index1][index2]]
             print('j.deepjet:',j.deepjet[index1])
             print('e.jetIdx:',e.jetIdx[index1])
-            print('e.btagDeepB:',e.btagDeepB[index1])
+            print('e.btagDeepB:',e.btagDeepB[index1],'\n')
                 
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge,
