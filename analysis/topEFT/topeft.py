@@ -39,7 +39,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         self._e['sieie']         = 'Electron_sieie'
         self._e['hoe']           = 'Electron_hoe'
         self._e['eInvMinusPInv'] = 'Electron_eInvMinusPInv'
-
+        self._e['jetIdx']        = 'Electron_jetIdx'
+        self._e['btagDeepB']     = 'Electron_btagDeepB'
+        
         self._mu['tight_id']     = 'Muon_tightId'
         self._mu['mediumId']     = 'Muon_mediumId'
         self._mu['mediumPrompt'] = 'Muon_mediumPromptId'
@@ -51,8 +53,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         self._mu['miniIso']      = 'Muon_miniPFRelIso_all'
         self._mu['sip3d']        = 'Muon_sip3d'
         self._mu['charge' ]      = 'Muon_charge'
-
-        self._jet['id'] = 'Jet_jetId'
+        self._mu['jetIdx']       = 'Muon_jetIdx'
+        self._mu['btagDeepB']    = 'Muon_btagDeepB'
+        
+        self._jet['id']          = 'Jet_jetId'
 
         # Create the histograms
         # 'name' : hist.Hist("Ytitle", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("level", "level"), hist.Cat("syst", "syst"), hist.Bin("name", "X axis (GeV)", 20, 0, 100)),
@@ -121,14 +125,29 @@ class AnalysisProcessor(processor.ProcessorABC):
         met = Initialize({'pt' : df['MET_pt'],      'eta' : 0                 , 'phi' : df['MET_phi'],      'mass': 0                  })
         e   = Initialize({'pt' : df['Electron_pt'], 'eta' : df['Electron_eta'], 'phi' : df['Electron_phi'], 'mass': df['Electron_mass']})
         mu  = Initialize({'pt' : df['Muon_pt'],     'eta' : df['Muon_eta'],     'phi' : df['Muon_phi'],     'mass': df['Muon_mass']    })    
-        j   = Initialize({'pt' : df['Jet_pt'],      'eta' : df['Jet_eta'],      'phi' : df['Jet_phi'],      'mass' : df['Jet_mass']})
+        j   = Initialize({'pt' : df['Jet_pt'],      'eta' : df['Jet_eta'],      'phi' : df['Jet_phi'],      'mass': df['Jet_mass']     })
 
+        
+        # Jet selection
+        j['deepjet'] = df['Jet_btagDeepFlavB']
+        for key in self._jet:
+                j[key] = j.pt.zeros_like()
+                if self._jet[key] in df:
+                    j[key] = df[self._jet[key]]
 
         # Electron selection
         for key in self._e:
             e[key] = e.pt.zeros_like()
             if self._e[key] in df:
                 e[key] = df[self._e[key]]
+                
+        for index in range(len(e.jetIdx)):
+            print('e.jetIdx:',e.jetIdx[index])
+        for index in range(len(j.jetId)):
+            print('j.jetId:',j.jetId[index])
+            print('j.jetId:',j.pt[index])
+            print('j.jetId:',j.deepjet[index])
+                
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge,
                                 e.sieie, e.hoe, e.eInvMinusPInv, minpt=10)
@@ -158,19 +177,17 @@ class AnalysisProcessor(processor.ProcessorABC):
         e0 = e[e.pt.argmax()]
         m0 = mu[mu.pt.argmax()]
 
-        # Jet selection
-        j['deepjet'] = df['Jet_btagDeepFlavB']
-        for key in self._jet:
-                j[key] = j.pt.zeros_like()
-                if self._jet[key] in df:
-                    j[key] = df[self._jet[key]]
 
         j['isgood']  = isGoodJet(j.pt, j.eta, j.id)
         j['isclean'] = ~j.match(e,0.4) & ~j.match(mu,0.4) & j.isgood.astype(np.bool)
-        #goodJets = j[(j['isgood'])&(j['isclean'])]
-        #j0 = goodJets[goodJets.pt.argmax()]
-        #nJets = goodJets.counts
-
+        
+        # njets
+        goodJets = j[(j.isclean)&(j.isgood)]
+        njets = goodJets.counts
+        ht = goodJets.pt.sum()
+        j0 = goodJets[goodJets.pt.argmax()]
+        # nbtags
+        nbtags = goodJets[goodJets.deepjet > 0.4941].counts
 
 
         ##################################################################
@@ -223,18 +240,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeSSSign   = (eeSSSign[eeSSSign].counts>0)
         mmSSSign   = (mmSSSign[mmSSSign].counts>0)        
         emSSSign   = (emSSSign[emSSSign].counts>0)        
+
         
-        # njets
-        goodJets = j[(j.isclean)&(j.isgood)]
-        njets = goodJets.counts
-        ht = goodJets.pt.sum()
-        j0 = goodJets[goodJets.pt.argmax()]
-
-        # nbtags
-        nbtags = goodJets[goodJets.deepjet > 0.2770].counts
-
-
-
         ##################################################################
         ### 3 leptons
         ##################################################################
