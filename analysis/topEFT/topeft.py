@@ -140,13 +140,13 @@ class AnalysisProcessor(processor.ProcessorABC):
             e[key] = e.pt.zeros_like()
             if self._e[key] in df:
                 e[key] = df[self._e[key]]
-                
-        for index in range(len(e.jetIdx)):
-            print('e.jetIdx:',e.jetIdx[index])
-        for index in range(len(j.jetId)):
-            print('j.jetId:',j.jetId[index])
-            print('j.jetId:',j.pt[index])
-            print('j.jetId:',j.deepjet[index])
+
+        for index1 in range(len(e.pt)):
+            for index2 in range(len(e.pt[index1])):
+                e.btagDeepB[index1][index2] = j.deepjet[index1][e.jetId[index1][index2]]
+            print('j.deepjet:',j.deepjet[index1])
+            print('e.jetId:',e.jetId[index1])
+            print('e.btagDeepB:',e.btagDeepB[index1])
                 
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge,
