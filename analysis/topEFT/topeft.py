@@ -143,9 +143,9 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         for index1 in range(len(e.pt)):
             for index2 in range(len(e.pt[index1])):
-                e.btagDeepB[index1][index2] = j.deepjet[index1][e.jetId[index1][index2]]
+                e.btagDeepB[index1][index2] = j.deepjet[index1][e.jetIdx[index1][index2]]
             print('j.deepjet:',j.deepjet[index1])
-            print('e.jetId:',e.jetId[index1])
+            print('e.jetIdx:',e.jetIdx[index1])
             print('e.btagDeepB:',e.btagDeepB[index1])
                 
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
