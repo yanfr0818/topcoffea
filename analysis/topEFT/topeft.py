@@ -145,9 +145,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             for index2 in range(len(e.pt[index1])):
                 if e.jetIdx[index1][index2] == -1: e.btagDeepB[index1][index2] = 0
                 else:                              e.btagDeepB[index1][index2] = j.deepjet[index1][e.jetIdx[index1][index2]]
-            print('j.deepjet:',np.size(j.deepjet[index1]))
-            print('e.jetIdx:',np.size(e.jetIdx[index1]))
-            print('e.btagDeepB:',np.size(e.btagDeepB[index1]),'\n')
+            if np.size(e.jetIdx[index1]) != np.size(e.btagDeepB[index1]: print('inequal size!')
                 
         #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge,
