@@ -26,7 +26,7 @@ sys.path.append(basepath)
 path = 'histos/plotsTopEFT.pkl.gz'
 
 processDic = {
-  'Nonprompt' : 'TTTo2L2Nu',# tW_noFullHad, tbarW_noFullHad, WJetsToLNu_MLM, WWTo2L2Nu',
+  #'Nonprompt' : 'TTTo2L2Nu, tW_noFullHad, tbarW_noFullHad, WJetsToLNu_MLM, WWTo2L2Nu',
   #'DY' : 'DYJetsToLL_M_10to50_MLM, DYJetsToLL_M_50_a',
   #'Other': 'WWW,WZG,WWZ,WZZ,ZZZ,tttt,ttWW,ttWZ,ttZH,ttZZ,ttHH,tZq,TTG',
   #'WZ' : 'WZTo2L2Q,WZTo3LNu',
@@ -36,7 +36,7 @@ processDic = {
   'ttH' : 'ttHnobb',#tHq',
   #'data' : 'EGamma, SingleMuon, DoubleMuon',
 }
-bkglist = ['Nonprompt', 'ttH']# 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
+bkglist = ['ttH']# 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
 allbkg  = ['ttH']#['tt', 'tW', 'WW', 'ttG', 'WW', 'WJets', 'Other', 'DY',  'ttH', 'WZ', 'ZZ', 'ttZ', 'ttW']
 
 colordic ={
@@ -60,13 +60,18 @@ colordic ={
   'WJets' : '#00065b',
 }
 
-ch4l    = ['eeemSSonZ', 'eeemSSoffZ', 'mmmeSSonZ', 'mmmeSSoffZ', 'eemmSSonZ', 'eemmSSoffZ', 'eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
-ch3l    = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ','eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ']
-ch3lp   = [x+'_p' for x in ch3l]
-ch3lm   = [x+'_m' for x in ch3l]
-ch2lss  = ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS']
-ch2lssp = [x+'_p' for x in ch2lss]
-ch2lssm = [x+'_m' for x in ch2lss]
+preset = {
+  'ch4l'      : ['eeemSSonZ', 'eeemSSoffZ', 'mmmeSSonZ', 'mmmeSSoffZ', 'eemmSSonZ', 'eemmSSoff', 'eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ'],
+  'ch3l'      : ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ','eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ'],
+  'ch3lSSonZ' : ['eemSSonZ', 'mmeSSonZ', 'eeeSSonZ', 'mmmSSonZ'],
+  'ch2lss'    : ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS'],
+}
+preset['ch3lp']      = [x+'_p' for x in preset['ch3l']]
+preset['ch3lm']      = [x+'_m' for x in preset['ch3l']]
+preset['ch3lSSonZp'] = [x+'_p' for x in preset['ch3lSSonZ']]
+preset['ch3lSSonZm'] = [x+'_m' for x in preset['ch3lSSonZ']]
+preset['ch2lssp']    = [x+'_p' for x in preset['ch2lss']]
+preset['ch2lssm']    = [x+'_m' for x in preset['ch2lss']]
 
 
 usage = 'usage: %prog [options]'
@@ -77,22 +82,15 @@ parser.add_option('-l', '--level',     dest='level',     help='cut',        defa
 parser.add_option('-t', '--title',     dest='title',     help='title',      default='3 leptons', type='string')
 (opt, args) = parser.parse_args()
 
-if   opt.channel == 'ch4l'     : channel = ch4l
-elif opt.channel == 'ch3l'     : channel = ch3l
-elif opt.channel == 'ch3lp'    : channel = ch3lp
-elif opt.channel == 'ch3lm'    : channel = ch3lm
-elif opt.channel == 'ch2lss'   : channel = ch2lss
-elif opt.channel == 'ch2lssp'   : channel = ch2lssp
-elif opt.channel == 'ch2lssm'   : channel = ch2lssm
-#elif (opt.channel[0] == 'e' or opt.channel[0] == 'm') and opt.channel[-1] != 'Z':
-#    if opt.channel[:2] == 'em' : channel = 'emSS'
-#    else                       : channel = [opt.channel+'SSonZ', opt.channel+'SSoffZ']
+for keys in preset:
+    if opt.channel == keys:
+        opt.channel = preset[keys]
 else                           : channel = opt.channel
 level = opt.level
 
 
 categories = {
- 'channel' : channel, #['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ','eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ'],#'eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS'],
+ 'channel' : channel,
  'cut'     : level    #['base', '2jets', '4jets', '4j1b', '4j2b'],
  #'Zcat' : ['onZ', 'offZ'],
  #'lepCat' : ['3l'],
@@ -103,6 +101,7 @@ colors = [colordic[k] for k in bkglist]
 from plotter.plotter import plotter
 
 def Draw(var, categories, label=''):
+  #print(categories['channel'])
   plt = plotter(path, prDic=processDic, bkgList=bkglist)
   plt.plotData = True
   plt.SetColors(colors)
