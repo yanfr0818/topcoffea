@@ -12,19 +12,17 @@ from coffea.hist import plot
 from cycler import cycler
 
 class plotter:
-  def __init__(self, path, prDic={}, colors={}, bkgList=[], category={}, dataName='data', outpath='./temp/', lumi=59.7, dataOnly=False, allprocess=False):
+  def __init__(self, path, prDic={}, colors={}, bkgList=[], dataName='data', outpath='./temp/', lumi=59.7):
     self.SetPath(path)
     self.SetProcessDic(prDic)
     self.SetBkgProcesses(bkgList)
-    self.categories = category
     self.SetDataName(dataName)
-    self.dataOnly=dataOnly
-    self.allprocess=allprocess
     self.Load()
     self.SetOutpath(outpath)
     self.SetLumi(lumi)
     self.SetColors(colors)
     self.SetRegion()
+    self.categories = {}
     self.doLegend = True
     self.doRatio = True
     self.doStack = True
@@ -52,17 +50,6 @@ class plotter:
       for k in hin.keys():
         if k in self.hists: self.hists[k]+=hin[k]
         else:               self.hists[k]=hin[k]
-
-    if self.dataOnly and self.allprocess:
-      h = self.hists['counts']
-      for cat in self.categories: 
-        h = h.integrate(cat, self.categories[cat])
-      hc=h.sum('sample')
-      y=hc.values(overflow='all')
-      ny = y[list(y.keys())[0]].sum()
-      print(ny)
-      exit(0)
-
     self.GroupProcesses()
 
   def SetProcessDic(self, prdic, sampleLabel='sample', processLabel='process'):
@@ -75,9 +62,9 @@ class plotter:
     if isinstance(var, str):
       for k in prdic:
         self.prDic[k] = (prdic[k].replace(' ', '').split(','))
-    #else:
-    #  for k in groupDic:
-    #    self.prDic[k] = (prdic[k])
+    else:
+      for k in groupDic:
+        self.prDic[k] = (prdic[k])
 
   def GroupProcesses(self, prdic={}):
     ''' Move from grouping in samples to groping in processes '''
@@ -249,7 +236,7 @@ class plotter:
         labels = ['Data']+labels[:-1]            
       ax.legend(handles, labels)#,bbox_to_anchor=leg_anchor,loc=leg_loc)
     
-    if self.doData(hname) and self.doRatio and not self.dataOnly:
+    if self.doData(hname) and self.doRatio:
       hist.plotratio(hData, h.sum("process"), clear=False,ax=rax, error_opts=data_err_opts, denom_fill_opts={}, guide_opts={}, unc='num')
       rax.set_ylabel(self.yRatioTit)
       rax.set_ylim(self.ratioRange[0], self.ratioRange[1])
@@ -299,13 +286,11 @@ class plotter:
     # Get colors for the stack
     colors = self.GetColors(self.bkglist)
     ax.set_prop_cycle(cycler(color=colors))
-
     # Data
     dataOpts = {'linestyle':'none', 'marker':'.', 'markersize':10., 'color':'k', 'elinewidth':1}
     if self.dataName in [str(x) for x in list(self.hists[hname].identifiers(self.processLabel))]:
       plot.plot1d(self.hists[hname].sum('cut').sum('channel').sum('Zcat').sum('lepCat')[self.dataName],
         overlay=self.processLabel, ax=ax, clear=False, error_opts=dataOpts)
-
     # Background
     fillOpt = {'edgecolor': (0,0,0,0.3), 'alpha': 0.8}
     mcOpt   = {'label':'Stat. Unc.', 'hatch':'///', 'facecolor':'none', 'edgecolor':(0,0,0,.5), 'linewidth': 0}
@@ -326,17 +311,14 @@ class plotter:
     for cat in self.categories: hbkg = hbkg.integrate(cat, self.categories[cat])
     hbkg = hbkg.group(hist.Cat(self.processLabel,self.processLabel), hist.Cat(self.processLabel, self.processLabel), {'All bkg' : self.bkglist})
     plot.plot1d(hbkg, ax=ax, clear=False, overlay=self.processLabel)#, error_opts={'hatch':'///', 'facecolor':'none', 'edgecolor':(0,0,0,.5), 'linewidth': 0}, overlay=self.processLabel)
-
     #hbkg = self.hists[hname].group(hist.Cat(self.processLabel,self.processLabel), hist.Cat(self.processLabel, self.processLabel), self.bkgdic)
     #plot.plot1d(hbkg.sum('level').sum('channel'),
     #  overlay=self.processLabel, ax=ax, clear=False, stack=True, fill_opts=fillOpt, error_opts=mcOpt)
-
     # Signal
     #ax._get_lines.prop_cycler = ax._get_patches_for_fill.prop_cycler
     #args = {'linestyle':'--', 'linewidth': 5}
     #plot.plot1d(signal_hists[key].project('jet_selection','baggy').project('region','iszeroL'),
     #            ax=ax, overlay="process", clear=False, stack=False, line_opts=args)
-
     # Options
     ax.autoscale(axis='x', tight=True)
     if self.doLogY: ax.set_yscale('log')
