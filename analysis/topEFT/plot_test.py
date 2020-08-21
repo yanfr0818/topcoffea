@@ -2,7 +2,6 @@
 #For example:
 #  python plot_test.py -c em
 #  python plot_test.py -v met -c ch4l -l 4j2b
-#  python plot_test.py -c eemSSonZ
 #  python plot_test.py -v m3l -l 2jets
 
 from __future__ import print_function, division
@@ -101,7 +100,7 @@ colors = [colordic[k] for k in bkglist]
 from plotter.plotter import plotter
 
 def Draw(var, categories, label=''):
-  #print(categories['channel'])
+  print(categories['channel'])
   plt = plotter(path, prDic=processDic, bkgList=bkglist)
   plt.plotData = True
   plt.SetColors(colors)
