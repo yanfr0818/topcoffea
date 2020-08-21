@@ -481,11 +481,12 @@ class AnalysisProcessor(processor.ProcessorABC):
             'run': df['run'],
             'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
         }
-        with open('passTracker','wb+') as f:
+        with open('passTracker','w+') as f:
             for keys in passTracker:
-                f.write(bytes(keys, 'utf-8'))
-                #for i in len(passTracker[keys]):
-                f.write(passTracker[keys])
+                f.write('{}:'.format(keys))
+                for i in range(len(passTracker[keys])):
+                    f.write(str(passTracker[keys][i]))
+                    if i >10: break
             
         # Selections and cuts
         selections = processor.PackedSelection()
