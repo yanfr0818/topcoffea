@@ -483,7 +483,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         }
         with open('passTracker','wb+') as f:
             for keys in passTracker:
-                f.write('{}:'.b'format(keys))
+                f.write(bytes(keys, 'utf-8'))
                 #for i in len(passTracker[keys]):
                 f.write(passTracker[keys])
             
