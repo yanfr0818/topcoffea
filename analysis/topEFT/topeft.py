@@ -476,6 +476,18 @@ class AnalysisProcessor(processor.ProcessorABC):
         weights = processor.Weights(df.size)
         weights.add('norm',genw if isData else (xsec/sow)*genw)
 
+        # P/NP information tracker
+        passTracker = {
+            'run': df['run'],
+            'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
+        }
+        with open('passTracker','a') as f:
+            for keys in passTracker:
+                f.write('{}:'.format(keys))
+                for i in len(passTracker[keys]):
+                    f.write('l[i]'.format(l=passTracker[keys]))
+                    if i>10: break
+            
         # Selections and cuts
         selections = processor.PackedSelection()
         channels2LSS = ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS']
@@ -658,7 +670,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
-            #weights_flat = np.ones_like(weights_flat, dtype=np.int)
+            weights_flat = np.ones_like(weights_flat, dtype=np.int)
             if var == 'invmass':
               if   ch in ['eeeSSoffZ', 'mmmSSoffZ', 'eeeSSoffZ_p', 'mmmSSoffZ_p', 'eeeSSoffZ_m', 'mmmSSoffZ_m']: continue
               elif ch in ['eeeSSonZ' , 'mmmSSonZ', 'eeeSSonZ_p', 'mmmSSonZ_p', 'eeeSSonZ_m', 'mmmSSonZ_m']: continue #values = v[ch]
@@ -701,7 +713,7 @@ class AnalysisProcessor(processor.ProcessorABC):
             cuts = [ch] + [lev]
             cut = selections.all(*cuts)
             weights_flat = weight[cut].flatten()
-            #weights_flat = np.ones_like(weights_flat, dtype=np.int)
+            weights_flat = np.ones_like(weights_flat, dtype=np.int)
             if  var == 'invmass': continue
             elif var == 'm3l'   : continue
             values = v[cut].flatten()
