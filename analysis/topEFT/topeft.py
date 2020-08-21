@@ -481,9 +481,9 @@ class AnalysisProcessor(processor.ProcessorABC):
             'run': df['run'],
             'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
         }
-        with open('passTracker','wb') as f:
+        with open('passTracker','wb+') as f:
             for keys in passTracker:
-                f.write('{}:'.format(keys))
+                f.write('{}:'.b'format(keys))
                 #for i in len(passTracker[keys]):
                 f.write(passTracker[keys])
             
