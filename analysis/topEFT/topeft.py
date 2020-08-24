@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 import lz4.frame as lz4f
 import cloudpickle
 import json
@@ -482,7 +481,6 @@ class AnalysisProcessor(processor.ProcessorABC):
             'run': df['run'],
             'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
         }
-        os.remove('passTracker')
         with open('passTracker','a+') as f:
             for keys in passTracker:
                 f.write('{}:'.format(keys))
