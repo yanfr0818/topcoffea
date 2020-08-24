@@ -478,7 +478,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # P/NP information tracker
         passTracker = {
-            'run': df['run'],
+            'event': df['event'], 'luminosityBlock': df['luminosityBlock'],
             'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
         }
         with open('passTracker','a+') as f:
