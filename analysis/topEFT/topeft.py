@@ -488,10 +488,17 @@ class AnalysisProcessor(processor.ProcessorABC):
         }
         with open('passTracker','a+') as f:
             for keys in passTracker:
-                f.write('{}:'.format(keys))
-                for i in range(len(passTracker[keys])):
-                    f.write('{},'.format(str(passTracker[keys][i])))
-                f.write('\n')
+                if keys == 'trig':
+                    for tkeys in passTracker[keys]:
+                        f.write('{}:'.format('trig_'+tkeys))
+                        for i in range(len(passTracker[keys][tkeys])):
+                            f.write('{},'.format(str(passTracker[keys][tkeys][i])))
+                        f.write('\n')
+                else:
+                    f.write('{}:'.format(keys))
+                    for i in range(len(passTracker[keys])):
+                        f.write('{},'.format(str(passTracker[keys][i])))
+                    f.write('\n')
             
         # Selections and cuts
         selections = processor.PackedSelection()
