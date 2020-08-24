@@ -485,8 +485,9 @@ class AnalysisProcessor(processor.ProcessorABC):
             for keys in passTracker:
                 f.write('{}:'.format(keys))
                 for i in range(len(passTracker[keys])):
-                    f.write(str(passTracker[keys][i]))
-                    if i >10: break
+                    f.write('{},'.format(str(passTracker[keys][i])))
+                    #if i >10: break
+                f.write('\n')
             
         # Selections and cuts
         selections = processor.PackedSelection()
