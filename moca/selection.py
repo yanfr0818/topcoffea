@@ -183,6 +183,8 @@ def updateStates():
       'MuonEG' : [], 
       'SingleElectron' : triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig']+triggers['DoubleElecTrig'],
       'SingleMuon' :  triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig']+triggers['DoubleMuonTrig'], 
+      'DoubleEG' :  triggers['MuonEGTrig']++triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleMuonTriggers']+triggers['DoubleMuonTrig'],
+      'DoubleMuon' :  triggers['MuonEGTrig']+triggers['DoubleElecMuonTrig']+triggers['DoubleMuonElecTrig']+triggers['SingleElecTriggers']+triggers['DoubleElecTrig'],
   }
   triggersNotForFinalState['mmme'] = {
       'MuonEG' : [],
