@@ -238,7 +238,14 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeeOffZmask = offZmask_ee[offZmask_ee].counts>0
         mmmOnZmask  = onZmask_mm[onZmask_mm].counts>0
         mmmOffZmask = offZmask_mm[offZmask_mm].counts>0
-
+        
+        eee_trilep = eee.choose(3)
+        eeeSign  = (np.sign(eee_trilep.i0.charge+eee_trilep.i1.charge+eee_trilep.i2.charge)>0)
+        eeeSign  = (eeeSign[eeeSign].counts>0)	
+        mmm_trilep = mmm.choose(3)
+        mmmSign  = (np.sign(mmm_trilep.i0.charge+mmm_trilep.i1.charge+mmm_trilep.i2.charge)>0)
+        mmmSign  = (mmmSign[mmmSign].counts>0)
+        
         # Leptons from Z
         eZ0= eee[eeOSSFmask.i0]
         eZ1= eee[eeOSSFmask.i1]
