@@ -12,54 +12,14 @@ from coffea.util import load, save
 from optparse import OptionParser
 
 class AnalysisProcessor(processor.ProcessorABC):
-    def __init__(self, samples, objects, selection, corrections, functions, columns):
+    def __init__(self, samples, objects, selection, corrections, functions):
         self._samples = samples
-        self._columns = columns
         self._objects = objects
         self._selection = selection
         self._corrections = corrections
         self._functions = functions
 
-        # Object variables
-        self._e   = {}
-        self._mu  = {}
-        self._jet = {}
-
-        self._e['id' ]           = 'Electron_cutBased'
-        self._e['dxy']           = 'Electron_dxy'
-        self._e['dz' ]           = 'Electron_dz'
-        self._e['tightCharge' ]  = 'Electron_tightCharge'
-        self._e['miniIso' ]      = 'Electron_miniPFRelIso_all'
-        self._e['sip3d' ]        = 'Electron_sip3d'
-        self._e['mvaTTH' ]       = 'Electron_mvaTTH'
-        self._e['elecMVA' ]      = 'Electron_mvaFall17V2noIso'#mvaFall17V2Iso
-        self._e['lostHits' ]     = 'Electron_lostHits'
-        self._e['convVeto' ]     = 'Electron_convVeto'
-        self._e['charge' ]       = 'Electron_charge'
-        self._e['sieie']         = 'Electron_sieie'
-        self._e['hoe']           = 'Electron_hoe'
-        self._e['eInvMinusPInv'] = 'Electron_eInvMinusPInv'
-        self._e['jetIdx']        = 'Electron_jetIdx'
-        self._e['btagDeepB']     = 'Electron_btagDeepB'
-        
-        self._mu['tight_id']     = 'Muon_tightId'
-        self._mu['mediumId']     = 'Muon_mediumId'
-        self._mu['mediumPrompt'] = 'Muon_mediumPromptId'
-        self._mu['dxy']          = 'Muon_dxy'
-        self._mu['dz' ]          = 'Muon_dz'
-        self._mu['iso']          = 'Muon_pfRelIso04_all'
-        self._mu['tightCharge']  = 'Muon_tightCharge'
-        self._mu['mvaTTH']       = 'Muon_mvaTTH'
-        self._mu['miniIso']      = 'Muon_miniPFRelIso_all'
-        self._mu['sip3d']        = 'Muon_sip3d'
-        self._mu['charge' ]      = 'Muon_charge'
-        self._mu['jetIdx']       = 'Muon_jetIdx'
-        self._mu['btagDeepB']    = 'Muon_btagDeepB'
-        
-        self._jet['id']          = 'Jet_jetId'
-
         # Create the histograms
-        # 'name' : hist.Hist("Ytitle", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("level", "level"), hist.Cat("syst", "syst"), hist.Bin("name", "X axis (GeV)", 20, 0, 100)),
         self._accumulator = processor.dict_accumulator({
         'dummy'   : hist.Hist("Dummy" , hist.Cat("sample", "sample"), hist.Bin("dummy", "Number of events", 1, 0, 1)),
         'counts'  : hist.Hist("Events", hist.Cat("sample", "sample"), hist.Cat("channel", "channel"), hist.Cat("cut", "cut"), hist.Bin("counts", "Counts", 1, 0, 2)),
@@ -88,9 +48,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         return self._columns
 
     # Main function: run on a given dataset
-    def process(self, df):
+    def process(self, events):
         # Dataset parameters
-        dataset = df['dataset']
+        dataset = events.metadata['dataset']
         year   = self._samples[dataset]['year']
         xsec   = self._samples[dataset]['xsec']
         sow    = self._samples[dataset]['nSumOfWeights' ]
@@ -104,6 +64,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         isTightMuon     = self._objects['isTightMuonPOG']
         isTightElectron = self._objects['isTightElectronPOG']
         isGoodJet       = self._objects['isGoodJet']
+        #isClean         = self._objects['isClean']
         isMuonMVA       = self._objects['isMuonMVA'] #isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=15)
         isElecMVA       = self._objects['isElecMVA'] #isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=15)
 
@@ -122,47 +83,49 @@ class AnalysisProcessor(processor.ProcessorABC):
         GetGoodTriplets = self._functions['GetGoodTriplets']
 
         # Initialize objects
-        met = Initialize({'pt' : df['MET_pt'],      'eta' : 0                 , 'phi' : df['MET_phi'],      'mass': 0                  })
-        e   = Initialize({'pt' : df['Electron_pt'], 'eta' : df['Electron_eta'], 'phi' : df['Electron_phi'], 'mass': df['Electron_mass']})
-        mu  = Initialize({'pt' : df['Muon_pt'],     'eta' : df['Muon_eta'],     'phi' : df['Muon_phi'],     'mass': df['Muon_mass']    })    
-        j   = Initialize({'pt' : df['Jet_pt'],      'eta' : df['Jet_eta'],      'phi' : df['Jet_phi'],      'mass': df['Jet_mass']     })
+        met = events.MET
+        e   = events.Electron
+        mu  = events.Muon
+        j   = events.Jet
 
         
         # Jet selection
-        j['deepjet'] = df['Jet_btagDeepFlavB']
-        for key in self._jet:
-                j[key] = j.pt.zeros_like()
-                if self._jet[key] in df:
-                    j[key] = df[self._jet[key]]
+        #j['deepjet'] = df['Jet_btagDeepFlavB']
+        #for key in self._jet:
+        #        j[key] = j.pt.zeros_like()
+        #        if self._jet[key] in df:
+        #            j[key] = df[self._jet[key]]
 
         # Electron selection
-        for key in self._e:
-            e[key] = e.pt.zeros_like()
-            if self._e[key] in df:
-                e[key] = df[self._e[key]]
+        #for key in self._e:
+        #    e[key] = e.pt.zeros_like()
+        #    if self._e[key] in df:
+        #        e[key] = df[self._e[key]]
 
         for index1 in range(len(e.pt)):
             for index2 in range(len(e.pt[index1])):
                 if e.jetIdx[index1][index2] == -1: e.btagDeepB[index1][index2] = 0
                 else:                              e.btagDeepB[index1][index2] = j.deepjet[index1][e.jetIdx[index1][index2]]
                 
-        #e['isGood'] = isTightElectron(e.pt, e.eta, e.dxy, e.dz, e.id, e.tightChrage, year)
+        #e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, e.lostHits, e.convVeto, e.tightCharge, minpt=10)
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniIso, e.sip3d, e.mvaTTH, e.elecMVA, e.lostHits, e.convVeto, e.tightCharge,
                                 e.sieie, e.hoe, e.eInvMinusPInv, e.btagDeepB, minpt=10)
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
 
         # Muon selection
-        for key in self._mu:
-            mu[key] = mu.pt.ones_like()
-            if self._mu[key] in df:
-                mu[key] = df[self._mu[key]]
+        #for key in self._mu:
+        #    mu[key] = mu.pt.ones_like()
+        #    if self._mu[key] in df:
+        #        mu[key] = df[self._mu[key]]
+                
         for index1 in range(len(mu.pt)):
             for index2 in range(len(mu.pt[index1])):
                 if mu.jetIdx[index1][index2] == -1: mu.btagDeepB[index1][index2] = 0
                 else:                               mu.btagDeepB[index1][index2] = j.deepjet[index1][mu.jetIdx[index1][index2]]
                 
         #mu['istight'] = isTightMuon(mu.pt, mu.eta, mu.dxy, mu.dz, mu.iso, mu.tight_id, mu.tightCharge, year)
+        #mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniPFRelIso_all, mu.sip3d, mu.mvaTTH, mu.mediumPromptId, mu.tightCharge, minpt=10)
         mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniIso, mu.sip3d, mu.mvaTTH, mu.mediumPrompt, mu.tightCharge, mu.btagDeepB, minpt=10)
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
@@ -181,17 +144,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         m0 = mu[mu.pt.argmax()]
 
 
-        j['isgood']  = isGoodJet(j.pt, j.eta, j.id)
-        j['isclean'] = ~j.match(e,0.4) & ~j.match(mu,0.4) & j.isgood.astype(np.bool)
-        
-        # njets
-        goodJets = j[(j.isclean)&(j.isgood)]
+        j['isgood']  = isGoodJet(j.pt, j.eta, j.jetId)
+        #j['isclean'] = isClean(j, e, mu)
+        goodJets = j[j.isgood]
         njets = goodJets.counts
         ht = goodJets.pt.sum()
         j0 = goodJets[goodJets.pt.argmax()]
-        # nbtags
-        nbtags = goodJets[goodJets.deepjet > 0.4941].counts
-
+        nbtags = goodJets[goodJets.btagDeepB > 0.4941].counts
 
         ##################################################################
         ### 2 same-sign leptons
@@ -213,13 +172,13 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         eepairs = ee.distincts()
         eeSSmask = (eepairs.i0.charge*eepairs.i1.charge>0)
-        eeonZmask  = (np.abs((eepairs.i0+eepairs.i1).mass-91)<15)
+        eeonZmask  = (np.abs((eepairs.i0+eepairs.i1).mass-91.2)<15)
         eeoffZmask = (eeonZmask==0)
         eeSSSign = (np.sign(eepairs.i0.charge+eepairs.i1.charge)>0)
 
         mmpairs = mm.distincts()
         mmSSmask = (mmpairs.i0.charge*mmpairs.i1.charge>0)
-        mmonZmask  = (np.abs((mmpairs.i0+mmpairs.i1).mass-91)<15)
+        mmonZmask  = (np.abs((mmpairs.i0+mmpairs.i1).mass-91.2)<15)
         mmoffZmask = (mmonZmask==0)
         mmSSSign = (np.sign(mmpairs.i0.charge+mmpairs.i1.charge)>0)
 
@@ -253,7 +212,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_eem = mu[(nElec==2)&(nMuon==1)&(mu.pt>-1)]
         elec_eem =  e[(nElec==2)&(nMuon==1)&( e.pt>-1)]
         ee_eem   = elec_eem.distincts()
-        ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)<15)
+        ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91.2)<15)
         ee_eemOffZmask  = (ee_eemZmask==0)#(ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)>15)
         ee_eemZmask     = (ee_eemZmask[ee_eemZmask].counts>0)
         ee_eemOffZmask  = (ee_eemOffZmask[ee_eemOffZmask].counts>0)
@@ -270,7 +229,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_mme = mu[(nElec==1)&(nMuon==2)&(mu.pt>-1)]
         elec_mme =  e[(nElec==1)&(nMuon==2)&( e.pt>-1)]
         mm_mme   = muon_mme.distincts() 
-        mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)<15)
+        mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91.2)<15)
         mm_mmeOffZmask  = (mm_mmeZmask==0)#(mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
         mm_mmeZmask     = (mm_mmeZmask[mm_mmeZmask].counts>0)
         mm_mmeOffZmask  = (mm_mmeOffZmask[mm_mmeOffZmask].counts>0)
@@ -292,64 +251,45 @@ class AnalysisProcessor(processor.ProcessorABC):
         ### eee and mmm
         eee =   e[(nElec==3)&(nMuon==0)&( e.pt>-1)] 
         mmm =  mu[(nElec==0)&(nMuon==3)&(mu.pt>-1)] 
-        # Create pairs
-        eee_groups = eee.distincts()
-        mmm_groups = mmm.distincts()
-        # Calculate the invariant mass of the pairs
-        invMass_eee = ((eee_groups.i0+eee_groups.i1).mass)
-        invMass_mmm = ((mmm_groups.i0+mmm_groups.i1).mass)
-        # OS pairs
-        isOSeee = ((eee_groups.i0.charge != eee_groups.i1.charge))
-        isOSmmm = ((mmm_groups.i0.charge != mmm_groups.i1.charge))
-        # Get the ones with a mass closest to the Z mass (and in a range of  thr)
-        clos_eee = IsClosestToZ(invMass_eee, thr=15)
-        clos_mmm = IsClosestToZ(invMass_mmm, thr=15)
-        # Finally, the mask for eee/mmm with/without OS onZ pair
-        eeeOnZmask  = (clos_eee)&(isOSeee)
-        eeeOffZmask = (eeeOnZmask==0)
-        mmmOnZmask  = (clos_mmm)&(isOSmmm)
-        mmmOffZmask = (mmmOnZmask==0)
-        
-        eeeOnZmask  = (eeeOnZmask[eeeOnZmask].counts>0)
-        eeeOffZmask = (eeeOffZmask[eeeOffZmask].counts>0)
-        mmmOnZmask  = (mmmOnZmask[mmmOnZmask].counts>0)
-        mmmOffZmask = (mmmOffZmask[mmmOffZmask].counts>0)
-        
-        eee_trilep = eee.choose(3)
-        eeeSign  = (np.sign(eee_trilep.i0.charge+eee_trilep.i1.charge+eee_trilep.i2.charge)>0)
-        eeeSign  = (eeeSign[eeeSign].counts>0)
-        mmm_trilep = mmm.choose(3)
-        mmmSign  = (np.sign(mmm_trilep.i0.charge+mmm_trilep.i1.charge+mmm_trilep.i2.charge)>0)
-        mmmSign  = (mmmSign[mmmSign].counts>0)
-        
-        # Get Z and W invariant masses
-        #goodPairs_eee = eee_groups[(clos_eee)&(isOSeee)]
-        #eZ0   = goodPairs_eee.i0[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        #eZ1   = goodPairs_eee.i1[goodPairs_eee.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        #goodPairs_mmm = mmm_groups[(clos_mmm)&(isOSmmm)]
-        #mZ0   = goodPairs_mmm.i0[goodPairs_mmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
-        #mZ1   = goodPairs_mmm.i1[goodPairs_mmm.counts>0].regular()#[(goodPairs_eee.counts>0)].regular()
+        ee_pairs = eee.argchoose(2)
+        mm_pairs = mmm.argchoose(2)
 
-        #eee_reg = eee[(eeeOnZmask)].regular()
-        #eW = np.append(eee_reg, eZ0, axis=1)
-        #eW = np.append(eW, eZ1,axis=1)
-        #eWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, eW)
-        #eW = eW[eWmask]
-        #mmm_reg = mmm[(mmmOnZmask)].regular()
-        #mW = np.append(mmm_reg, mZ0, axis=1)
-        #mW = np.append(mW, mZ1,axis=1)
-        #mWmask = np.apply_along_axis(lambda a : [list(a).count(x)==1 for x in a], 1, mW)
-        #mW = mW[mWmask]
-        
-        #eZ      = [x+y for x,y in zip(eZ0, eZ1)]
-        #triElec = [x+y for x,y in zip(eZ, eW)]
-        #mZ_eee  = [t[0].mass for t in eZ]
-        #m3l_eee = [t[0].mass for t in triElec]
-        #mZ      = [x+y for x,y in zip(mZ0, mZ1)]
-        #triMuon = [x+y for x,y in zip(mZ, mW)]
-        #mZ_mmm  = [t[0].mass for t in mZ]
-        #m3l_mmm = [t[0].mass for t in triMuon]
-        
+        # Select pairs that are SFOS.
+        eeSFOS_pairs = ee_pairs[(np.abs(eee[ee_pairs.i0].pdgId) == np.abs(eee[ee_pairs.i1].pdgId)) & (eee[ee_pairs.i0].charge != eee[ee_pairs.i1].charge)]
+        mmSFOS_pairs = mm_pairs[(np.abs(mmm[mm_pairs.i0].pdgId) == np.abs(mmm[mm_pairs.i1].pdgId)) & (mmm[mm_pairs.i0].charge != mmm[mm_pairs.i1].charge)]
+        # Find the pair with mass closest to Z.
+        eeOSSFmask = eeSFOS_pairs[np.abs((eee[eeSFOS_pairs.i0] + eee[eeSFOS_pairs.i1]).mass - 91.2).argmin()]
+        onZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) < 15
+        mmOSSFmask = mmSFOS_pairs[np.abs((mmm[mmSFOS_pairs.i0] + mmm[mmSFOS_pairs.i1]).mass - 91.2).argmin()]
+        onZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) < 15
+        offZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 15
+        offZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) > 15
+
+        # Create masks
+        eeeOnZmask  = onZmask_ee[onZmask_ee].counts>0
+        eeeOffZmask = offZmask_ee[offZmask_ee].counts>0
+        mmmOnZmask  = onZmask_mm[onZmask_mm].counts>0
+        mmmOffZmask = offZmask_mm[offZmask_mm].counts>0
+
+        # Leptons from Z
+        eZ0= eee[eeOSSFmask.i0]
+        eZ1= eee[eeOSSFmask.i1]
+        mZ0= mmm[mmOSSFmask.i0]
+        mZ1= mmm[mmOSSFmask.i1]
+
+        # Leptons from W
+        eW = eee[~eeOSSFmask.i0 | ~eeOSSFmask.i1]
+        mW = mmm[~mmOSSFmask.i0 | ~mmOSSFmask.i1]
+
+        eZ = eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]
+        triElec = eZ + eW
+        mZ = mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]
+        triMuon = mZ + mW
+
+        mZ_eee  = eZ.mass
+        m3l_eee = triElec.mass
+        mZ_mmm  = mZ.mass
+        m3l_mmm = triMuon.mass
         
         
         ##################################################################
@@ -360,7 +300,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_eeem = mu[(nElec==3)&(nMuon==1)&(mu.pt>-1)]
         elec_eeem =  e[(nElec==3)&(nMuon==1)&( e.pt>-1)]
         ee_eeem   = elec_eeem.distincts()
-        ee_eeemZmask     = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)<15)
+        ee_eeemZmask     = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91.2)<15)
         ee_eeemOffZmask  = (ee_eeemZmask==0)#(ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)>15)
         ee_eeemZmask     = (ee_eeemZmask[ee_eeemZmask].counts>0)
         ee_eeemOffZmask  = (ee_eeemOffZmask[ee_eeemOffZmask].counts>0)
@@ -373,7 +313,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_mmme = mu[(nElec==1)&(nMuon==3)&(mu.pt>-1)]
         elec_mmme =  e[(nElec==1)&(nMuon==3)&( e.pt>-1)]
         mm_mmme   = muon_mmme.distincts()
-        mm_mmmeZmask     = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)<15)
+        mm_mmmeZmask     = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91.2)<15)
         mm_mmmeOffZmask  = (mm_mmmeZmask==0)#(mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)>15)
         mm_mmmeZmask     = (mm_mmmeZmask[mm_mmmeZmask].counts>0)
         mm_mmmeOffZmask  = (mm_mmmeOffZmask[mm_mmmeOffZmask].counts>0)
@@ -391,8 +331,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         elec_eemm =  e[(nElec==2)&(nMuon==2)&( e.pt>-1)]
         ee_eemm   = elec_eemm.distincts()
         mm_eemm   = muon_eemm.distincts()
-        ee_eemmZmask  = (ee_eemm.i0.charge*ee_eemm.i1.charge<1)&(np.abs((ee_eemm.i0+ee_eemm.i1).mass-91)<15)
-        mm_eemmZmask  = (mm_eemm.i0.charge*mm_eemm.i1.charge<1)&(np.abs((mm_eemm.i0+mm_eemm.i1).mass-91)<15)
+        ee_eemmZmask  = (ee_eemm.i0.charge*ee_eemm.i1.charge<1)&(np.abs((ee_eemm.i0+ee_eemm.i1).mass-91.2)<15)
+        mm_eemmZmask  = (mm_eemm.i0.charge*mm_eemm.i1.charge<1)&(np.abs((mm_eemm.i0+mm_eemm.i1).mass-91.2)<15)
         eemmOnZmask   = (ee_eemmZmask|mm_eemmZmask)
         eemmOffZmask  = (eemmOnZmask==0)
         eemmOnZmask   = (eemmOnZmask[eemmOnZmask].counts>0)
@@ -455,25 +395,25 @@ class AnalysisProcessor(processor.ProcessorABC):
         #m4l_mmmm = [t[0].mass for t in quadMuon]
 
         # Triggers
-        #passTrigger = lambda df, n, m, o : np.ones_like(df['MET_pt'], dtype=np.bool) # XXX
-        trig_eeSS = passTrigger(df,'ee',isData,dataset)
-        trig_mmSS = passTrigger(df,'mm',isData,dataset)
-        trig_emSS = passTrigger(df,'em',isData,dataset)
-        trig_eee  = passTrigger(df,'eee',isData,dataset)
-        trig_mmm  = passTrigger(df,'mmm',isData,dataset)
-        trig_eem  = passTrigger(df,'eem',isData,dataset)
-        trig_mme  = passTrigger(df,'mme',isData,dataset)
-        trig_eeee = passTrigger(df,'eeee',isData,dataset)
-        trig_mmmm = passTrigger(df,'mmmm',isData,dataset)
-        trig_eeem = passTrigger(df,'eeem',isData,dataset)
-        trig_eemm = passTrigger(df,'eemm',isData,dataset)
-        trig_mmme = passTrigger(df,'mmme',isData,dataset)
+        #passTrigger = lambda events, n, m, o : np.ones_like(events['MET_pt'], dtype=np.bool) # XXX
+        trig_eeSS = passTrigger(events,'ee',isData,dataset)
+        trig_mmSS = passTrigger(events,'mm',isData,dataset)
+        trig_emSS = passTrigger(events,'em',isData,dataset)
+        trig_eee  = passTrigger(events,'eee',isData,dataset)
+        trig_mmm  = passTrigger(events,'mmm',isData,dataset)
+        trig_eem  = passTrigger(events,'eem',isData,dataset)
+        trig_mme  = passTrigger(events,'mme',isData,dataset)
+        trig_eeee = passTrigger(events,'eeee',isData,dataset)
+        trig_mmmm = passTrigger(events,'mmmm',isData,dataset)
+        trig_eeem = passTrigger(events,'eeem',isData,dataset)
+        trig_eemm = passTrigger(events,'eemm',isData,dataset)
+        trig_mmme = passTrigger(events,'mmme',isData,dataset)
 
         # MET filters
 
         # Weights
-        genw = np.ones_like(df['MET_pt']) if isData else df['genWeight']
-        weights = processor.Weights(df.size)
+        genw = np.ones_like(events['MET_pt']) if isData else events['genWeight']
+        weights = processor.Weights(events.size)
         weights.add('norm',genw if isData else (xsec/sow)*genw)
 
         # P/NP information tracker
@@ -669,11 +609,11 @@ class AnalysisProcessor(processor.ProcessorABC):
         varnames['m0eta'] = m0.eta
         varnames['j0pt' ] = j0.pt
         varnames['j0eta'] = j0.eta
-        varnames['counts'] = np.ones_like(df['MET_pt'], dtype=np.bool)
+        varnames['counts'] = np.ones_like(events.MET.pt, dtype=np.int)
 
         # Fill Histos
         hout = self.accumulator.identity()
-        hout['dummy'].fill(sample=dataset, dummy=1, weight=df.size)
+        hout['dummy'].fill(sample=dataset, dummy=1, weight=events.size)
         
         for var, v in varnames.items():
          for ch in channels2LSS+channels3L:
@@ -749,61 +689,6 @@ if __name__ == '__main__':
     corrections = load(outpath+'corrections.coffea')
     functions   = load(outpath+'functions.coffea')
 
-    # Branches
-    columns = ''' 
-    MET_pt
-    MET_phi
-    Electron_pt
-    Electron_eta
-    Electron_phi
-    Electron_mass
-    Electron_cutBased
-    Electron_dxy
-    Electron_dz
-    Electron_sip3d
-    Electron_convVeto
-    Electron_lostHits
-    Electron_pfRelIso03_all
-    Electron_miniPFRelIso_all
-    Electron_mvaTTH
-    Electron_mvaFall17V2Iso
-    Muon_pt
-    Muon_ptErr
-    Muon_eta
-    Muon_phi
-    Muon_mass
-    Muon_pfRelIso04_all
-    Muon_miniPFRelIso_all
-    Muon_sip3d
-    Muon_tightId
-    Muon_mediumId
-    Muon_mediumPromptId
-    Muon_dxy
-    Muon_dz
-    Muon_tightCharge
-    Muon_mvaTTH
-    Jet_pt
-    Jet_eta
-    Jet_phi
-    Jet_mass
-    Jet_btagDeepB
-    Jet_btagDeepFlavB
-    Jet_jetId
-    Jet_neHEF
-    Jet_neEmEF
-    Jet_chHEF
-    Jet_chEmEF
-    GenPart_pt
-    GenPart_eta
-    GenPart_phi
-    GenPart_mass
-    GenPart_pdgId
-    GenPart_status
-    GenPart_statusFlags
-    GenPart_genPartIdxMother
-    PV_npvs
- 
-    '''.split()
-
-    topprocessor = AnalysisProcessor(samples, objects, selection, corrections, functions, columns)
+    
+    topprocessor = AnalysisProcessor(samples, objects, selection, corrections, functions)
     save(topprocessor, outpath+'topeft.coffea')
