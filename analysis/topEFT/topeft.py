@@ -386,7 +386,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # P/NP information tracker
         passTracker = {
-            'event': df['event'],
+            'event': events['event'],
             'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
             'trig': {
                 'eeSS': trig_eeSS, 'mmSS': trig_mmSS, 'emSS': trig_emSS,
