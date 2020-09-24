@@ -37,7 +37,7 @@ def isTightElectronPOG(pt,eta,dxy,dz,tight_id,tightCharge,year):
     return mask
 
 def isGoodJet(pt, eta, jet_id, jetPtCut=30):
-    mask = (pt>jetPtCut) & (abs(eta)<2.4) & ((jet_id&2)==2)
+    mask = (pt>jetPtCut) & (abs(eta)<2.4) & ((jet_id&6)==6)
     return mask
 
 def isClean(jets, electrons, muons, drmin=0.4):
