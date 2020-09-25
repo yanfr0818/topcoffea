@@ -64,7 +64,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         isTightMuon     = self._objects['isTightMuonPOG']
         isTightElectron = self._objects['isTightElectronPOG']
         isGoodJet       = self._objects['isGoodJet']
-        #isClean         = self._objects['isClean']
+        isClean         = self._objects['isClean']
         isMuonMVA       = self._objects['isMuonMVA'] #isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=15)
         isElecMVA       = self._objects['isElecMVA'] #isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=15)
 
@@ -113,7 +113,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
 
         j['isgood']  = isGoodJet(j.pt, j.eta, j.jetId)
-        #j['isclean'] = isClean(j, e, mu)
+        j['isclean'] = isClean(j, e, mu)
         goodJets = j[j.isgood]
         njets = goodJets.counts
         ht = goodJets.pt.sum()
