@@ -90,11 +90,11 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         
         e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, e.lostHits, e.convVeto, e.tightCharge,
-                                e.sieie, e.hoe, e.eInvMinusPInv, e.matched_jet.btagDeepB, minpt=15)
+                                e.sieie, e.hoe, e.eInvMinusPInv, minpt=15)
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
                 
-        mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniPFRelIso_all, mu.sip3d, mu.mvaTTH, mu.mediumPromptId, mu.tightCharge, mu.matched_jet.btagDeepB, minpt=10)
+        mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.miniPFRelIso_all, mu.sip3d, mu.mvaTTH, mu.mediumPromptId, mu.tightCharge, minpt=10)
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
         
