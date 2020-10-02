@@ -89,7 +89,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         j   = events.Jet
 
         
-        e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, ord(e.lostHits), e.convVeto, e.tightCharge,
+        e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, e.lostHits, e.convVeto, e.tightCharge,
                                 e.sieie, e.hoe, e.eInvMinusPInv, e.matched_jet.btagDeepB, minpt=10)
         leading_e = e[e.pt.argmax()]
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
