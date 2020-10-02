@@ -57,7 +57,7 @@ def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convV
                ((pt>10)&(abs(eta)<0.8)&(elecMVA>-0.86))|((pt>10)&(abs(eta)>0.8)&(abs(eta)<1.44)&(elecMVA>-0.81))|((pt>10)&(abs(eta)>1.44)&(elecMVA>-0.72))
   maskSieie  = ((abs(eta)<1.479)&(sieie<0.011))|((abs(eta)>1.479)&(sieie<0.030))
   mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)&(lostHits<1)&\
-         (convVeto)&(maskSieie)&(hoe<0.10)&(eInvMinusPInv>-0.04)&(jetDeepB<0.4941)#(maskPOGMVA)&&(mvaTTH>0.90)&(tightCharge==2)
+         (maskPOGMVA)&(convVeto)&(maskSieie)&(jetDeepB<0.4941)#&(hoe<0.10)&(eInvMinusPInv>-0.04)&(mvaTTH>0.90)&(tightCharge==2)
   return mask 
 
 ids = {}
