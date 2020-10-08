@@ -36,7 +36,7 @@ def isTightElectronPOG(pt,eta,dxy,dz,tight_id,tightCharge,year):
     mask = ((pt>10)&(abs(eta)<2.5)&(tight_id==4)&(tightCharge)) # Trigger: HLT_Ele27_WPTight_Gsf_v
     return mask
 
-def isGoodJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, jetPtCut=31.0):
+def isGoodJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, jetPtCut=33.0):
     mask = (pt>jetPtCut) & (abs(eta)<2.4)# & ((jet_id&6)==6)
     loose = (neHEF<0.99)&(neEmEF<0.99)&(chEmEF<0.99)
     tight = (neHEF<0.9)&(neEmEF<0.9)&(chHEF>0.0)
