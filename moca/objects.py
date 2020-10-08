@@ -36,7 +36,7 @@ def isTightElectronPOG(pt,eta,dxy,dz,tight_id,tightCharge,year):
     mask = ((pt>10)&(abs(eta)<2.5)&(tight_id==4)&(tightCharge)) # Trigger: HLT_Ele27_WPTight_Gsf_v
     return mask
 
-def isGoodJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, jetPtCut=30):
+def isGoodJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, jetPtCut=30.0):
     mask = (pt>jetPtCut) & (abs(eta)<2.4)# & ((jet_id&6)==6)
     loose = (neHEF<0.99)&(neEmEF<0.99)&(chEmEF<0.99)
     tight = (neHEF<0.9)&(neEmEF<0.9)&(chHEF>0.0)
@@ -52,11 +52,11 @@ def isClean(jets, electrons, muons, drmin=0.4):
   mgoodPairs = (mpairs.i0.delta_r(mpairs.i1) > drmin).all()
   return (egoodPairs) & (mgoodPairs)
   
-def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, minpt=10):
+def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, minpt=10.0):
   mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)#&(mvaTTH>0.90)&(tightCharge==2)&(mediumPrompt)
   return mask
 
-def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, sieie, hoe, eInvMinusPInv, minpt=15):
+def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, sieie, hoe, eInvMinusPInv, minpt=15.0):
   maskPOGMVA = ((pt<10)&(abs(eta)<0.8)&(elecMVA>-0.13))|((pt<10)&(abs(eta)>0.8)&(abs(eta)<1.44)&(elecMVA>-0.32))|((pt<10)&(abs(eta)>1.44)&(elecMVA>-0.08))|\
                ((pt>10)&(abs(eta)<0.8)&(elecMVA>-0.86))|((pt>10)&(abs(eta)>0.8)&(abs(eta)<1.44)&(elecMVA>-0.81))|((pt>10)&(abs(eta)>1.44)&(elecMVA>-0.72))
   maskSieie  = ((abs(eta)<1.479)&(sieie<0.011))|((abs(eta)>1.479)&(sieie<0.030))
