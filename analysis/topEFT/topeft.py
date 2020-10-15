@@ -112,7 +112,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         m0 = mu[mu.pt.argmax()]
 
 
-        j['isgood']  = isGoodJet(j.pt, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF)
+        j['isgood']  = isGoodJet(j.pt, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF, j.nConstituents)
         j['isclean'] = isClean(j, e, mu)
         goodJets = j[j.isgood]
         njets = goodJets.counts
