@@ -393,15 +393,16 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # P/NP information tracker
         passTracker = {
-            'event': events['event'],
-            'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
-            'trig': {
-                'eeSS': trig_eeSS, 'mmSS': trig_mmSS, 'emSS': trig_emSS,
-                'eee' : trig_eee,  'mmm' : trig_mmm,  'eem' : trig_eem,  'mme' :  trig_mme,
-                'eeee': trig_eeee, 'mmmm': trig_mmmm, 'eeem': trig_eeem, 'eemm': trig_eemm, 'mmme': trig_mmme,
-            }
+            #'event': events['event'],
+            #'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
+            #'trig': {
+            #    'eeSS': trig_eeSS, 'mmSS': trig_mmSS, 'emSS': trig_emSS,
+            #    'eee' : trig_eee,  'mmm' : trig_mmm,  'eem' : trig_eem,  'mme' :  trig_mme,
+            #    'eeee': trig_eeee, 'mmmm': trig_mmmm, 'eeem': trig_eeem, 'eemm': trig_eemm, 'mmme': trig_mmme,
+            #}
+            'EFTweights': events['EFTfitCoefficients']
         }
-        with open('passTracker','a+') as f:
+        with open('passTrackerEFTweights','a+') as f:
             for keys in passTracker:
                 if keys == 'trig':
                     for tkeys in passTracker[keys]:
