@@ -38,9 +38,9 @@ def isTightElectronPOG(pt,eta,dxy,dz,tight_id,tightCharge,year):
 
 def isGoodJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, nConstituents, jetPtCut=30.0):
     mask = (pt>jetPtCut) & (abs(eta)<2.4)# & ((jet_id&6)==6)
-    loose = (neHEF<0.99)&(neEmEF<0.99)&(chEmEF<0.99)&(nConstituents>1)
+    loose = (pt>0)#(neHEF<0.99)&(neEmEF<0.99)&(chEmEF<0.99)&(nConstituents>1)
     tight = (neHEF<0.9)&(neEmEF<0.9)&(chHEF>0.0)
-    jetMETcorrection = (neEmEF + chEmEF < 0.9)
+    jetMETcorrection = (pt>0)#(neEmEF + chEmEF < 0.9)
     mask = mask & loose & tight & jetMETcorrection
     return mask
 
