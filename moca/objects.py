@@ -44,13 +44,15 @@ def isGoodJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, nConstituents, jetP
     mask = mask & loose & tight & jetMETcorrection
     return mask
 
-def isClean(jets, electrons, muons, drmin=0.4):
+def isClean(jets, electrons, muons, taus, drmin=0.4):
   ''' Returns mask to select clean jets '''
   epairs = jets.cross(electrons, nested=True)
   mpairs = jets.cross(muons, nested=True)
+  tpairs = jets.cross(taus, nested=True)
   egoodPairs = (epairs.i0.delta_r(epairs.i1) > drmin).all()
   mgoodPairs = (mpairs.i0.delta_r(mpairs.i1) > drmin).all()
-  return (egoodPairs) & (mgoodPairs)
+  tgoodPairs = (tpairs.i0.delta_r(tpairs.i1) > drmin).all()
+  return (egoodPairs) & (mgoodPairs) & (tgoodPairs)
   
 def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, minpt=10.0):
   mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)#&(mvaTTH>0.90)&(tightCharge==2)&(mediumPrompt)
@@ -63,6 +65,10 @@ def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convV
   mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)&(lostHits<1)&\
          (maskPOGMVA)&(convVeto)&(maskSieie)&(hoe<0.10)&(eInvMinusPInv>-0.04)#&(mvaTTH>0.90)&(tightCharge==2)
   return mask 
+ 
+def isTauMVA(pt, eta, minpt=25.0):
+  mask = (pt>minpt)&(abs(eta)<2.4)
+  return mask
 
 ids = {}
 ids['isTightMuonPOG'] = isTightMuonPOG
