@@ -86,6 +86,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         met = events.MET
         e   = events.Electron
         mu  = events.Muon
+        tau = events.Tau
         j   = events.Jet
 
         
@@ -98,8 +99,11 @@ class AnalysisProcessor(processor.ProcessorABC):
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
         
+        tau['isGood'] = isTauMVA(tau.pt, tau.eta, minpt=25)
+        
         e  =  e[e .isGood.astype(np.bool)]
         mu = mu[mu.isGood.astype(np.bool)]
+        tau= tau[tau.isGood.astype(np.bool)]
         nElec = e .counts
         nMuon = mu.counts
 
@@ -113,7 +117,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
 
         j['isgood']  = isGoodJet(j.pt_nom, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF, j.nConstituents) #j.pt_nom is the skimmed version
-        j['isclean'] = isClean(j, e, mu)
+        j['isclean'] = isClean(j, e, mu, tau)
         goodJets = j[j.isgood]
         njets = goodJets.counts
         ht = goodJets.pt.sum()
