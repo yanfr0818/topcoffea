@@ -67,7 +67,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         isClean         = self._objects['isClean']
         isMuonMVA       = self._objects['isMuonMVA'] #isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=15)
         isElecMVA       = self._objects['isElecMVA'] #isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=15)
-        #isTauMVA        = self._objects['isTauMVA']
+        isTauMVA        = self._objects['isTauMVA']
         
         # Corrections
         GetMuonIsoSF    = self._corrections['getMuonIso']
