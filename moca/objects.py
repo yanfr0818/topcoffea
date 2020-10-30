@@ -75,6 +75,7 @@ ids['isTightMuonPOG'] = isTightMuonPOG
 ids['isTightElectronPOG'] = isTightElectronPOG
 ids['isMuonMVA'] = isMuonMVA
 ids['isElecMVA'] = isElecMVA
+ids['isTauMVA']  = isTauMVA
 ids['isGoodJet'] = isGoodJet
 ids['isClean']   = isClean
 
