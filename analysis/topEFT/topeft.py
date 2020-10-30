@@ -120,7 +120,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         j['isgood']  = isGoodJet(j.pt_nom, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF, j.nConstituents) #j.pt_nom is the skimmed version
         j['isclean'] = isClean(j, e, mu, tau)
-        goodJets = j[j.isgood]
+        goodJets = j[(j.isclean)&(j.isgood)]
         njets = goodJets.counts
         ht = goodJets.pt.sum()
         j0 = goodJets[goodJets.pt.argmax()]
