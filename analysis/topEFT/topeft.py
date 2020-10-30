@@ -100,7 +100,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
         
-        tau['isGood'] = (tau.pt>25.0) & (abs(tau.eta)<2.4) #isTauMVA(tau.pt, tau.eta, minpt=25)
+        #tau['isGood'] = (tau.pt>25.0)&(abs(tau.eta)<2.4)
+        tau['isGood'] = isTauMVA(tau.pt, tau.eta, minpt=25)
         
         e  =  e[e .isGood.astype(np.bool)]
         mu = mu[mu.isGood.astype(np.bool)]
