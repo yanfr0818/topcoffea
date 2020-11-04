@@ -55,14 +55,14 @@ def isClean(jets, electrons, muons, taus, drmin=0.4):
   return (egoodPairs) & (mgoodPairs)# & (tgoodPairs)
   
 def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, minpt=10.0):
-  mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)#&(mvaTTH>0.90)&(tightCharge==2)&(mediumPrompt)
+  mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.15)&(sip3D<8)#&(mvaTTH>0.90)&(tightCharge==2)&(mediumPrompt)
   return mask
 
 def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, sieie, hoe, eInvMinusPInv, minpt=15.0):
   maskPOGMVA = ((pt<10)&(abs(eta)<0.8)&(elecMVA>-0.13))|((pt<10)&(abs(eta)>0.8)&(abs(eta)<1.44)&(elecMVA>-0.32))|((pt<10)&(abs(eta)>1.44)&(elecMVA>-0.08))|\
                ((pt>10)&(abs(eta)<0.8)&(elecMVA>-0.86))|((pt>10)&(abs(eta)>0.8)&(abs(eta)<1.44)&(elecMVA>-0.81))|((pt>10)&(abs(eta)>1.44)&(elecMVA>-0.72))
   maskSieie  = ((abs(eta)<1.479)&(sieie<0.011))|((abs(eta)>1.479)&(sieie<0.030))
-  mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.4)&(sip3D<8)&(lostHits<1)&\
+  mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(miniIso<0.1)&(sip3D<8)&(lostHits<1)&\
          (maskPOGMVA)&(convVeto)&(maskSieie)&(hoe<0.10)&(eInvMinusPInv>-0.04)#&(mvaTTH>0.90)&(tightCharge==2)
   return mask 
  
