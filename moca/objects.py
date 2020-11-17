@@ -64,7 +64,7 @@ def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convV
   maskSieie  = ((abs(eta)<1.479)&(sieie<0.011))|((abs(eta)>1.479)&(sieie<0.030))
   maskhoe    = ((abs(eta)<1.479)&(hoe<0.10))|((abs(eta)>1.479)&(hoe<0.07))
   mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(sip3D<8)&(lostHits<1)&\
-         (maskPOGMVA)&(convVeto)&(maskSieie)&(maskhoe)&(eInvMinusPInv>-0.04)#&(miniIso<0.25)#&(mvaTTH>0.90)&(tightCharge==2)
+         (maskPOGMVA)&(convVeto)&(maskSieie)&(eInvMinusPInv>-0.04)#&(maskhoe)&(miniIso<0.25)#&(mvaTTH>0.90)&(tightCharge==2)
   return mask 
  
 def isTauMVA(pt, eta, minpt=25.0):
