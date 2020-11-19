@@ -54,8 +54,8 @@ def isClean(jets, electrons, muons, taus, drmin=0.4):
   tgoodPairs = (tpairs.i0.delta_r(tpairs.i1) > drmin).all()
   return (egoodPairs) & (mgoodPairs)# & (tgoodPairs)
   
-def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, minpt=10.0):
-  mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(sip3D<8)#&(miniIso<0.25)#&(mvaTTH>0.90)&(tightCharge==2)&(mediumPrompt)
+def isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, looseId, minpt=10.0):
+  mask = (pt>minpt)&(abs(eta)<2.5)&(abs(dxy)<0.05)&(abs(dz)<0.1)&(sip3D<8)&(looseId)#&(miniIso<0.25)#&(mvaTTH>0.90)&(tightCharge==2)&(mediumPrompt)
   return mask
 
 def isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, sieie, hoe, eInvMinusPInv, minpt=15.0):
