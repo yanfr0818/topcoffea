@@ -80,7 +80,7 @@ def isTightElec(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, con
          (convVeto)&(maskSieie)#&(maskPOGMVA)&(eInvMinusPInv>-0.04)&(maskhoe)&(miniIso<0.25)#&(mvaTTH>0.90)&(tightCharge==2)
   return mask 
  
-def isCleanElec(e, mu, drmin=0.05)
+def isCleanElec(e, mu, drmin=0.05):
   empairs = e.cross(mu, nested=True)
   emgoodPairs = (empairs.i0.delta_r(empairs.i1) > drmin).all()
   return emgoodPairs
