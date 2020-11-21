@@ -109,7 +109,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         e['isPres']  = isPresElec(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.lostHits, minpt=15)
         e['isTight'] = isTightElec(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, e.lostHits, e.convVeto, e.tightCharge,
                                 e.sieie, e.hoe, e.eInvMinusPInv, minpt=15)
-        e['isClean'] = isClean(e, mu, drmin=-1.00)#0.05
+        e['isClean'] = isClean(e, mu, drmin=0.05)#0.05
         e['isGood']  = e['isPres'] & e['isTight'] & e['isClean']
         
         leading_e = e[e.pt.argmax()]
@@ -137,7 +137,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
 
         j['isGood']  = isTightJet(j.pt_nom, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF, j.nConstituents) #j.pt_nom is the skimmed version
-        j['isClean'] = isClean(j, e, drmin=0.4) & isClean(j, mu, drmin=0.4)# & isClean(j, tau, dr=0.4) #isCleanJet(j, e, mu, tau, drmin=0.4)
+        j['isClean'] = isClean(j, e, drmin=0.4) & isClean(j, mu, drmin=0.4) & isClean(j, tau, drmin=0.4) #isCleanJet(j, e, mu, tau, drmin=0.4)
         goodJets = j[(j.isClean)&(j.isGood)]
         njets = goodJets.counts
         ht = goodJets.pt.sum()
