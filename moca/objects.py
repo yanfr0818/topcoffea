@@ -41,7 +41,7 @@ def isClean(obj_A, obj_B, drmin=0.4):
    ABgoodPairs = (ABpairs.i0.delta_r(ABpairs.i1) > drmin).all()
    return ABgoodPairs
 
-def isGoodJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, nConstituents, jetPtCut=30.0):
+def isTightJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, nConstituents, jetPtCut=30.0):
     mask = (pt>jetPtCut) & (abs(eta)<2.4)# & ((jet_id&6)==6)
     loose = (pt>0)#(neHEF<0.99)&(neEmEF<0.99)&(chEmEF<0.99)&(nConstituents>1)
     tight = (neHEF<0.9)&(neEmEF<0.9)&(chHEF>0.0)
@@ -99,7 +99,7 @@ ids['isPresElec'] = isPresElec
 ids['isTightElec'] = isTightElec
 ids['isCleanMuon'] = isCleanElec
 ids['isPresTau']  = isPresTau
-ids['isGoodJet'] = isGoodJet
+ids['isTightJet'] = isTightJet
 ids['isCleanJet']   = isCleanJet
 
 if not os.path.isdir(outdir): os.system('mkdir -p ' + outdir)
