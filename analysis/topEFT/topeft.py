@@ -116,7 +116,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         leading_e = leading_e[leading_e.isGood.astype(np.bool)]
         
         e  =  e[e .isGood.astype(np.bool)]
-        e_pres = e[e .isPres.astype(np.bool)]
+        e_pres = e[e .isPres.astype(np.bool) & e .isClean.astype(np.bool)]
         
         tau['isPres']= isPresTau(tau.pt, tau.eta, minpt=25)
         tau['isClean']=isClean(tau, e_pres, drmin=0.4) & isClean(tau, mu_pres, drmin=0.4)
