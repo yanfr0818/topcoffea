@@ -61,6 +61,8 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         ### Recover objects, selection, functions and others...
         # Objects
+        isClean         = self._objects['isClean']
+        
         isTightJet      = self._objects['isTightJet']
         isCleanJet      = self._objects['isCleanJet']
         
