@@ -72,7 +72,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         isCleanElec     = self._objects['isCleanElec']
         
         isPresTau       = self._objects['isPresTau']
-        isCleanTau      = self._objects['isCleanTau']
         
         # Corrections
         GetMuonIsoSF    = self._corrections['getMuonIso']
