@@ -94,7 +94,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         tau = events.Tau
         j   = events.Jet
 
-        mu['isPres'] = isPresMuon(mu.dxy, mu.dz, mu.sip3d, mu.loosId)
+        mu['isPres'] = isPresMuon(mu.dxy, mu.dz, mu.sip3d, mu.looseId)
         mu['isTight']= isTightMuon(mu.pt, mu.eta, mu.dxy, mu.dz, mu.pfRelIso03_all, mu.sip3d, mu.mvaTTH, mu.mediumPromptId, mu.tightCharge, mu.looseId, minpt=10)
         mu['isGood'] = mu['isPres'] & mu['isTight']
         
