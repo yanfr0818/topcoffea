@@ -61,13 +61,18 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         ### Recover objects, selection, functions and others...
         # Objects
-        isTightMuon     = self._objects['isTightMuonPOG']
-        isTightElectron = self._objects['isTightElectronPOG']
-        isGoodJet       = self._objects['isGoodJet']
-        isClean         = self._objects['isClean']
-        isMuonMVA       = self._objects['isMuonMVA'] #isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=15)
-        isElecMVA       = self._objects['isElecMVA'] #isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=15)
-        isTauMVA        = self._objects['isTauMVA']
+        isTightJet      = self._objects['isTightJet']
+        isCleanJet      = self._objects['isCleanJet']
+        
+        isPresMuon      = self._objects['isPresMuon']
+        isTightMuon     = self._objects['isTightMuon'] #isMuonMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, mediumPrompt, tightCharge, jetDeepB=0, minpt=15)
+        
+        isPresElec      = self._objects['isPresElec']
+        isTightElec     = self._objects['isTightElec'] #isElecMVA(pt, eta, dxy, dz, miniIso, sip3D, mvaTTH, elecMVA, lostHits, convVeto, tightCharge, jetDeepB=0, minpt=15)
+        isCleanElec     = self._objects['isCleanElec']
+        
+        isPresTau       = self._objects['isPresTau']
+        isCleanTau      = self._objects['isCleanTau']
         
         # Corrections
         GetMuonIsoSF    = self._corrections['getMuonIso']
@@ -90,22 +95,34 @@ class AnalysisProcessor(processor.ProcessorABC):
         tau = events.Tau
         j   = events.Jet
 
+        mu['isPres'] = isPresMuon(mu.dxy, mu.dz, mu.sip3d, mu.loosId)
+        mu['isTight']= isTightMuon(mu.pt, mu.eta, mu.dxy, mu.dz, mu.pfRelIso03_all, mu.sip3d, mu.mvaTTH, mu.mediumPromptId, mu.tightCharge, mu.looseId, minpt=10)
+        mu['isGood'] = mu['isPres'] & mu['isTight']
         
-        e['isGood'] = isElecMVA(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, e.lostHits, e.convVeto, e.tightCharge,
-                                e.sieie, e.hoe, e.eInvMinusPInv, minpt=15)
-        leading_e = e[e.pt.argmax()]
-        leading_e = leading_e[leading_e.isGood.astype(np.bool)]
-                
-        mu['isGood'] = isMuonMVA(mu.pt, mu.eta, mu.dxy, mu.dz, mu.pfRelIso03_all, mu.sip3d, mu.mvaTTH, mu.mediumPromptId, mu.tightCharge, mu.looseId, minpt=10)
         leading_mu = mu[mu.pt.argmax()]
         leading_mu = leading_mu[leading_mu.isGood.astype(np.bool)]
         
-        #tau['isGood'] = (tau.pt>25.0)&(abs(tau.eta)<2.4)
-        tau['isGood'] = isTauMVA(tau.pt, tau.eta, minpt=25)
+        mu = mu[mu.isGood.astype(np.bool)]
+        mu_pres = mu[mu.isPres.astype(np.bool)]
+        
+        e['isPres']  = isPresElec(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.lostHits, minpt=15)
+        e['isTight'] = isTightElec(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, e.lostHits, e.convVeto, e.tightCharge,
+                                e.sieie, e.hoe, e.eInvMinusPInv, minpt=15)
+        e['isClean'] = isClean(e, mu, deltaR=0.00)#0.05
+        e['isGood']  = e['isPres'] & e['isTight'] & e['isClean']
+        
+        leading_e = e[e.pt.argmax()]
+        leading_e = leading_e[leading_e.isGood.astype(np.bool)]
         
         e  =  e[e .isGood.astype(np.bool)]
-        mu = mu[mu.isGood.astype(np.bool)]
+        e_pres = e[e .isPres.astype(np.bool)]
+        
+        tau['isPres']= isPresTau(tau.pt, tau.eta, minpt=25)
+        tau['isClean']=isClean(tau, e_pres, deltaR=0.4) & isClean(tau, mu_pres, deltaR=0.4)
+        tau['isGood']= tau['isPres'] & tau['isClean']
+        
         tau= tau[tau.isGood.astype(np.bool)]
+        
         nElec = e .counts
         nMuon = mu.counts
 
@@ -118,9 +135,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         m0 = mu[mu.pt.argmax()]
 
 
-        j['isgood']  = isGoodJet(j.pt_nom, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF, j.nConstituents) #j.pt_nom is the skimmed version
-        j['isclean'] = isClean(j, e, mu, tau)
-        goodJets = j[(j.isclean)&(j.isgood)]
+        j['isGood']  = isGoodJet(j.pt_nom, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF, j.nConstituents) #j.pt_nom is the skimmed version
+        j['isClean'] = isCleanJet(j, e, mu, tau, deltaR=0.4)
+        goodJets = j[(j.isClean)&(j.isGood)]
         njets = goodJets.counts
         ht = goodJets.pt.sum()
         j0 = goodJets[goodJets.pt.argmax()]
