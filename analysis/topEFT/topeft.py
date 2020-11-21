@@ -137,7 +137,7 @@ class AnalysisProcessor(processor.ProcessorABC):
 
 
         j['isGood']  = isTightJet(j.pt_nom, j.eta, j.jetId, j.neHEF, j.neEmEF, j.chHEF, j.chEmEF, j.nConstituents) #j.pt_nom is the skimmed version
-        j['isClean'] = isCleanJet(j, e, mu, tau, deltaR=0.4)
+        j['isClean'] = isCleanJet(j, e, mu, tau, drmin=0.4)
         goodJets = j[(j.isClean)&(j.isGood)]
         njets = goodJets.counts
         ht = goodJets.pt.sum()
