@@ -118,7 +118,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         e  =  e[e .isGood.astype(np.bool)]
         e_pres = e[e .isPres.astype(np.bool) & e .isClean.astype(np.bool)]
         
-        tau['isPres']= isPresTau(tau.pt, tau.eta, tau.dxy, tau.dz, tau.leadTkPtOverTauPt, tau.idAntiMu[1], tau.idAntiEle[1], tau.rawIso, minpt=20)
+        tau['isPres']= isPresTau(tau.pt, tau.eta, tau.dxy, tau.dz, tau.leadTkPtOverTauPt, tau.idAntiMu, tau.idAntiEle, tau.rawIso, minpt=20)
         tau['isClean']=isClean(tau, e_pres, drmin=0.4) & isClean(tau, mu_pres, drmin=0.4)
         tau['isGood']= tau['isPres']# & tau['isClean']
         
