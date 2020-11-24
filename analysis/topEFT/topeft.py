@@ -109,7 +109,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         e['isPres']  = isPresElec(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.lostHits, minpt=15)
         e['isTight'] = isTightElec(e.pt, e.eta, e.dxy, e.dz, e.miniPFRelIso_all, e.sip3d, e.mvaTTH, e.mvaFall17V2Iso, e.lostHits, e.convVeto, e.tightCharge,
                                 e.sieie, e.hoe, e.eInvMinusPInv, minpt=15)
-        e['isClean'] = isClean(e, mu, drmin=0.05)#0.05
+        e['isClean'] = isClean(e, mu, drmin=0.05)
         e['isGood']  = e['isPres'] & e['isTight'] & e['isClean']
         
         leading_e = e[e.pt.argmax()]
@@ -120,7 +120,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         tau['isPres']= isPresTau(tau.pt, tau.eta, minpt=25)
         tau['isClean']=isClean(tau, e_pres, drmin=0.4) & isClean(tau, mu_pres, drmin=0.4)
-        tau['isGood']= tau['isPres'] & tau['isClean']
+        tau['isGood']= tau['isPres']# & tau['isClean']
         
         tau= tau[tau.isGood.astype(np.bool)]
         
