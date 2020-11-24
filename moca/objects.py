@@ -87,7 +87,7 @@ def isCleanElec(e, mu, drmin=0.05):
  
 def isPresTau(pt, eta, dxy, dz, leadTkPtOverTauPt, idAntiMu, idAntiEle, rawIso, minpt=20.0):
   kinematics = (pt>minpt)&(abs(eta)<2.3)&(leadTkPtOverTauPt*pt>0.5)&(dxy<1000.)&(dz<0.2)
-  loose = (idAntiMu>0.5)&(idAntiEle>0.5)&(rawIso>0.5)
+  loose = (idAntiMu>0.5)&(idAntiEle>0.5)&(rawIso>1000.5)
   return kinematics & loose
 
 ids = {}
