@@ -126,6 +126,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         nElec = e .counts
         nMuon = mu.counts
+        nTau  = tau.counts
 
         twoLeps   = (nElec+nMuon) == 2
         threeLeps = (nElec+nMuon) == 3
@@ -418,7 +419,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # P/NP information tracker
         passTracker = {
             'event': events['event'],
-            'nElec': nElec, 'nMuon': nMuon, 'njets': njets, 'nbtags': nbtags,
+            'nElec': nElec, 'nMuon': nMuon, 'nTau': nTau, 'njets': njets, 'nbtags': nbtags,
             'trig': {
                 'eeSS': trig_eeSS, 'mmSS': trig_mmSS, 'emSS': trig_emSS,
                 'eee' : trig_eee,  'mmm' : trig_mmm,  'eem' : trig_eem,  'mme' :  trig_mme,
