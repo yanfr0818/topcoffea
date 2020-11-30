@@ -86,7 +86,7 @@ def isCleanElec(e, mu, drmin=0.05):
   return emgoodPairs
  
 def isPresTau(pt, eta, dxy, dz, leadTkPtOverTauPt, idAntiMu, idAntiEle, rawIso, idDecayModeNewDMs, minpt=20.0):
-  kinematics = (pt>minpt)&(abs(eta)<2.3)&(leadTkPtOverTauPt*pt>0.5)&(dxy<1000.)&(dz<0.2)
+  kinematics = (pt>minpt)&(abs(eta)<2.3)#&(leadTkPtOverTauPt*pt>0.5)&(dxy<1000.)&(dz<0.2)
   medium = (idAntiMu>0.5)&(idAntiEle>0.5)&(rawIso>0.5)&(idDecayModeNewDMs)
   return kinematics# & medium
 
