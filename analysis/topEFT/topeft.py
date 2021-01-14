@@ -205,7 +205,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_eem = mu[(nElec==2)&(nMuon==1)&(mu.pt>-1)]
         elec_eem =  e[(nElec==2)&(nMuon==1)&( e.pt>-1)]
         ee_eem   = elec_eem.distincts()
-        ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91.2)<15)
+        ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91.2)<10)
         ee_eemOffZmask  = (ee_eemZmask==0)#(ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)>15)
         ee_eemZmask     = (ee_eemZmask[ee_eemZmask].counts>0)
         ee_eemOffZmask  = (ee_eemOffZmask[ee_eemOffZmask].counts>0)
@@ -222,7 +222,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_mme = mu[(nElec==1)&(nMuon==2)&(mu.pt>-1)]
         elec_mme =  e[(nElec==1)&(nMuon==2)&( e.pt>-1)]
         mm_mme   = muon_mme.distincts() 
-        mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91.2)<15)
+        mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91.2)<10)
         mm_mmeOffZmask  = (mm_mmeZmask==0)#(mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
         mm_mmeZmask     = (mm_mmeZmask[mm_mmeZmask].counts>0)
         mm_mmeOffZmask  = (mm_mmeOffZmask[mm_mmeOffZmask].counts>0)
@@ -252,10 +252,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmSFOS_pairs = mm_pairs[(np.abs(mmm[mm_pairs.i0].pdgId) == np.abs(mmm[mm_pairs.i1].pdgId)) & (mmm[mm_pairs.i0].charge != mmm[mm_pairs.i1].charge)]
         # Find the pair with mass closest to Z.
         eeOSSFmask = eeSFOS_pairs[np.abs((eee[eeSFOS_pairs.i0] + eee[eeSFOS_pairs.i1]).mass - 91.2).argmin()]
-        onZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) < 15
+        onZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) < 10
         mmOSSFmask = mmSFOS_pairs[np.abs((mmm[mmSFOS_pairs.i0] + mmm[mmSFOS_pairs.i1]).mass - 91.2).argmin()]
-        onZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) < 15
-        offZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 15
+        onZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) < 10
+        offZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 10
         offZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) > 15
 
         # Create masks
