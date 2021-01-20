@@ -145,8 +145,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         j0 = goodJets[goodJets.pt.argmax()]
         nbtags = goodJets[goodJets.btagDeepB > 0.4941].counts
 
-        mZ = 91.2
-        deltamZ = 10
         
         ##################################################################
         ### 2 same-sign leptons
@@ -168,13 +166,13 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         eepairs = ee.distincts()
         eeSSmask = (eepairs.i0.charge*eepairs.i1.charge>0)
-        eeonZmask  = (np.abs((eepairs.i0+eepairs.i1).mass-mZ)<deltamZ)
+        eeonZmask  = (np.abs((eepairs.i0+eepairs.i1).mass-91.2)<10)
         eeoffZmask = (eeonZmask==0)
         eeSSSign = (np.sign(eepairs.i0.charge+eepairs.i1.charge)>0)
 
         mmpairs = mm.distincts()
         mmSSmask = (mmpairs.i0.charge*mmpairs.i1.charge>0)
-        mmonZmask  = (np.abs((mmpairs.i0+mmpairs.i1).mass-mZ)<deltamZ)
+        mmonZmask  = (np.abs((mmpairs.i0+mmpairs.i1).mass-91.2)<10)
         mmoffZmask = (mmonZmask==0)
         mmSSSign = (np.sign(mmpairs.i0.charge+mmpairs.i1.charge)>0)
 
@@ -208,7 +206,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_eem = mu[(nElec==2)&(nMuon==1)&(mu.pt>-1)]
         elec_eem =  e[(nElec==2)&(nMuon==1)&( e.pt>-1)]
         ee_eem   = elec_eem.distincts()
-        ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-mZ)<deltamZ)
+        ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91.2)<10)
         ee_eemOffZmask  = (ee_eemZmask==0)#(ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)>15)
         ee_eemZmask     = (ee_eemZmask[ee_eemZmask].counts>0)
         ee_eemOffZmask  = (ee_eemOffZmask[ee_eemOffZmask].counts>0)
@@ -225,7 +223,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_mme = mu[(nElec==1)&(nMuon==2)&(mu.pt>-1)]
         elec_mme =  e[(nElec==1)&(nMuon==2)&( e.pt>-1)]
         mm_mme   = muon_mme.distincts() 
-        mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-mZ)<deltamZ)
+        mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91.2)<10)
         mm_mmeOffZmask  = (mm_mmeZmask==0)#(mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
         mm_mmeZmask     = (mm_mmeZmask[mm_mmeZmask].counts>0)
         mm_mmeOffZmask  = (mm_mmeOffZmask[mm_mmeOffZmask].counts>0)
@@ -254,12 +252,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeSFOS_pairs = ee_pairs[(np.abs(eee[ee_pairs.i0].pdgId) == np.abs(eee[ee_pairs.i1].pdgId)) & (eee[ee_pairs.i0].charge != eee[ee_pairs.i1].charge)]
         mmSFOS_pairs = mm_pairs[(np.abs(mmm[mm_pairs.i0].pdgId) == np.abs(mmm[mm_pairs.i1].pdgId)) & (mmm[mm_pairs.i0].charge != mmm[mm_pairs.i1].charge)]
         # Find the pair with mass closest to Z.
-        eeOSSFmask = eeSFOS_pairs[np.abs((eee[eeSFOS_pairs.i0] + eee[eeSFOS_pairs.i1]).mass - mZ).argmin()]
-        onZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - mZ) < deltamZ
-        mmOSSFmask = mmSFOS_pairs[np.abs((mmm[mmSFOS_pairs.i0] + mmm[mmSFOS_pairs.i1]).mass - mZ).argmin()]
-        onZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - mZ) < deltamZ
-        offZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - mZ) > deltamZ
-        offZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - mZ) > deltamZ
+        eeOSSFmask = eeSFOS_pairs[np.abs((eee[eeSFOS_pairs.i0] + eee[eeSFOS_pairs.i1]).mass - 91.2).argmin()]
+        onZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) < 10
+        mmOSSFmask = mmSFOS_pairs[np.abs((mmm[mmSFOS_pairs.i0] + mmm[mmSFOS_pairs.i1]).mass - 91.2).argmin()]
+        onZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) < 10
+        offZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 10
+        offZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) > 10
 
         # Create masks
         eeeOnZmask  = onZmask_ee[onZmask_ee].counts>0
@@ -303,7 +301,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_eeem = mu[(nElec==3)&(nMuon==1)&(mu.pt>-1)]
         elec_eeem =  e[(nElec==3)&(nMuon==1)&( e.pt>-1)]
         ee_eeem   = elec_eeem.distincts()
-        ee_eeemZmask     = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-mZ)<deltamZ)
+        ee_eeemZmask     = (ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91.2)<10)
         ee_eeemOffZmask  = (ee_eeemZmask==0)#(ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)>15)
         ee_eeemZmask     = (ee_eeemZmask[ee_eeemZmask].counts>0)
         ee_eeemOffZmask  = (ee_eeemOffZmask[ee_eeemOffZmask].counts>0)
@@ -316,7 +314,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_mmme = mu[(nElec==1)&(nMuon==3)&(mu.pt>-1)]
         elec_mmme =  e[(nElec==1)&(nMuon==3)&( e.pt>-1)]
         mm_mmme   = muon_mmme.distincts()
-        mm_mmmeZmask     = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-mZ)<deltamZ)
+        mm_mmmeZmask     = (mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91.2)<10)
         mm_mmmeOffZmask  = (mm_mmmeZmask==0)#(mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)>15)
         mm_mmmeZmask     = (mm_mmmeZmask[mm_mmmeZmask].counts>0)
         mm_mmmeOffZmask  = (mm_mmmeOffZmask[mm_mmmeOffZmask].counts>0)
@@ -334,8 +332,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         elec_eemm =  e[(nElec==2)&(nMuon==2)&( e.pt>-1)]
         ee_eemm   = elec_eemm.distincts()
         mm_eemm   = muon_eemm.distincts()
-        ee_eemmZmask  = (ee_eemm.i0.charge*ee_eemm.i1.charge<1)&(np.abs((ee_eemm.i0+ee_eemm.i1).mass-mZ)<deltamZ)
-        mm_eemmZmask  = (mm_eemm.i0.charge*mm_eemm.i1.charge<1)&(np.abs((mm_eemm.i0+mm_eemm.i1).mass-mZ)<deltamZ)
+        ee_eemmZmask  = (ee_eemm.i0.charge*ee_eemm.i1.charge<1)&(np.abs((ee_eemm.i0+ee_eemm.i1).mass-91.2)<10)
+        mm_eemmZmask  = (mm_eemm.i0.charge*mm_eemm.i1.charge<1)&(np.abs((mm_eemm.i0+mm_eemm.i1).mass-91.2)<10)
         eemmOnZmask   = (ee_eemmZmask|mm_eemmZmask)
         eemmOffZmask  = (eemmOnZmask==0)
         eemmOnZmask   = (eemmOnZmask[eemmOnZmask].counts>0)
