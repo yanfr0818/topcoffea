@@ -396,7 +396,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         #m4l_mmmm = [t[0].mass for t in quadMuon]
 
         # Triggers
-        #passTrigger = lambda events, n, m, o : np.ones_like(events['MET_pt'], dtype=np.bool) # XXX
+        #passTrigger = lambda events, n, m, o : np.ones_like(events.MET.pt], dtype=np.bool) # XXX
         trig_eeSS = passTrigger(events,'ee',isData,dataset)
         trig_mmSS = passTrigger(events,'mm',isData,dataset)
         trig_emSS = passTrigger(events,'em',isData,dataset)
@@ -413,7 +413,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         # MET filters
 
         # Weights
-        genw = np.ones_like(events['MET_pt']) if isData else events['genWeight']
+        genw = np.ones_like(events.MET.pt) if isData else events['genWeight']
         weights = processor.Weights(events.size)
         weights.add('norm',genw if isData else (xsec/sow)*genw)
 
