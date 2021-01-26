@@ -41,8 +41,9 @@ def isClean(obj_A, obj_B, drmin=0.4):
    ABgoodPairs = (ABpairs.i0.delta_r(ABpairs.i1) > drmin).all()
    return ABgoodPairs
 
-def isTightJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, nConstituents, jetPtCut=30.0):
-    mask = (pt>jetPtCut) & (abs(eta)<2.4)# & ((jet_id&6)==6)
+def isTightJet(pt, eta, jet_id, neHEF, neEmEF, chHEF, chEmEF, nConstituents, rawFactor, jetPtCut=30.0):
+    rawpt = pt* (1.-rawFactor)
+    mask = (rawpt>jetPtCut) & (abs(eta)<2.4)# & ((jet_id&6)==6)
     loose = (pt>0)#(neHEF<0.99)&(neEmEF<0.99)&(chEmEF<0.99)&(nConstituents>1)
     tight = (neHEF<0.9)&(neEmEF<0.9)&(chHEF>0.0)
     jetMETcorrection = (pt>0)#(neEmEF + chEmEF < 0.9)
