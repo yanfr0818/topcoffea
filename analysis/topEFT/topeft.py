@@ -145,7 +145,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         j0 = goodJets[goodJets.pt.argmax()]
         nbtags = goodJets[goodJets.btagDeepB > 0.4941].counts
         
-        e_near  = e [(e .pt<115.5) & (e .pt>14.5)]
+        e_near  = e [(e .pt<15.5) & (e .pt>14.5)]
         m_near  = mu[(mu.pt<10.5) & (mu.pt>9.5)]
         ne_near = len(e_near.flatten())
         nm_near = len(m_near.flatten())
