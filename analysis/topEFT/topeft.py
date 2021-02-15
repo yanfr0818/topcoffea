@@ -444,11 +444,11 @@ class AnalysisProcessor(processor.ProcessorABC):
         # Selections and cuts
         selections = processor.PackedSelection()
         channels2LSS = ['eeSSonZ', 'eeSSoffZ', 'mmSSonZ', 'mmSSoffZ', 'emSS']
-        selections.add('eeSSonZ',  (eeonZmask)&(eeSSmask)&(trig_eeSS))
-        selections.add('eeSSoffZ', (eeoffZmask)&(eeSSmask)&(trig_eeSS))
-        selections.add('mmSSonZ',  (mmonZmask)&(mmSSmask)&(trig_mmSS))
-        selections.add('mmSSoffZ', (mmoffZmask)&(mmSSmask)&(trig_mmSS))
-        selections.add('emSS',     (emSSmask)&(trig_emSS))
+        selections.add('eeSSonZ',  (eeonZmask)&(eeSSmask))#&(trig_eeSS))
+        selections.add('eeSSoffZ', (eeoffZmask)&(eeSSmask))#&(trig_eeSS))
+        selections.add('mmSSonZ',  (mmonZmask)&(mmSSmask))#&(trig_mmSS))
+        selections.add('mmSSoffZ', (mmoffZmask)&(mmSSmask))#&(trig_mmSS))
+        selections.add('emSS',     (emSSmask))#&(trig_emSS))
 
         channels2LSS += ['eeSSonZ_p', 'eeSSoffZ_p', 'mmSSonZ_p', 'mmSSoffZ_p', 'emSS_p']
         selections.add('eeSSonZ_p',  (eeonZmask)&(eeSSmask)&(trig_eeSS)&(eeSSSign))
@@ -466,16 +466,16 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         
         channels3L = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ']
-        selections.add('eemSSonZ',   (ee_eemZmask)&(trig_eem))
-        selections.add('eemSSoffZ',  (ee_eemOffZmask)&(trig_eem))
-        selections.add('mmeSSonZ',   (mm_mmeZmask)&(trig_mme))
-        selections.add('mmeSSoffZ',  (mm_mmeOffZmask)&(trig_mme))
+        selections.add('eemSSonZ',   (ee_eemZmask))#&(trig_eem))
+        selections.add('eemSSoffZ',  (ee_eemOffZmask))#&(trig_eem))
+        selections.add('mmeSSonZ',   (mm_mmeZmask))#&(trig_mme))
+        selections.add('mmeSSoffZ',  (mm_mmeOffZmask))#&(trig_mme))
 
         channels3L += ['eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ']
-        selections.add('eeeSSonZ',   (eeeOnZmask)&(trig_eee))
-        selections.add('eeeSSoffZ',  (eeeOffZmask)&(trig_eee))
-        selections.add('mmmSSonZ',   (mmmOnZmask)&(trig_mmm))
-        selections.add('mmmSSoffZ',  (mmmOffZmask)&(trig_mmm))
+        selections.add('eeeSSonZ',   (eeeOnZmask))#&(trig_eee))
+        selections.add('eeeSSoffZ',  (eeeOffZmask))#&(trig_eee))
+        selections.add('mmmSSonZ',   (mmmOnZmask))#&(trig_mmm))
+        selections.add('mmmSSoffZ',  (mmmOffZmask))#&(trig_mmm))
         
         channels3L += ['eemSSonZ_p', 'eemSSoffZ_p', 'mmeSSonZ_p', 'mmeSSoffZ_p']
         selections.add('eemSSonZ_p',   (ee_eemZmask)&(trig_eem)&(eemSign))
@@ -502,18 +502,18 @@ class AnalysisProcessor(processor.ProcessorABC):
         selections.add('mmmSSoffZ_m',  (mmmOffZmask)&(trig_mmm)&(mmmSign==0))
         
         channels4L = ['eeemSSonZ', 'eeemSSoffZ', 'mmmeSSonZ', 'mmmeSSoffZ', 'eemmSSonZ', 'eemmSSoffZ']
-        selections.add('eeemSSonZ',   (ee_eeemZmask)&(trig_eeem))
-        selections.add('eeemSSoffZ',  (ee_eeemOffZmask)&(trig_eeem))
-        selections.add('mmmeSSonZ',   (mm_mmmeZmask)&(trig_mmme))
-        selections.add('mmmeSSoffZ',  (mm_mmmeOffZmask)&(trig_mmme))
-        selections.add('eemmSSonZ',   (eemmOnZmask)&(trig_eemm))
-        selections.add('eemmSSoffZ',  (eemmOffZmask)&(trig_eemm))
+        selections.add('eeemSSonZ',   (ee_eeemZmask))#&(trig_eeem))
+        selections.add('eeemSSoffZ',  (ee_eeemOffZmask))#&(trig_eeem))
+        selections.add('mmmeSSonZ',   (mm_mmmeZmask))#&(trig_mmme))
+        selections.add('mmmeSSoffZ',  (mm_mmmeOffZmask))#&(trig_mmme))
+        selections.add('eemmSSonZ',   (eemmOnZmask))#&(trig_eemm))
+        selections.add('eemmSSoffZ',  (eemmOffZmask))#&(trig_eemm))
         
         channels4L += ['eeeeSSonZ', 'eeeeSSoffZ', 'mmmmSSonZ', 'mmmmSSoffZ']
-        selections.add('eeeeSSonZ',   (eeeeOnZmask)&(trig_eeee))
-        selections.add('eeeeSSoffZ',  (eeeeOffZmask)&(trig_eeee))
-        selections.add('mmmmSSonZ',   (mmmmOnZmask)&(trig_mmmm))
-        selections.add('mmmmSSoffZ',  (mmmmOffZmask)&(trig_mmmm))
+        selections.add('eeeeSSonZ',   (eeeeOnZmask))#&(trig_eeee))
+        selections.add('eeeeSSoffZ',  (eeeeOffZmask))#&(trig_eeee))
+        selections.add('mmmmSSonZ',   (mmmmOnZmask))#&(trig_mmmm))
+        selections.add('mmmmSSoffZ',  (mmmmOffZmask))#&(trig_mmmm))
 
         levels = ['base', '2jets', '2j1b', '2j2b', '3jets', '3j1b', '3j2b', '4jets', '4j1b', '4j2b', '5j1b', '5j2b', '6j1b', '6j2b']
         selections.add('base', (nElec+nMuon>=2))
