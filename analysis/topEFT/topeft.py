@@ -4,7 +4,7 @@ import cloudpickle
 import json
 import pprint
 import numpy as np
-import awkward
+import awkward as ak
 np.seterr(divide='ignore', invalid='ignore', over='ignore')
 from coffea.arrays import Initialize
 from coffea import hist, processor
@@ -183,7 +183,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         neeSS = len(eeSSonZ.flatten()) + len(eeSSoffZ.flatten())
         nmmSS = len(mmSSonZ.flatten()) + len(mmSSoffZ.flatten())
 
-        #print('Same-sign events [ee, emu, mumu] = [%i, %i, %i]'%(neeSS, nemSS, nmmSS))
+        print('Same-sign events total [ee, emu, mumu] = %i [%i, %i, %i]'%(neeSS+nemSS+nmmSS, neeSS, nemSS, nmmSS))
 
         # Cuts
         eeSSmask   = (eeSSmask[eeSSmask].counts>0)
@@ -195,8 +195,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         emSSmask   = (emSSmask[emSSmask].counts>0)
         eeSSSign   = (eeSSSign[eeSSSign].counts>0)
         mmSSSign   = (mmSSSign[mmSSSign].counts>0)        
-        emSSSign   = (emSSSign[emSSSign].counts>0)        
-
+        emSSSign   = (emSSSign[emSSSign].counts>0)
+        
         
         ##################################################################
         ### 3 leptons
