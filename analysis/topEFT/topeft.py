@@ -147,8 +147,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         e_near  = e [(e .pt<15.5)]
         m_near  = mu[(mu.pt<10.5)]
-        ne_near = e_near.counts
-        nm_near = m_near.counts
+        ne_near = len(e_near.flatten())
+        nm_near = len(m_near.flatten())
         print('near the pT cut, ne: %i nm: %i'%(ne_near, nm_near))
 
         
