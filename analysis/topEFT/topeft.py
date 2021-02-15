@@ -376,7 +376,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         neeee = len(eeee.flatten())
         neeem = len(group_eeem.flatten())
-        neeem = len(group_eemm.flatten())
+        neemm = len(group_eemm.flatten())
         nmmme = len(group_mmme.flatten())
         nmmmm = len(mmmm.flatten())
         
