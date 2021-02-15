@@ -295,7 +295,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         neee = len(eee.flatten())
         neem = len(group_eem.flatten())
         nmme = len(group_mme.flatten())
-        nmmm = len(group_mmm.flatten())
+        nmmm = len(mmm.flatten())
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
         
@@ -312,6 +312,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         ee_eeemOffZmask  = (ee_eeemZmask==0)#(ee_eeem.i0.charge*ee_eeem.i1.charge<1)&(np.abs((ee_eeem.i0+ee_eeem.i1).mass-91)>15)
         ee_eeemZmask     = (ee_eeemZmask[ee_eeemZmask].counts>0)
         ee_eeemOffZmask  = (ee_eeemOffZmask[ee_eeemOffZmask].counts>0)
+        group_eeem= ee_eeem.cross(muon_eeem)
 
         #eepair_eeem     = (ee_eeem.i0+ee_eeem.i1)
         #trilep_eeem     = eepair_eeem.cross(muon_eeem)
@@ -325,6 +326,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         mm_mmmeOffZmask  = (mm_mmmeZmask==0)#(mm_mmme.i0.charge*mm_mmme.i1.charge<1)&(np.abs((mm_mmme.i0+mm_mmme.i1).mass-91)>15)
         mm_mmmeZmask     = (mm_mmmeZmask[mm_mmmeZmask].counts>0)
         mm_mmmeOffZmask  = (mm_mmmeOffZmask[mm_mmmeOffZmask].counts>0)
+        group_mmme= mm_mmme.cross(elec_mmme)
 
         #mmpair_mmme     = (mm_mmme.i0+mm_mmme.i1)
         #trilep_mmme     = mmpair_mmme.cross(elec_mmme)
@@ -345,6 +347,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         eemmOffZmask  = (eemmOnZmask==0)
         eemmOnZmask   = (eemmOnZmask[eemmOnZmask].counts>0)
         eemmOffZmask  = (eemmOffZmask[eemmOffZmask].counts>0)
+        group_eemm= ee_eemm.cross(mm_eemm)
         
         ### eeee and mmmm
         eeee =   e[(nElec==4)&(nMuon==0)&( e.pt>-1)] 
@@ -372,9 +375,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         mmmmOffZmask = (mmmmOffZmask[mmmmOffZmask].counts>0)
         
         neeee = len(eeee.flatten())
-        neeem = len(eeem.flatten())
-        neeem = len(eemm.flatten())
-        nmmme = len(mmme.flatten())
+        neeem = len(group_eeem.flatten())
+        neeem = len(group_eemm.flatten())
+        nmmme = len(group_mmme.flatten())
         nmmmm = len(mmmm.flatten())
         
         print('4L events total [eeee, eeem, eemm, mmme, mmmm] = %i [%i, %i, %i, %i, %i]'%(neeee+neeem+neemm+nmmme+nmmmm, neeee, neeem, neemm, nmmme, nmmmm))
