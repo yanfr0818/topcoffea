@@ -144,6 +144,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         ht = goodJets.pt.sum()
         j0 = goodJets[goodJets.pt.argmax()]
         nbtags = goodJets[goodJets.btagDeepB > 0.4941].counts
+        
+        e_near  = e [(e .pt<15.5)]
+        m_near  = mu[(mu.pt<10.5)]
+        ne_near = e_near.counts
+        nm_near = m_near.counts
+        print('near the pT cut, ne: %i nm: %i'%(ne_near, nm_near))
 
         
         ##################################################################
