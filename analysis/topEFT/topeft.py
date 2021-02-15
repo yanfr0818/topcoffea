@@ -157,7 +157,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         emSSmask = (em.i0.charge*em.i1.charge>0)
         emSS = em[emSSmask]
         nemSS = len(emSS.flatten())
-        emSSSign = (np.sign(em.i0.charge+em.i1.charge)>0)
+        emSSSign = (np.sign(em.i0.charge+em.i1.charge)>-100)
         
         # ee and mumu
         # pt>-1 to preserve jagged dimensions
@@ -168,13 +168,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeSSmask = (eepairs.i0.charge*eepairs.i1.charge>0)
         eeonZmask  = (np.abs((eepairs.i0+eepairs.i1).mass-91.2)<10)
         eeoffZmask = (eeonZmask==0)
-        eeSSSign = (np.sign(eepairs.i0.charge+eepairs.i1.charge)>0)
+        eeSSSign = (np.sign(eepairs.i0.charge+eepairs.i1.charge)>-100)
 
         mmpairs = mm.distincts()
         mmSSmask = (mmpairs.i0.charge*mmpairs.i1.charge>0)
         mmonZmask  = (np.abs((mmpairs.i0+mmpairs.i1).mass-91.2)<10)
         mmoffZmask = (mmonZmask==0)
-        mmSSSign = (np.sign(mmpairs.i0.charge+mmpairs.i1.charge)>0)
+        mmSSSign = (np.sign(mmpairs.i0.charge+mmpairs.i1.charge)>-100)
 
         eeSSonZ  = eepairs[eeSSmask &  eeonZmask]
         eeSSoffZ = eepairs[eeSSmask & eeoffZmask]
