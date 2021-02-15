@@ -154,7 +154,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         singe = e [(nElec==1)&(nMuon==1)&(e .pt>-1)]
         singm = mu[(nElec==1)&(nMuon==1)&(mu.pt>-1)]
         em = singe.cross(singm)
-        emSSmask = (em.i0.charge*em.i1.charge>-100)
+        emSSmask = (em.i0.charge*em.i1.charge>0)
         emSS = em[emSSmask]
         nemSS = len(emSS.flatten())
         emSSSign = (np.sign(em.i0.charge+em.i1.charge)>0)
@@ -165,13 +165,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         mm = mu[(nElec==0)&(nMuon==2)&(mu.pt>-1)]
 
         eepairs = ee.distincts()
-        eeSSmask = (eepairs.i0.charge*eepairs.i1.charge>-100)
+        eeSSmask = (eepairs.i0.charge*eepairs.i1.charge>0)
         eeonZmask  = (np.abs((eepairs.i0+eepairs.i1).mass-91.2)<10)
         eeoffZmask = (eeonZmask==0)
         eeSSSign = (np.sign(eepairs.i0.charge+eepairs.i1.charge)>0)
 
         mmpairs = mm.distincts()
-        mmSSmask = (mmpairs.i0.charge*mmpairs.i1.charge>-100)
+        mmSSmask = (mmpairs.i0.charge*mmpairs.i1.charge>0)
         mmonZmask  = (np.abs((mmpairs.i0+mmpairs.i1).mass-91.2)<10)
         mmoffZmask = (mmonZmask==0)
         mmSSSign = (np.sign(mmpairs.i0.charge+mmpairs.i1.charge)>0)
@@ -292,6 +292,13 @@ class AnalysisProcessor(processor.ProcessorABC):
         mZ_mmm  = mZ.mass
         m3l_mmm = triMuon.mass
         
+        neee = len(eee.flatten())
+        neem = len(eem.flatten())
+        nmme = len(mme.flatten())
+        nmmm = len(mmm.flatten())
+        
+        print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
+        
         
         ##################################################################
         ### 4 leptons
@@ -363,6 +370,14 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeeeOffZmask = (eeeeOffZmask[eeeeOffZmask].counts>0)
         mmmmOnZmask  = (mmmmOnZmask[mmmmOnZmask].counts>0)
         mmmmOffZmask = (mmmmOffZmask[mmmmOffZmask].counts>0)
+        
+        neeee = len(eeee.flatten())
+        neeem = len(eeem.flatten())
+        neeem = len(eemm.flatten())
+        nmmme = len(mmme.flatten())
+        nmmmm = len(mmmm.flatten())
+        
+        print('4L events total [eeee, eeem, eemm, mmme, mmmm] = %i [%i, %i, %i, %i, %i]'%(neeee+neeem+neemm+nmmme+nmmmm, neeee, neeem, neemm, nmmme, nmmmm))
         
         # Get Z and W invariant masses
         #goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
