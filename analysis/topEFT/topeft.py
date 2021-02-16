@@ -391,9 +391,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         # More than 4L
         
-        gt4e =  events[e[(nElec>4)&(nMuon>=0)&( e.pt>-1)]]
-        gt4m =  events[mu[(nElec>=0)&(nMuon>4)&(mu.pt>-1)]]
-        gt4e4m = events[(e[(nElec>4)&(nMuon>4)&(e.pt>-1)]) & (mu[(nElec>4)&(nMuon>4)&(mu.pt>-1))]
+        gt4e =  e[(nElec>4)&(nMuon>=0)&( e.pt>-1)]
+        gt4m = mu[(nElec>=0)&(nMuon>4)&(mu.pt>-1)]
+        gt4e4m = e[(nElec>4)&(nMuon>4)&(e.pt>-1)] & mu[(nElec>4)&(nMuon>4)&(mu.pt>-1)]
         
         ngt4e = len(gt4e.flatten())
         ngt4m = len(gt4m.flatten())
