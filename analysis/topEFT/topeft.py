@@ -388,6 +388,19 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         print('4L events total [eeee, eeem, eemm, mmme, mmmm] = %i [%i, %i, %i, %i, %i]'%(neeee+neeem+neemm+nmmme+nmmmm, neeee, neeem, neemm, nmmme, nmmmm))
         
+        # More than 4L
+        
+        gt4e =  e[(nElec>4)&(nMuon>=0)&( e.pt>-1)]
+        gt4m = mu[(nElec>=0)&(nMuon>4)&(mu.pt>-1)]
+        gt4e4m = e[(nElec>4)&(nMuon>4)&( e.pt>-1)&(mu.pt>-1)]
+        
+        ngt4e = len(gt4e.flatten())
+        ngt4m = len(gt4m.flatten())
+        ngt4e4m = len(gt4e4m.flatten())
+        
+        print('[>4e, >4m, >4e&>4m] = [%i, %i, %i]'%(ngt4e, ngt4m, ngt4e4m))
+        print('>4l = %i'%(ngt4e+ngt4m-ngt4e4m))
+        
         # Get Z and W invariant masses
         #goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
         #print(len(eeee_groups[clos_eeee.counts>0]))
@@ -418,6 +431,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         #quadMuon = [x+y for x,y in zip(mZ, mW)]
         #mZ_mmmm  = [t[0].mass for t in mZ]
         #m4l_mmmm = [t[0].mass for t in quadMuon]
+        
 
         # Triggers
         #passTrigger = lambda events, n, m, o : np.ones_like(events['MET_pt'], dtype=np.bool) # XXX
