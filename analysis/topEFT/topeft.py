@@ -393,13 +393,15 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         gt4e =  e[(nElec>4)&(nMuon>=0)&( e.pt>-1)]
         gt4m = mu[(nElec>=0)&(nMuon>4)&(mu.pt>-1)]
-        gt4e4m = e[(nElec>4)&(nMuon>4)&(e.pt>-1)] & mu[(nElec>4)&(nMuon>4)&(mu.pt>-1)]
+        gt4e4m = e[(nElec>4)&(nMuon>4)&(e.pt>-1)]
+        gt4e4mM = mu[(nElec>4)&(nMuon>4)&(mu.pt>-1)]
         
         ngt4e = len(gt4e.flatten())
         ngt4m = len(gt4m.flatten())
         ngt4e4m = len(gt4e4m.flatten())
+        ngt4e4mM = len(gt4e4mM.flatten())
         
-        print('[>4e, >4m, >4e&>4m] = [%i, %i, %i]'%(ngt4e, ngt4m, ngt4e4m))
+        print('[>4e, >4m, >4e&>4m, >4e&>4mM] = [%i, %i, %i, %i]'%(ngt4e, ngt4m, ngt4e4m, ngt4e4mM))
         print('>4l = %i'%(ngt4e+ngt4m-ngt4e4m))
         
         # Get Z and W invariant masses
