@@ -127,6 +127,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         nElec = e .counts
         nMuon = mu.counts
         nTau  = tau.counts
+        nLep  = nElec + nMuon
 
         twoLeps   = (nElec+nMuon) == 2
         threeLeps = (nElec+nMuon) == 3
@@ -390,9 +391,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         # More than 4L
         
-        gt4e =  e[(nElec>4)&(nMuon>=0)&( e.pt>-1)]
-        gt4m = mu[(nElec>=0)&(nMuon>4)&(mu.pt>-1)]
-        gt4e4m = e[(nElec>4)&(nMuon>4)&( e.pt>-1)&(mu.pt>-1)]
+        gt4e =  events[(nElec>4)&(nMuon>=0)&( e.pt>-1)]
+        gt4m =  events[(nElec>=0)&(nMuon>4)&(mu.pt>-1)]
+        gt4e4m = events[(nElec>4)&(nMuon>4)&( e.pt>-1)&(mu.pt>-1)]
         
         ngt4e = len(gt4e.flatten())
         ngt4m = len(gt4m.flatten())
