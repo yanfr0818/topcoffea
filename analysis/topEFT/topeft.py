@@ -406,6 +406,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         print('[>4e, >4m, >4e&>4m, >4e&>4mM] = [%i, %i, %i, %i]'%(ngt4e, ngt4m, ngt4e4m, ngt4e4mM))
         print('>4l = %i'%(ngt4e+ngt4m-ngt4e4m))
         
+        Lep = []
+        nLep = []
         for i in range(4):
             Lep[i] = events['event'][events['nLep'] == i]
         Lep[4] = events['event'][events['nLep'] >= 4]
