@@ -313,6 +313,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
         
+        eeeOffZmask = eeeOffZmask & eeeMask
+        mmmOffZmask = mmmOffZmask & mmmMask
+        
         eeeOnZ = eeeOnZmask[eeeOnZmask]
         eeeOffZ = eeeOffZmask[eeeOffZmask]
         neeeOnZ = len(eeeOnZ.flatten())
