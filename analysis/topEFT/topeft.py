@@ -265,14 +265,14 @@ class AnalysisProcessor(processor.ProcessorABC):
         onZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) < 10
         mmOSSFmask = mmSFOS_pairs[np.abs((mmm[mmSFOS_pairs.i0] + mmm[mmSFOS_pairs.i1]).mass - 91.2).argmin()]
         onZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) < 10
-        offZmask_ee = (np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 10) | (ak.num(eeSFOS_pairs)>0)
-        offZmask_mm = (onZmask_mm==0)#np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) > 10
+        #offZmask_ee = (onZmask_ee==0)#np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 10
+        #offZmask_mm = (onZmask_mm==0)#np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) > 10
 
         # Create masks
         eeeOnZmask  = onZmask_ee[onZmask_ee].counts>0
-        eeeOffZmask = offZmask_ee[offZmask_ee].counts>0
+        eeeOffZmask = onZmask_ee[onZmask_ee==0].counts>0
         mmmOnZmask  = onZmask_mm[onZmask_mm].counts>0
-        mmmOffZmask = offZmask_mm[offZmask_mm].counts>0
+        mmmOffZmask = onZmask_mm[onZmask_mm==0].counts>0
         
         eee_trilep = eee.choose(3)
         eeeSign  = (np.sign(eee_trilep.i0.charge+eee_trilep.i1.charge+eee_trilep.i2.charge)>0)
