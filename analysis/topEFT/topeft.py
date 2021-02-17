@@ -192,6 +192,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         nmmSS = len(mmSSonZ.flatten()) + len(mmSSoffZ.flatten())
 
         print('Same-sign events total [ee, emu, mumu] = %i [%i, %i, %i]'%(neeSS+nemSS+nmmSS, neeSS, nemSS, nmmSS))
+        
+        2Lep = events[events['nLep'] == 2]
+        print('when n =2, nLep = %i'%(2Lep))
 
         # Cuts
         eeSSmask   = (eeSSmask[eeSSmask].counts>0)
