@@ -338,9 +338,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         eeeMask = eeeMask[eeeMask].counts>0
         #eeeOnZ = eeeOnZ[eeeOnZ].counts>0
+        diff = []
         for i in range(len(events['event'])):
             if (eeeMask[i] != eeeOnZmask[i]):
-                print(events['event'][i])
+                diff = np.append(diff, events['event'][i])
+        print(diff)
+        print(len(diff))
         
         ##################################################################
         ### 4 leptons
