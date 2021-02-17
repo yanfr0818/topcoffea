@@ -213,10 +213,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_eem = mu[(nElec==2)&(nMuon==1)&(mu.pt>-1)]
         elec_eem =  e[(nElec==2)&(nMuon==1)&( e.pt>-1)]
         ee_eem   = elec_eem.distincts()
-        ee_eemZmask     = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91.2)<10)
-        ee_eemOffZmask  = (ee_eemZmask==0)#(ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)>15)
-        ee_eemZmask     = (ee_eemZmask[ee_eemZmask].counts>0)
-        ee_eemOffZmask  = (ee_eemOffZmask[ee_eemOffZmask].counts>0)
+        ee_eemOnZ         = (ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91.2)<10)
+        ee_eemOffZ      = (ee_eemOnZ==0)#(ee_eem.i0.charge*ee_eem.i1.charge<1)&(np.abs((ee_eem.i0+ee_eem.i1).mass-91)>15)
+        ee_eemZmask     = (ee_eemOnZ[ee_eemOnZ].counts>0)
+        ee_eemOffZmask  = (ee_eemOffZ[ee_eemOffZ].counts>0)
 
         eepair_eem      = (ee_eem.i0+ee_eem.i1)
         trilep_eem      = eepair_eem.cross(muon_eem)
@@ -230,10 +230,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         muon_mme = mu[(nElec==1)&(nMuon==2)&(mu.pt>-1)]
         elec_mme =  e[(nElec==1)&(nMuon==2)&( e.pt>-1)]
         mm_mme   = muon_mme.distincts() 
-        mm_mmeZmask     = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91.2)<10)
-        mm_mmeOffZmask  = (mm_mmeZmask==0)#(mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
-        mm_mmeZmask     = (mm_mmeZmask[mm_mmeZmask].counts>0)
-        mm_mmeOffZmask  = (mm_mmeOffZmask[mm_mmeOffZmask].counts>0)
+        mm_mmeOnZ   = (mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91.2)<10)
+        mm_mmeOffZ  = (mm_mmeOnZ==0)#(mm_mme.i0.charge*mm_mme.i1.charge<1)&(np.abs((mm_mme.i0+mm_mme.i1).mass-91)>15)
+        mm_mmeZmask   = (mm_mmeOnZ[mm_mmeOnZ].counts>0)
+        mm_mmeOffZmask  = (mm_mmeOffZ[mm_mmeOffZ].counts>0)
 
         mmpair_mme     = (mm_mme.i0+mm_mme.i1)
         trilep_mme     = mmpair_mme.cross(elec_mme)
@@ -300,8 +300,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         m3l_mmm = triMuon.mass
         
         neee = len(onZmask_ee.flatten()) + len(offZmask_ee.flatten())
-        neem = len(ee_eemZmask.flatten()) + len(ee_eemOffZmask.flatten())
-        nmme = len(mm_mmeZmask.flatten()) + len(mm_mmeOffZmask.flatten())
+        neem = len(ee_eemOnZ.flatten()) + len(ee_eemOffZ.flatten())
+        nmme = len(mm_mmeOnZ.flatten()) + len(mm_mmeOffZ.flatten())
         nmmm = len(onZmask_mm.flatten()) + len(offZmask_mm.flatten())
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
