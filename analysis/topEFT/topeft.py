@@ -313,18 +313,6 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
         
-        channels3L = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ']
-        selections.add('eemSSonZ',   (ee_eemZmask))#&(trig_eem))
-        selections.add('eemSSoffZ',  (ee_eemOffZmask))#&(trig_eem))
-        selections.add('mmeSSonZ',   (mm_mmeZmask))#&(trig_mme))
-        selections.add('mmeSSoffZ',  (mm_mmeOffZmask))#&(trig_mme))
-
-        channels3L += ['eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ']
-        selections.add('eeeSSonZ',   (eeeOnZmask))#&(trig_eee))
-        selections.add('eeeSSoffZ',  (eeeOffZmask))#&(trig_eee))
-        selections.add('mmmSSonZ',   (mmmOnZmask))#&(trig_mmm))
-        selections.add('mmmSSoffZ',  (mmmOffZmask))#&(trig_mmm))
-        
         eeeOnZ = eeeOnZmask[eeeOnZmask]
         eeeOffZ = eeeOffZmask[eeeOffZmask]
         neeeOnZ = len(eeeOnZ.flatten())
