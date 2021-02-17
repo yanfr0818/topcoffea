@@ -416,6 +416,16 @@ class AnalysisProcessor(processor.ProcessorABC):
             nLep_sum += nLep[i]
         print(nLep_sum)
         
+        nE = []
+        for i in range(4):
+            nE = np.append(nE, len(events['event'][events['nElec'] == i]))
+        nE = np.append(nE, len(events['event'][events['nElec'] >= 4]))
+        nE_sum = 0
+        for i in range(len(nE)):
+            print('when n = %i, nLep = %i'%(i, nE[i]))
+            nE_sum += nE[i]
+        print(nE_sum)
+        
         # Get Z and W invariant masses
         #goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
         #print(len(eeee_groups[clos_eeee.counts>0]))
