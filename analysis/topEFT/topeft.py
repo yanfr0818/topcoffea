@@ -406,14 +406,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         print('[>4e, >4m, >4e&>4m, >4e&>4mM] = [%i, %i, %i, %i]'%(ngt4e, ngt4m, ngt4e4m, ngt4e4mM))
         print('>4l = %i'%(ngt4e+ngt4m-ngt4e4m))
         
-        Lep = []
         nLep = []
         for i in range(4):
-            Lep[i] = events['event'][events['nLep'] == i]
-        Lep[4] = events['event'][events['nLep'] >= 4]
+            nLep = np.append(nLep, len(events['event'][events['nLep'] == i]))
+        nLep = np.append(nLep, len(events['event'][events['nLep'] >= 4]))
         nLep_sum = 0
-        for i in range(5):
-            nLep[i] == len(lep[i])
+        for i in range(len(nLep)):
             print('when n = %i, nLep = %i'%(i, nLep[i]))
             nLep_sum += nLep[i]
         print(nLep_sum)
