@@ -301,13 +301,15 @@ class AnalysisProcessor(processor.ProcessorABC):
         mZ_mmm  = mZ.mass
         m3l_mmm = triMuon.mass
         
-        mmeMask  = (np.sign(group_mme.i0.charge+group_mme.i1.charge+group_mme.i2.charge)>-100)
+        eeeMask  = (np.sign(eee_trilep.i0.charge+eee_trilep.i1.charge+eee_trilep.i2.charge)>-100)
         eemMask  = (np.sign(group_eem.i0.charge+group_eem.i1.charge+group_eem.i2.charge)>-100)
+        mmeMask  = (np.sign(group_mme.i0.charge+group_mme.i1.charge+group_mme.i2.charge)>-100)
+        mmmMask  = (np.sign(mmm_trilep.i0.charge+mmm_trilep.i1.charge+mmm_trilep.i2.charge)>-100)
         
-        neee = len(onZmask_ee.flatten()) + len(offZmask_ee.flatten())
+        neee = len(eeeMask.flatten())
         neem = len(eemMask.flatten())
         nmme = len(mmeMask.flatten())
-        nmmm = len(onZmask_mm.flatten()) + len(offZmask_mm.flatten())
+        nmmm = len(mmmMask.flatten())
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
         
