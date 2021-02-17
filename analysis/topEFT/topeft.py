@@ -299,10 +299,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         mZ_mmm  = mZ.mass
         m3l_mmm = triMuon.mass
         
-        neee = len(eee.flatten())
-        neem = len(group_eem.flatten())
-        nmme = len(group_mme.flatten())
-        nmmm = len(mmm.flatten())
+        neee = len(eeeSSonZ.flatten()) + len(eeeSSoffZ.flatten())
+        neem = len(ee_eemZmask.flatten()) + len(ee_eemOffZmask.flatten())
+        nmme = len(mm_mmeZmask.flatten()) + len(mm_mmeOffZmask.flatten())
+        nmmm = len(mmmSSonZ.flatten()) + len(mmmSSoffZ.flatten())
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
         
