@@ -270,9 +270,9 @@ class AnalysisProcessor(processor.ProcessorABC):
 
         # Create masks
         eeeOnZmask  = onZmask_ee[onZmask_ee].counts>0
-        eeeOffZmask = onZmask_ee[onZmask_ee==0].counts>0
+        eeeOffZmask = onZmask_ee[onZmask_ee].counts==0
         mmmOnZmask  = onZmask_mm[onZmask_mm].counts>0
-        mmmOffZmask = onZmask_mm[onZmask_mm==0].counts>0
+        mmmOffZmask = onZmask_mm[onZmask_mm].counts==0
         
         eee_trilep = eee.choose(3)
         eeeSign  = (np.sign(eee_trilep.i0.charge+eee_trilep.i1.charge+eee_trilep.i2.charge)>0)
