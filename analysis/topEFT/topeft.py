@@ -263,8 +263,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         onZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) < 10
         mmOSSFmask = mmSFOS_pairs[np.abs((mmm[mmSFOS_pairs.i0] + mmm[mmSFOS_pairs.i1]).mass - 91.2).argmin()]
         onZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) < 10
-        offZmask_ee = np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 10
-        offZmask_mm = np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) > 10
+        offZmask_ee = (onZmask_ee==0)#np.abs((eee[eeOSSFmask.i0] + eee[eeOSSFmask.i1]).mass - 91.2) > 10
+        offZmask_mm = (onZmask_mm==0)#np.abs((mmm[mmOSSFmask.i0] + mmm[mmOSSFmask.i1]).mass - 91.2) > 10
 
         # Create masks
         eeeOnZmask  = onZmask_ee[onZmask_ee].counts>0
@@ -299,10 +299,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         mZ_mmm  = mZ.mass
         m3l_mmm = triMuon.mass
         
-        neee = len(eeeSSonZ.flatten()) + len(eeeSSoffZ.flatten())
+        neee = len(onZmask_ee.flatten()) + len(offZmask_ee.flatten())
         neem = len(ee_eemZmask.flatten()) + len(ee_eemOffZmask.flatten())
         nmme = len(mm_mmeZmask.flatten()) + len(mm_mmeOffZmask.flatten())
-        nmmm = len(mmmSSonZ.flatten()) + len(mmmSSoffZ.flatten())
+        nmmm = len(onZmask_mm.flatten()) + len(offZmask_mm.flatten())
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
         
