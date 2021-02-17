@@ -336,6 +336,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         print('SSOnZ: total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOnZ+neemOnZ+nmmeOnZ+nmmmOnZ, neeeOnZ, neemOnZ, nmmeOnZ, nmmmOnZ))
         print('SSOffZ: total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOffZ+neemOffZ+nmmeOffZ+nmmmOffZ, neeeOffZ, neemOffZ, nmmeOffZ, nmmmOffZ))
         
+        eeeMask = eeeMask[eeeMask].counts>0
+        neeeOnZ = neeeOnZ[neeeOnZ].counts>0
+        for i in range(len(events['event'])):
+            if (eeeMask[i] != neeeOnZ[i])
+                print(events['event'][i])
+        
         ##################################################################
         ### 4 leptons
         ##################################################################
