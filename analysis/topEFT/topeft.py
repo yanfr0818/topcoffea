@@ -339,7 +339,7 @@ class AnalysisProcessor(processor.ProcessorABC):
         eeeMask = eeeMask[eeeMask].counts>0
         neeeOnZ = neeeOnZ[neeeOnZ].counts>0
         for i in range(len(events['event'])):
-            if (eeeMask[i] != neeeOnZ[i])
+            if (eeeMask[i] != neeeOnZ[i]):
                 print(events['event'][i])
         
         ##################################################################
