@@ -313,6 +313,40 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
         
+        channels3L = ['eemSSonZ', 'eemSSoffZ', 'mmeSSonZ', 'mmeSSoffZ']
+        selections.add('eemSSonZ',   (ee_eemZmask))#&(trig_eem))
+        selections.add('eemSSoffZ',  (ee_eemOffZmask))#&(trig_eem))
+        selections.add('mmeSSonZ',   (mm_mmeZmask))#&(trig_mme))
+        selections.add('mmeSSoffZ',  (mm_mmeOffZmask))#&(trig_mme))
+
+        channels3L += ['eeeSSonZ', 'eeeSSoffZ', 'mmmSSonZ', 'mmmSSoffZ']
+        selections.add('eeeSSonZ',   (eeeOnZmask))#&(trig_eee))
+        selections.add('eeeSSoffZ',  (eeeOffZmask))#&(trig_eee))
+        selections.add('mmmSSonZ',   (mmmOnZmask))#&(trig_mmm))
+        selections.add('mmmSSoffZ',  (mmmOffZmask))#&(trig_mmm))
+        
+        eeeOnZ = eeeOnZmask[eeeOnZmask]
+        eeeOffZ = eeeOffZmask[eeeOffZmask]
+        neeeOnZ = len(eeeOnZ.flatten())
+        neeeOffZ = len(eeeOffZ.flatten())
+        
+        eemOnZ = ee_eemZmask[ee_eemZmask]
+        eemOffZ = ee_eemOffZmask[ee_eemOffZmask]
+        neemOnZ = len(eemOnZ.flatten())
+        neemOffZ = len(eemOffZ.flatten())
+        
+        mmeOnZ = mm_mmeZmask[mm_mmeZmask]
+        mmeOffZ = mm_mmeOffZmask[mm_mmeOffZmask]
+        nmmeOnZ = len(mmeOnZ.flatten())
+        nmmeOffZ = len(mmeOffZ.flatten())
+                
+        mmmOnZ = mmmOnZmask[mmmOnZmask]
+        mmmOffZ = mmmOffZmask[mmmOffZmask]
+        nmmmOnZ = len(mmmOnZ.flatten())
+        nmmmOffZ = len(mmmOffZ.flatten())
+        
+        print('SSOnZ: total %i[eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOnZ+neemOnZ+nmmeOnZ+nmmmOnZ, neeeOnZ, neemOnZ, nmmeOnZ, nmmmOnZ))
+        print('SSOffZ: total %i[eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOffZ+neemOffZ+nmmeOffZ+nmmmOffZ, neeeOffZ, neemOffZ, nmmeOffZ, nmmmOffZ))
         
         ##################################################################
         ### 4 leptons
