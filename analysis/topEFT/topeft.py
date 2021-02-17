@@ -337,9 +337,9 @@ class AnalysisProcessor(processor.ProcessorABC):
         print('SSOffZ: total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOffZ+neemOffZ+nmmeOffZ+nmmmOffZ, neeeOffZ, neemOffZ, nmmeOffZ, nmmmOffZ))
         
         eeeMask = eeeMask[eeeMask].counts>0
-        eeeOnZ = eeeOnZ[eeeOnZ].counts>0
+        #eeeOnZ = eeeOnZ[eeeOnZ].counts>0
         for i in range(len(events['event'])):
-            if (eeeMask[i] != neeeOnZ[i]):
+            if (eeeMask[i] != eeeOnZmask[i]):
                 print(events['event'][i])
         
         ##################################################################
