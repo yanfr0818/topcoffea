@@ -418,8 +418,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         
         nE = []
         for i in range(4):
-            nE = np.append(nE, len(events['event'][events['nElec'] == i]))
-        nE = np.append(nE, len(events['event'][events['nElec'] >= 4]))
+            nE = np.append(nE, len(events['event'][nElec == i]))
+        nE = np.append(nE, len(events['event'][nElec >= 4]))
         nE_sum = 0
         for i in range(len(nE)):
             print('when n = %i, nLep = %i'%(i, nE[i]))
