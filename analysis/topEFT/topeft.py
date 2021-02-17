@@ -341,10 +341,10 @@ class AnalysisProcessor(processor.ProcessorABC):
         diff = []
         Idiff = []
         for i in range(len(events['event'])):
-            if (eeeMask[i] != (eeeOnZmask[i] | eeeOfZmask[i])):
+            if (eeeMask[i] != (eeeOnZmask[i] | eeeOffZmask[i])):
                 diff = np.append(diff, events['event'][i])
                 Idiff = np.append(Idiff, i)
-                print('OnZmask: %r, OffZmask: %r'%(eeeOnZmask[i], (eeeOnZmask[i] | eeeOfZmask[i])))
+                print('OnZmask: %r, OffZmask: %r'%(eeeOnZmask[i], (eeeOnZmask[i] | eeeOffZmask[i])))
         print(diff)
         print(Idiff)
         print(len(diff))
