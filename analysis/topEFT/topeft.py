@@ -333,8 +333,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         nmmmOnZ = len(mmmOnZ.flatten())
         nmmmOffZ = len(mmmOffZ.flatten())
         
-        print('SSOnZ: total %i[eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOnZ+neemOnZ+nmmeOnZ+nmmmOnZ, neeeOnZ, neemOnZ, nmmeOnZ, nmmmOnZ))
-        print('SSOffZ: total %i[eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOffZ+neemOffZ+nmmeOffZ+nmmmOffZ, neeeOffZ, neemOffZ, nmmeOffZ, nmmmOffZ))
+        print('SSOnZ: total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOnZ+neemOnZ+nmmeOnZ+nmmmOnZ, neeeOnZ, neemOnZ, nmmeOnZ, nmmmOnZ))
+        print('SSOffZ: total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neeeOffZ+neemOffZ+nmmeOffZ+nmmmOffZ, neeeOffZ, neemOffZ, nmmeOffZ, nmmmOffZ))
         
         ##################################################################
         ### 4 leptons
