@@ -127,7 +127,8 @@ class AnalysisProcessor(processor.ProcessorABC):
         nElec = e .counts
         nMuon = mu.counts
         nTau  = tau.counts
-        nLep  = nElec + nMuon
+        
+        events['nLep'] = events.nElec + events.nMuon
 
         twoLeps   = (nElec+nMuon) == 2
         threeLeps = (nElec+nMuon) == 3
