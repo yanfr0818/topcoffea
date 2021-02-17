@@ -301,9 +301,12 @@ class AnalysisProcessor(processor.ProcessorABC):
         mZ_mmm  = mZ.mass
         m3l_mmm = triMuon.mass
         
+        mmeMask  = (np.sign(group_mme.i0.charge+group_mme.i1.charge+group_mme.i2.charge)>-100)
+        eemMask  = (np.sign(group_eem.i0.charge+group_eem.i1.charge+group_eem.i2.charge)>-100)
+        
         neee = len(onZmask_ee.flatten()) + len(offZmask_ee.flatten())
-        neem = len(ee_eemOnZ.flatten()) + len(ee_eemOffZ.flatten())
-        nmme = len(mm_mmeOnZ.flatten()) + len(mm_mmeOffZ.flatten())
+        neem = len(eemMask.flatten())
+        nmme = len(mmeMask.flatten())
         nmmm = len(onZmask_mm.flatten()) + len(offZmask_mm.flatten())
         
         print('3L events total [eee, eem, mme, mmm] = %i [%i, %i, %i, %i]'%(neee+neem+nmme+nmmm, neee, neem, nmme, nmmm))
@@ -415,16 +418,6 @@ class AnalysisProcessor(processor.ProcessorABC):
             print('when n = %i, nLep = %i'%(i, nLep[i]))
             nLep_sum += nLep[i]
         print(nLep_sum)
-        
-        nE = []
-        for i in range(4):
-            nE = np.append(nE, len(events['event'][nElec == i]))
-        nE = np.append(nE, len(events['event'][nElec >= 4]))
-        nE_sum = 0
-        for i in range(len(nE)):
-            print('when n = %i, nLep = %i'%(i, nE[i]))
-            nE_sum += nE[i]
-        print(nE_sum)
         
         # Get Z and W invariant masses
         #goodPairs_eeee = eeee_groups[(clos_eeee)&(isOSeeee)]
